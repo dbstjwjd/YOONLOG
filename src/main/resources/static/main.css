@@ -1,0 +1,68 @@
+nav {
+    font-family: 'Gugi', sans-serif;
+}
+
+.nav-link {
+    font-family: 'Gugi', sans-serif;
+}
+
+body, ul, li {
+    margin:0;
+    list-style:none;
+    padding:0;
+    font-family: 'Poor Story', cursive;
+}
+
+a {
+    color:inherit;
+    text-decoration:none;
+}
+
+a:hover {
+    color:indianred;
+}
+
+.comment_button {
+    color:lightcoral;
+    border:1px solid lightcoral;
+}
+
+.comment_button:hover {
+    background:lightcoral;
+    color:white;
+}
+
+#delete_button {
+    color:lightcoral;
+    border:1px solid lightcoral;
+}
+
+#delete_button:hover {
+    background:lightcoral;
+    color:white;
+}
+
+#btn_like {
+    color:lightcoral;
+    border:1px solid lightcoral;
+}
+
+#btn_like:hover {
+    background:lightcoral;
+    color:white;
+}
+
+#btn_login {
+    border:1px solid lightcoral;
+    color:lightcoral;
+}
+
+#btn_login:hover {
+    background:lightcoral;
+    color:white;
+}
+
+.styled-tag {
+    display: inline-block;
+    margin-right: 5px;
+}

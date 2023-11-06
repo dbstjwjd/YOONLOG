@@ -1,0 +1,64 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <h3 class="border-bottom pb-2 mt-3">글쓰기</h3>
+    <div>
+        <form method="post" th:object="${postForm}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+            <div class="my-3" style="width:20%">
+                <select th:field="*{category}" class="form-select">
+                    <option value="" selected>카테고리를 선택하세요</option>
+                    <option value="일기장">일기장</option>
+                    <option value="개발 일지">개발 일지</option>
+                    <option value="잡담">잡담</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="subject" class="form-label fs-5">제목</label>
+                <input type="text" class="form-control" th:field="*{subject}" style="font-size:13pt;">
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label fs-5">내용</label>
+                <div id="editor"></div>
+            </div>
+            <div class="mb-3">
+                <label for="tag" class="form-label fs-5">태그</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" style="font-size:13pt;" id="inputTag" placeholder="#태그이름" name="inputTag">
+                    <div class="btn btn-outline-light" style="background:lightcoral; border:lightcoral;">등록
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <input onclick="saveEditorContent()" type="submit" value="저장" class="btn btn-outline-light" style="background:lightcoral">
+            </div>
+            <input type="hidden" th:field="*{content}" id="content">
+        </form>
+    </div>
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="https://unpkg.com/@yaireo/tagify"></script>
+    <script>
+        const editor = new toastui.Editor({
+            el: document.querySelector('#editor'), // 에디터를 적용할 요소 (컨테이너)
+            height: '300px',                        // 에디터 영역의 높이 값 (OOOpx || auto)
+            initialEditType: 'wysiwyg',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
+            initialValue: '',     // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
+            previewStyle: 'vertical'                // 마크다운 프리뷰 스타일 (tab || vertical)
+        });
+
+        function saveEditorContent() {
+            const content = editor.getMarkdown(); // 에디터의 내용을 가져옵니다.
+            const contentField = document.getElementById('content'); // 폼 필드에 해당하는 엘리먼트
+
+            // 에디터의 내용을 폼 필드에 할당합니다.
+            contentField.value = content;
+        }
+
+        const input = document.querySelector('#inputTag');
+            let tagify = new Tagify(input); // initialize Tagify
+            tagify.on('add', function() {
+              console.log(tagify.value);
+            })
+    </script>
+</div>
+</html>

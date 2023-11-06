@@ -1,0 +1,31 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <div style="width:50%; margin:0 auto; font-size:15pt;">
+        <h3 class="border-bottom pb-2">정보 수정</h3>
+        <form th:action="@{|/user/modify/${user.username}|}" method="post" th:object="${userModifyForm}">
+            <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+            <div class="my-3">
+                <label for="nickname" class="form-label">닉네임</label>
+                <input type="text" class="form-control" th:field="*{nickname}">
+            </div>
+            <div class="mb-3">
+                <label for="birthDate" class="form-label">생년월일</label>
+                <input type="date" class="form-control" th:field="*{birthDate}">
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">주소</label>
+                <input type="text" class="form-control" th:field="*{address}">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">이메일</label>
+                <input type="email" class="form-control" th:field="*{email}">
+            </div>
+            <div class="mb-3">
+                <label for="file" class="form-label">프로필 사진</label>
+                <input class="form-control" type="file" accept=".jpg, .png" name="file">
+            </div>
+            <input type="submit" value="저장" class="btn btn-lg btn-outline-light" style="background:lightcoral">
+        </form>
+    </div>
+</div>
+</html>

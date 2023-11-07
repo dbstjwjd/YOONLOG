@@ -5,6 +5,7 @@ import com.ysblog.sbb.Post.Post;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,6 +42,5 @@ public class SiteUser {
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
 
-    @Lob
-    private byte[] profileImage;
+    private String imgUrl;
 }

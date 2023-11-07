@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -25,5 +26,6 @@ public class UserModifyForm {
     @NotEmpty(message = "이메일을 입력해주세요.")
     private String email;
 
-    private String imageAddress;
+    private MultipartFile profileImage;
+
 }

@@ -1,38 +1,46 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
     <div class="d-flex justify-content-between">
-        <h3 class="border-end pe-2 me-3"><span th:text="|#${hashtag}|" class="fw-bold fs-1" style="background:pink; opacity:0.7; margin-right:5px;"></span>로 검색된 결과
+        <h3 class="border-end pe-2 me-3"><span th:text="|#${hashtag}|" class="fw-bold fs-1"
+                                               style="background:pink; opacity:0.7; margin-right:5px;"></span>로 검색된 결과
         </h3>
-        <div style="width:100%; display:flex; flex-wrap:wrap; justify-content:space-between;">
+        <div style="width:100%; display:flex; flex-wrap:wrap; justify-content:start;">
             <div class="card mx-3 mb-3" th:each="post : ${postList}" style="width:30%;">
-                <div class="card-header fw-bold bg-danger bg-opacity-25" style="font-size:14pt;" th:text="|< ${post.subject} >|"></div>
+                <div class="card-header fw-bold bg-danger bg-opacity-25" style="font-size:14pt;"
+                     th:text="|< ${post.subject} >|"></div>
                 <div class="card-body">
                     <p class="card-title" th:text="${post.content}" style="font-size:13pt;"></p>
-                    <p class="card-text" th:id="'tag_' + ${post.id}" data-hashtag="/*[[${post.hashtag}]]*/" style="font-size:11pt; color:gray;">
-                        <script th:inline="javascript">
-                            var jsonString = /*[[${post.hashtag}]]*/ '';
-                            var tagList = [];
-                            try {
-                                var jsonArray = JSON.parse(jsonString);
-                                for (var i = 0; i < jsonArray.length; i++) {
-                                    var jsonObject = jsonArray[i];
-                                    var value = jsonObject.value;
-                                    tagList.push(value);
-                                }
-                            } catch (error) {
-                                throw new Error(error);
+                    <a class="tagName card-text" th:id="'tag_' + ${post.id}" data-hashtag="/*[[${post.hashtag}]]*/"
+                       style="font-size:11pt; color:gray;"></a>
+                    <script th:inline="javascript">
+                        var jsonString = /*[[${post.hashtag}]]*/ '';
+                        var tagList = [];
+                        try {
+                            var jsonArray = JSON.parse(jsonString);
+                            for (var i = 0; i < jsonArray.length; i++) {
+                                var jsonObject = jsonArray[i];
+                                var value = jsonObject.value;
+                                tagList.push(value);
                             }
+                        } catch (error) {
+                            throw new Error(error);
+                        }
+                        var tagDiv = document.querySelector("#tag_" + /*[[${post.id}]]*/);
+                        for (var i = 0; i < tagList.length; i++) {
+                            var tagSpan = document.createElement('a');
+                            tagSpan.textContent = tagList[i];
 
-                            var tagDiv = document.querySelector("#tag_" + /*[[${post.id}]]*/);
-
-                            var tagsAsString = tagList.join(' ');
-
-                            // card-text 요소에 해시태그 추가
-                            if (tagDiv) {
-                                tagDiv.innerText = tagsAsString;
+                            if (i < tagList.length - 1) {
+                                tagSpan.textContent += ' ';
                             }
-                        </script>
-                    </p>
+                            var baseHref = '/post/search/'; // 기본 URL
+                            var addHref = (tagSpan.textContent).substring(1);
+                            var dataHref = baseHref + addHref;
+                            console.log(dataHref);
+                            tagSpan.href = dataHref;
+                            tagDiv.appendChild(tagSpan);
+                        }
+                    </script>
                 </div>
             </div>
         </div>

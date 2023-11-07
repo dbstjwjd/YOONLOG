@@ -85,7 +85,6 @@ public class PostController {
         if (principal != null) {
             SiteUser user = this.userService.getUser(principal.getName());
             model.addAttribute("user", user);
-
         }
         List<String> tagList = getStrings(post);
         model.addAttribute("tagList", tagList);
@@ -131,13 +130,13 @@ public class PostController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String modify(@PathVariable("id") Integer id, Principal principal,
-                         @Valid PostForm postForm, BindingResult bindingResult) {
+                         @Valid PostForm postForm, BindingResult bindingResult, @RequestParam(value = "inputTag", defaultValue = "") String hashtag) {
         Post post = this.postService.getPost(id);
         if (!post.getAuthor().getUsername().equals(principal.getName()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
         if (bindingResult.hasErrors())
             return "post_form";
-        this.postService.modifyPost(post, postForm.getCategory(), postForm.getSubject(), postForm.getContent());
+        this.postService.modifyPost(post, postForm.getCategory(), postForm.getSubject(), postForm.getContent(), hashtag);
         return String.format("redirect:/post/detail/%s", id);
     }
 

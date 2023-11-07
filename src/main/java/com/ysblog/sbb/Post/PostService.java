@@ -76,11 +76,12 @@ public class PostService {
         }
     }
 
-    public void modifyPost(Post post, String category, String subject, String content) {
+    public void modifyPost(Post post, String category, String subject, String content, String hashtag) {
         post.setCategory(category);
         post.setSubject(subject);
         post.setContent(content);
         post.setModifyDate(LocalDateTime.now());
+        post.setHashtag(hashtag);
         this.postRepository.save(post);
     }
 

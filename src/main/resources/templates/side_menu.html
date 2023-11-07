@@ -8,7 +8,7 @@
      class="bg-danger bg-opacity-25 rounded me-5 text-center">
     <div class="text-start m-2 bg-light rounded p-3">
         <div sec:authorize="isAuthenticated()">
-            <img src="https://thumb.ac-illust.com/ad/added14396179429fc29841a20108f39_t.jpeg" alt="" width="100%"
+            <img th:src="@{${user.imgUrl}}" alt="프로필 이미지" width="100%"
                  height="150" class="border-bottom mb-1">
             <div class="d-flex align-items-center">
                 <p class="fw-bold fs-5 mt-2" style="text-decoration:underline;"

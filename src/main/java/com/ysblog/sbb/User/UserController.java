@@ -3,7 +3,13 @@ package com.ysblog.sbb.User;
 import com.ysblog.sbb.Post.Post;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -11,7 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +31,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
 
     @GetMapping("/signup")
     public String signup(UserForm userForm, Model model, Principal principal) {
@@ -60,8 +70,8 @@ public class UserController {
 
     @GetMapping("/info/{username}")
     public String info(Model model, Principal principal, @PathVariable("username") String username) {
-        SiteUser siteUser = this.userService.getUser(principal.getName());
-        model.addAttribute("user", siteUser);
+        SiteUser user = this.userService.getUser(principal.getName());
+        model.addAttribute("user", user);
         return "user_info";
     }
 
@@ -79,15 +89,48 @@ public class UserController {
 
     @PostMapping("/modify/{username}")
     @PreAuthorize("isAuthenticated()")
-    public String modify(Principal principal, @PathVariable("username") String username, @Valid UserModifyForm userModifyForm, BindingResult bindingResult, Model model) {
+    public String modify(Principal principal, @PathVariable("username") String username, @Valid UserModifyForm userModifyForm, BindingResult bindingResult, Model model, @RequestParam(value = "file") MultipartFile file) {
         SiteUser user = this.userService.getUser(principal.getName());
         model.addAttribute("user", user);
+        if (file != null && !file.isEmpty()) {
+            try {
+                String fileName = file.getOriginalFilename();
+                String ext = fileName.substring(file.getOriginalFilename().lastIndexOf("."));
+                String path = "src/main/resources/static/profile/" + user.getUsername() + ext;
+                File temp = new File(path);
+                user.setImgUrl("/profile/" + user.getUsername() + ext);
+                file.transferTo(new File(temp.getAbsolutePath()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else user.setImgUrl("/profile/defaultImage.jpeg");
         if (bindingResult.hasErrors()) {
             return "user_modify";
         }
         this.userService.modifyUser(user, userModifyForm.getNickname(), userModifyForm.getBirthDate(), userModifyForm.getAddress(), userModifyForm.getEmail());
         return String.format("redirect:/user/info/%s", username);
     }
+
+    @GetMapping("/check")
+    public String userCheck() {
+        return "userCheck_form";
+    }
+
+    @PostMapping("/user/check")
+    public ResponseEntity<String> checkUser(@RequestParam String username, @RequestParam String email) {
+        SiteUser user = this.userService.findUser(username);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디가 존재하지 않습니다.");
+        }
+
+        // 유저의 이메일과 입력받은 이메일 비교
+        if (user.getEmail().equals(email)) {
+            return ResponseEntity.ok("아이디와 이메일이 일치합니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일이 일치하지 않습니다.");
+        }
+    }
 }
+
 
 

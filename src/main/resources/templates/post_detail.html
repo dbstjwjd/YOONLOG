@@ -49,10 +49,7 @@
                                     <span style="margin-left:3px;" th:text="|+ ${post.view}|"></span>
                                 </div>
                             </div>
-                            <div class="mb-2">
-                                    <span th:if="${post.author != null}"
-                                          th:text="|작성자 : ${post.author.nickname}|"></span>
-                            </div>
+                            <div class="mb-2" th:text="|작성자 : ${post.author.nickname}|"></div>
                             <div class="mb-2"
                                  th:text="|작성일 : ${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}|"></div>
                             <div th:if="${post.modifyDate != null}"

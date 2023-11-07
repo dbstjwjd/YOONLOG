@@ -2,7 +2,7 @@
 <div layout:fragment="content">
     <div class="d-flex justify-content-around">
         <div class="card" style="height:650px; width:25%;">
-            <img src="https://thumb.ac-illust.com/ad/added14396179429fc29841a20108f39_t.jpeg"
+            <img th:src="@{${user.imgUrl}}"
                  class="card-img-top" alt="" style="height:400px">
             <div class="card-body d-flex justify-content-center align-items-center">
                 <h1 class="card-title border-bottom border-danger border-opacity-25 pb-2"
@@ -51,7 +51,7 @@
             <div class="card mb-2" style="height:335px;">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" th:text="|내 글(${#lists.size(user.postList)})|"
+                        <a class="nav-link active" th:text="|글(${#lists.size(user.postList)})|"
                            style="color:lightcoral"></a>
                     </li>
                 </ul>
@@ -82,7 +82,7 @@
             <div class="card" style="height:300px;">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" th:text="|내 댓글(${#lists.size(user.commentList)})|"
+                        <a class="nav-link active" th:text="|댓글(${#lists.size(user.commentList)})|"
                            style="color:lightcoral"></a>
                     </li>
                 </ul>
@@ -101,7 +101,8 @@
                                 <div th:each="comment : ${user.commentList}" class="card mb-2">
                                     <a th:id="|userComment_${comment.id}|"></a>
                                     <div class="card-text p-1">
-                                        <a class=" fw-bold text-center" th:text="|<${comment.post.category}> ${comment.post.subject}|"
+                                        <a class=" fw-bold text-center"
+                                           th:text="|<${comment.post.category}> ${comment.post.subject}|"
                                            th:href="@{|/post/detail/${comment.post.id}|}"></a>
                                     </div>
                                 </div>

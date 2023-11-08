@@ -66,3 +66,19 @@ a:hover {
     display: inline-block;
     margin-right: 5px;
 }
+
+#btn_check {
+    border:none;
+}
+
+#btn_check:hover {
+    color:lightcoral;
+}
+
+#btn_update {
+    border:none;
+}
+
+#btn_update:hover {
+    color:lightcoral;
+}

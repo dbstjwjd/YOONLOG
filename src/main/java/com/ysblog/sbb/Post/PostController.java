@@ -62,7 +62,7 @@ public class PostController {
         return "redirect:/";
     }
 
-    @GetMapping("/main")
+    @GetMapping("/list")
     public String list(Model model, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "kw", defaultValue = "") String kw,
                        @RequestParam(value = "category", defaultValue = "") String category) {
@@ -74,7 +74,7 @@ public class PostController {
         model.addAttribute("paging", paging);
         model.addAttribute("kw", kw);
         model.addAttribute("category", category);
-        return "main";
+        return "post_list";
     }
 
     @GetMapping("/detail/{id}")

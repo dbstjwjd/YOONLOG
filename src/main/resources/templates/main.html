@@ -1,126 +1,55 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
-    <div style="margin:0 auto; font-size:14pt;">
-        <div class="row mb-2">
-            <div class="col-10 fw-bold fs-3 d-flex ">
-                <div th:if="${category.isEmpty()}" th:text="|전체 게시물 (${paging.totalElements})|"></div>
-                <div class="ms-1" th:if="${!category.isEmpty()}"
-                     th:text="|${category} (${paging.totalElements})|"></div>
-            </div>
-            <div class="col-2">
-                <select class="form-select" aria-label="Default select example" th:value="${category}" id="categoryForm">
-                    <option class="categoryName" href="javascript:void(0)" value="">카테고리를 선택하세요</option>
-                    <option class="categoryName" href="javascript:void(0)" value="일기장" th:selected="${category == '일기장'}">일기장</option>
-                    <option class="categoryName" href="javascript:void(0)" value="개발 일지" th:selected="${category == '개발 일지'}">개발 일지</option>
-                    <option class="categoryName" href="javascript:void(0)" value="잡담" th:selected="${category == '잡담'}">잡담</option>
-                </select>
-            </div>
+    <div id="carouselExampleCaptions" class="carousel slide">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
         </div>
-        <table class="table table-hover text-center">
-            <thead class="table" style="background:pink;">
-            <tr>
-                <th>번호</th>
-                <th>카테고리</th>
-                <th style="width:55%;">제목</th>
-                <th>조회수</th>
-                <th>작성자</th>
-                <th>작성일자</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="post, loop:${paging}">
-                <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
-                <td th:text="${post.category}"></td>
-                <td class="text-start">
-                    <a style="text-decoration:underline" th:href="@{|/post/detail/${post.id}|}"
-                       th:text="${post.subject}"></a>
-                    <span th:text="${#lists.size(post.commentList)}"
-                          th:if="${#lists.size(post.commentList) > 0}" class="text-danger small ms-2"
-                    ></span>
-                </td>
-                <td th:text="${post.view}"></td>
-                <td><span th:if="${post.author != null}" th:text="${post.author.nickname}"></span></td>
-                <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd')}"></td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="row my-3">
-            <div class="col-3">
-                <a th:href="@{/post/create}" class="btn btn-outline-light" style="background:lightcoral">글쓰기</a>
+        <div class="carousel-inner">
+            <div class="carousel-item active position-relative">
+                <img src="https://img.freepik.com/premium-photo/pink-clouds-in-the-sky_899870-26342.jpg"
+                     class="d-block w-100" style="height:70vh; opacity:0.5;" alt="...">
+                <div class="carousel-caption d-flex position-absolute" style="width:100%; top:30%;">
+                    <div class="text-start">
+                        <h1 style="font-family: 'Gugi', sans-serif;
+                    text-shadow: -1px -1px 0 pink, 1px -1px 0 pink, -1px 1px 0 pink, 1px 1px 0 pink; font-size:7rem;">
+                            윤로그</h1>
+                        <h1 style="font-family: 'Gowun Batang', serif; -webkit-text-stroke: 1px gray;">당신의 일상을 기록하고 공유하세요.</h1>
+                    </div>
+                    <a style="color:black;" th:href="@{/post/list}">윤로그 보러가기 ></a>
+                </div>
             </div>
-            <div class="col-6">
-                <div class="input-group">
-                    <input type="text" id="search_kw" class="form-control" th:value="${kw}">
-                    <button class="btn btn-outline-light" style="background:lightcoral; border:lightcoral" type="button"
-                            id="btn_search">검색
-                    </button>
+            <div class="carousel-item">
+                <img src="https://img.freepik.com/free-vector/pink-clouds-background_91008-167.jpg"
+                     class="d-block w-100" style="height:70vh; opacity:0.5;" alt="...">
+                <div class="carousel-caption">
+                    <h5>Second slide label</h5>
+                    <p>Some representative placeholder content for the second slide.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://img.freepik.com/premium-photo/pink-clouds-in-the-sky-with-a-purple-background_899870-26318.jpg"
+                     style="height:70vh; opacity:0.4;" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Third slide label</h5>
+                    <p>Some representative placeholder content for the third slide.</p>
                 </div>
             </div>
         </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
-    <!-- 페이징처리 시작 -->
-    <div th:if="${!paging.isEmpty()}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link" href="javascript:void(0)" th:data-page="${0}">
-                    <span>&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number-1}">
-                    <span><</span>
-                </a>
-            </li>
-            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                th:if="${page >= paging.number-4 and page <= paging.number+4}"
-                th:classappend="${page == paging.number} ? 'active'"
-                class="page-item">
-                <a th:text="${page}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>
-            </li>
-            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number+1}">
-                    <span>></span>
-                </a>
-            </li>
-            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" href="javascript:void(0)" th:data-page="${paging.totalPages-1}">
-                    <span>&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <!-- 페이징처리 끝 -->
-    <form th:action="@{/post/main}" method="get" id="searchForm">
-        <input type="hidden" id="kw" name="kw" th:value="${kw}">
-        <input type="hidden" id="page" name="page" th:value="${paging.number}">
-        <input type="hidden" id="category" name="category" th:value="${category}">
-    </form>
 </div>
-<script layout:fragment="script" type='text/javascript'>
-    const page_elements = document.getElementsByClassName("page-link");
-    Array.from(page_elements).forEach(function(element) {
-        element.addEventListener('click', function() {
-            document.getElementById('page').value = this.dataset.page;
-            document.getElementById('searchForm').submit();
-        });
-    });
-    const btn_search = document.getElementById("btn_search");
-    btn_search.addEventListener('click', function() {
-        document.getElementById('kw').value = document.getElementById('search_kw').value;
-        document.getElementById('page').value = 0;
-        document.getElementById('searchForm').submit();
-    });
-
-
-
-    const choiceCategoryForm = document.querySelector("#categoryForm");
-    choiceCategoryForm.addEventListener('change', function() {
-        selectedValue = document.querySelector("select[id='categoryForm'] option:checked").value;
-        document.getElementById('category').value = selectedValue;
-        document.getElementById('page').value = 0;
-        document.getElementById('searchForm').submit();
-
-    });
-
-</script>
 </html>

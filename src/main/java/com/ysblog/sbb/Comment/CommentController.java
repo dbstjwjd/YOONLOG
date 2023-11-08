@@ -36,7 +36,7 @@ public class CommentController {
         Post post = this.postService.getPost(id);
         SiteUser user = this.userService.getUser(principal.getName());
         this.commentService.createComment(content, post, user);
-        return String.format("redirect:/post/detail/{id}");
+        return String.format("redirect:/post/detail/%s", id);
     }
 
     @PreAuthorize("isAuthenticated()")

@@ -125,9 +125,8 @@
             <!-- 댓글 입력 폼 시작 -->
             <form th:action="@{|/comment/create/${post.id}|}" method="post" id="content_form">
                 <label for="content" class="form-label">댓글 쓰기</label>
-                <textarea sec:authorize="isAnonymous()" disabled cols="10" rows="5" class="form-control"></textarea>
-                <textarea sec:authorize="isAuthenticated()" id="content" name="content" cols="10" rows="5"
-                          class="form-control"></textarea>
+                <textarea name="content" cols="10" rows="5" class="form-control" sec:authorize="isAnonymous()" disabled></textarea>
+                <textarea id="content" name="content" cols="10" rows="5" class="form-control" sec:authorize="isAuthenticated()"></textarea>
                 <div class="d-flex justify-content-end">
                     <input id="addComment" type="button" value="등록" class="btn btn-outline-light mt-2"
                            style="background:lightcoral">

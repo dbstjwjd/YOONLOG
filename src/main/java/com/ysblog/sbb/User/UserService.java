@@ -49,20 +49,25 @@ public class UserService {
         }
     }
 
-    public SiteUser findUser(String username) {
-        Optional<SiteUser> siteUser = this.userRepository.findByUsername(username);
-        if (siteUser.isPresent()) {
-            return siteUser.get();
-        } else {
-            return null;
-        }
-    }
-
     public void modifyUser(SiteUser user, String nickname, LocalDate birthDate, String address, String email) {
         user.setNickname(nickname);
         user.setBirthDate(birthDate);
         user.setAddress(address);
         user.setEmail(email);
+        this.userRepository.save(user);
+    }
+
+    public boolean checkUser(SiteUser user, String email) {
+        return user.getEmail().equals(email);
+    }
+
+    public SiteUser findUser(String username) {
+        Optional<SiteUser> user = this.userRepository.findByUsername(username);
+        return user.orElse(null);
+    }
+
+    public void updateUserPassword(SiteUser user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
         this.userRepository.save(user);
     }
 }

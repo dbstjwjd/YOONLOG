@@ -6,8 +6,8 @@
         </h3>
         <div style="width:100%; display:flex; flex-wrap:wrap; justify-content:start;">
             <div class="card mx-3 mb-3" th:each="post : ${postList}" style="width:30%;">
-                <div class="card-header fw-bold bg-danger bg-opacity-25" style="font-size:14pt;"
-                     th:text="|< ${post.subject} >|"></div>
+                <a class="card-header fw-bold bg-danger bg-opacity-25" style="font-size:14pt;"
+                     th:text="|< ${post.subject} >|" th:href="@{|/post/detail/${post.id}|}"></a>
                 <div class="card-body">
                     <p class="card-title" th:text="${post.content}" style="font-size:13pt;"></p>
                     <a class="tagName card-text" th:id="'tag_' + ${post.id}" data-hashtag="/*[[${post.hashtag}]]*/"

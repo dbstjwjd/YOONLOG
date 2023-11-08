@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class UserController {
 
     private final UserService userService;
 
+    private final UserMailService userMailService;
 
     @GetMapping("/signup")
     public String signup(UserForm userForm, Model model, Principal principal) {
@@ -112,23 +114,47 @@ public class UserController {
     }
 
     @GetMapping("/check")
-    public String userCheck() {
+    public String check() {
         return "userCheck_form";
     }
 
-    @PostMapping("/user/check")
-    public ResponseEntity<String> checkUser(@RequestParam String username, @RequestParam String email) {
+    @PostMapping("/check")
+    public String check(@RequestParam(value = "username") String username, @RequestParam(value = "email") String email, Model model) {
         SiteUser user = this.userService.findUser(username);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디가 존재하지 않습니다.");
-        }
-
-        // 유저의 이메일과 입력받은 이메일 비교
-        if (user.getEmail().equals(email)) {
-            return ResponseEntity.ok("아이디와 이메일이 일치합니다.");
+            model.addAttribute("message", "아이디가 존재하지 않습니다.");
+            return "userCheck_form";
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일이 일치하지 않습니다.");
+            if (!this.userService.checkUser(user, email)) {
+                model.addAttribute("message", "이메일이 일치하지 않습니다.");
+                return "userCheck_form";
+            } else {
+                model.addAttribute("success", "입력하신 메일로 임시 비밀번호가 발급되었습니다.");
+                this.userMailService.sendEmail(user);
+                return "login_form";
+            }
         }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/update/{username}")
+    public String updatePassword(@PathVariable("username") String username, Model model) {
+        SiteUser user = this.userService.getUser(username);
+        model.addAttribute("user", user);
+        return "password_update";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/update/{username}")
+    public String updatePassword(@RequestParam(value = "password1") String password1, @RequestParam(value = "password2") String password2,
+                                 @PathVariable("username") String username, Model model) {
+        SiteUser user = this.userService.getUser(username);
+        model.addAttribute("user", user);
+        if (!password1.equals(password2)) {
+            return "password_update";
+        }
+        this.userService.updateUserPassword(user, password1);
+        return "redirect:/";
     }
 }
 

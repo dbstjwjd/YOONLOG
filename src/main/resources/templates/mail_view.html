@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div style="text-align:center; background:pink; padding:30px; width:50%; margin:0 auto; border-radius:20px;">
+    <img src="https://evape.kr/data/member/so/soularium" alt="" style="width:auto; height:200px;">
+    <p style="font-size:2.5rem; font-weight:bold;">윤로그</p>
+    <div style="font-size:1rem; background:white; padding:10px; border-radius:20px;">
+        <p>안녕하세요.</p>
+        <div style="display:flex; justify-content:center;">
+            <p style="margin-right:5px;" th:text="' ' + ${userNickname} + '님의 임시 비밀번호는 '"></p>
+            <span th:text="${temporaryPassword}" style="font-weight:bold; margin-right:5px;"></span>
+            <p>입니다.</p>
+        </div>
+        <p>임시 비밀번호로 로그인 후 꼭 비밀번호를 변경해주세요.</p>
+        <p>감사합니다.</p>
+    </div>
+</div>
+</body>
+</html>

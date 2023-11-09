@@ -1,11 +1,13 @@
 package com.ysblog.sbb.User;
 
 import com.ysblog.sbb.Post.Post;
+import com.ysblog.sbb.Post.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,12 +37,18 @@ public class UserController {
 
     private final UserMailService userMailService;
 
+    private final PostService postService;
+
     @GetMapping("/signup")
-    public String signup(UserForm userForm, Model model, Principal principal) {
+    public String signup(UserForm userForm, Model model, Principal principal,
+                         @RequestParam(value = "nickname", defaultValue = "") String nickname) {
         if (principal != null) {
             SiteUser user = this.userService.getUser(principal.getName());
             model.addAttribute("user", user);
         }
+        List<SiteUser> authorList = this.userService.searchUser(nickname);
+        model.addAttribute("authorList", authorList);
+        model.addAttribute("searchKw", nickname);
         return "signup_form";
     }
 
@@ -66,22 +74,33 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model, @RequestParam(value = "nickname", defaultValue = "") String nickname) {
+        List<SiteUser> authorList = this.userService.searchUser(nickname);
+        model.addAttribute("authorList", authorList);
+        model.addAttribute("searchKw", nickname);
         return "login_form";
     }
 
     @GetMapping("/info/{username}")
-    public String info(Model model, Principal principal, @PathVariable("username") String username) {
+    public String info(Model model, Principal principal, @PathVariable("username") String username,
+                       @RequestParam(value = "nickname", defaultValue = "") String nickname) {
         SiteUser user = this.userService.getUser(principal.getName());
+        List<SiteUser> authorList = this.userService.searchUser(nickname);
+        model.addAttribute("authorList", authorList);
         model.addAttribute("user", user);
+        model.addAttribute("searchKw", nickname);
         return "user_info";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{username}")
-    public String modify(@PathVariable("username") String username, Model model, Principal principal, UserModifyForm userModifyForm) {
+    public String modify(@PathVariable("username") String username, Model model, Principal principal, UserModifyForm userModifyForm,
+                         @RequestParam(value = "nickname", defaultValue = "") String nickname) {
         SiteUser user = this.userService.getUser(principal.getName());
+        List<SiteUser> authorList = this.userService.searchUser(nickname);
+        model.addAttribute("authorList", authorList);
         model.addAttribute("user", user);
+        model.addAttribute("searchKw", nickname);
         userModifyForm.setNickname(user.getNickname());
         userModifyForm.setBirthDate(user.getBirthDate());
         userModifyForm.setAddress(user.getAddress());
@@ -114,7 +133,10 @@ public class UserController {
     }
 
     @GetMapping("/check")
-    public String check() {
+    public String check(@RequestParam(value = "nickname", defaultValue = "") String nickname, Model model) {
+        List<SiteUser> authorList = this.userService.searchUser(nickname);
+        model.addAttribute("authorList", authorList);
+        model.addAttribute("searchKw", nickname);
         return "userCheck_form";
     }
 
@@ -138,8 +160,11 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/update/{username}")
-    public String updatePassword(@PathVariable("username") String username, Model model) {
+    public String updatePassword(@PathVariable("username") String username, Model model, @RequestParam(value = "nickname", defaultValue = "") String nickname) {
         SiteUser user = this.userService.getUser(username);
+        List<SiteUser> authorList = this.userService.searchUser(nickname);
+        model.addAttribute("authorList", authorList);
+        model.addAttribute("searchKw", nickname);
         model.addAttribute("user", user);
         return "password_update";
     }
@@ -155,6 +180,29 @@ public class UserController {
         }
         this.userService.updateUserPassword(user, password1);
         return "redirect:/";
+    }
+
+    @GetMapping("/page/{username}")
+    public String page(@PathVariable("username") String username, Model model, @RequestParam(value = "nickname", defaultValue = "") String nickname,
+                       Principal principal) {
+        if (principal != null) {
+            SiteUser user = this.userService.getUser(principal.getName());
+            model.addAttribute("user", user);
+        }
+        SiteUser siteUser = this.userService.getUser(username);
+        List<SiteUser> authorList = this.userService.searchUser(nickname);
+        model.addAttribute("siteUser", siteUser);
+        model.addAttribute("authorList", authorList);
+        model.addAttribute("searchKw", nickname);
+        return "user_page";
+    }
+
+    @PostMapping("/subscribe/{username}")
+    public String subscribe(@PathVariable("username") String username, Principal principal) {
+        SiteUser user1 = this.userService.getUser(principal.getName());
+        SiteUser user2 = this.userService.getUser(username);
+        this.userService.subscribeUser(user1, user2);
+        return "user_page";
     }
 }
 

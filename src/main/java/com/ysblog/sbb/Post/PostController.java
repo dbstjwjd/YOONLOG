@@ -43,9 +43,12 @@ public class PostController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String create(PostForm postForm, Model model, Principal principal) {
+    public String create(PostForm postForm, Model model, Principal principal, @RequestParam(value = "nickname", defaultValue = "") String nickname) {
         SiteUser user = this.userService.getUser(principal.getName());
+        List<SiteUser> authorList = this.userService.searchUser(nickname);
         model.addAttribute("user", user);
+        model.addAttribute("authorList", authorList);
+        model.addAttribute("searchKw", nickname);
         return "post_form";
     }
 
@@ -62,15 +65,18 @@ public class PostController {
         return "redirect:/";
     }
 
-    @GetMapping("/list")
+    @GetMapping("/main")
     public String list(Model model, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "kw", defaultValue = "") String kw,
-                       @RequestParam(value = "category", defaultValue = "") String category) {
+                       @RequestParam(value = "category", defaultValue = "") String category, @RequestParam(value = "nickname", defaultValue = "") String nickname) {
         Page<Post> paging = this.postService.getList(page, kw, category);
+        List<SiteUser> authorList = this.userService.searchUser(nickname);
         if (principal != null) {
             SiteUser user = this.userService.getUser(principal.getName());
             model.addAttribute("user", user);
         }
+        model.addAttribute("searchKw", nickname);
+        model.addAttribute("authorList", authorList);
         model.addAttribute("paging", paging);
         model.addAttribute("kw", kw);
         model.addAttribute("category", category);
@@ -79,14 +85,17 @@ public class PostController {
 
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, Principal principal,
-                         @RequestParam(value = "page", defaultValue = "0") int page) {
+                         @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "nickname", defaultValue = "") String nickname) {
         Post post = this.postService.getPost(id);
         Page<Comment> paging = this.commentService.getList(post, page);
+        List<SiteUser> authorList = this.userService.searchUser(nickname);
         if (principal != null) {
             SiteUser user = this.userService.getUser(principal.getName());
             model.addAttribute("user", user);
         }
         List<String> tagList = getStrings(post);
+        model.addAttribute("searchKw", nickname);
+        model.addAttribute("authorList", authorList);
         model.addAttribute("tagList", tagList);
         model.addAttribute("paging", paging);
         model.addAttribute("post", post);
@@ -115,10 +124,14 @@ public class PostController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String modify(PostForm postForm, @PathVariable("id") Integer id, Principal principal, Model model) {
+    public String modify(PostForm postForm, @PathVariable("id") Integer id, Principal principal, Model model,
+                         @RequestParam(value = "nickname", defaultValue = "") String nickname) {
         Post post = this.postService.getPost(id);
         SiteUser user = this.userService.getUser(principal.getName());
+        List<SiteUser> authorList = this.userService.searchUser(nickname);
         model.addAttribute("user", user);
+        model.addAttribute("authorList", authorList);
+        model.addAttribute("searchKw", nickname);
         if (!post.getAuthor().getUsername().equals(principal.getName()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
         postForm.setCategory(post.getCategory());
@@ -159,12 +172,16 @@ public class PostController {
     }
 
     @GetMapping("/search/{hashtag}")
-    public String tagList(@PathVariable("hashtag") String hashtag, Model model, Principal principal) {
+    public String tagList(@PathVariable("hashtag") String hashtag, Model model, Principal principal,
+                          @RequestParam(value = "nickname", defaultValue = "") String nickname) {
         List<Post> postList = this.postService.searchTagList(hashtag);
+        List<SiteUser> authorList = this.userService.searchUser(nickname);
         if (principal != null) {
             SiteUser user = this.userService.getUser(principal.getName());
             model.addAttribute("user", user);
         }
+        model.addAttribute("authorList", authorList);
+        model.addAttribute("searchKw", nickname);
         model.addAttribute("postList", postList);
         return "hashtag_list";
     }

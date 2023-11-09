@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -43,4 +44,7 @@ public class SiteUser {
     private List<Comment> commentList;
 
     private String imgUrl;
+
+    @ManyToMany
+    private Set<SiteUser> subscriber;
 }

@@ -11,13 +11,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,11 +39,15 @@ public class CommentController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String modify(Model model, @PathVariable("id") Integer id, Principal principal) {
+    public String modify(Model model, @PathVariable("id") Integer id, Principal principal,
+                         @RequestParam(value = "nickname", defaultValue = "") String nickname) {
         SiteUser user = this.userService.getUser(principal.getName());
         Comment comment = this.commentService.getComment(id);
+        List<SiteUser> authorList = this.userService.searchUser(nickname);
+        model.addAttribute("authorList", authorList);
         model.addAttribute("user", user);
         model.addAttribute("comment", comment);
+        model.addAttribute("searchKw", nickname);
         if (!comment.getAuthor().getUsername().equals(principal.getName()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
         return "comment_form";

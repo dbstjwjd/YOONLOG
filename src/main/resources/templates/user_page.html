@@ -1,0 +1,45 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <div class="top_bar"></div>
+    <img th:src="@{${siteUser.imgUrl}}" alt="" style="height:170px; width:170px; border-radius:30px;;
+    position:absolute; top:22%; right:10%;">
+    <div style="position:absolute; top:27%; right:20%; display:flex; align-items:center; font-family: 'Gugi', sans-serif;">
+        <div th:text="${siteUser.nickname}" style="font-weight:bold; font-size:3rem; margin-right:5px;"></div>
+        <div style="font-size:2rem;">님</div>
+    </div>
+    <div class="d-flex">
+        <div style="background:white; width:70%; text-align:center; overflow: auto;">
+            <div class="d-flex flex-wrap justify-content-start" style="width:100%;">
+                <div th:each="post : ${siteUser.postList}" id="user_post">
+                    <div th:text="${post.subject}"></div>
+                    <div th:text="${post.content}"></div>
+                    <input type="hidden" th:value="${post.id}" id="post_id">
+                </div>
+            </div>
+        </div>
+        <div style="background:pink; width:30%; height:55vh; padding:10px;">
+            <form th:action="@{|/user/subscribe/${siteUser.username}|}" th:if="${user.username != siteUser.username}" method="post">
+                <input type="button" class="btn btn-light text-dark mb-2 fw-bold" value="구독">
+            </form>
+            <div style="margin-bottom:5px; border-radius:10px; padding:10px; background:white; padding-left:20px;">
+                <div class="border-bottom" style="font-size:15pt; font-weight:bold;">별명</div>
+                <div style="font-size:13pt;" th:text="${siteUser.nickname}"></div>
+            </div>
+            <div style="border-radius:10px; padding:10px; background:white; padding-left:20px;">
+                <div class="border-bottom" style="font-size:15pt; font-weight:bold;">생일</div>
+                <div style="font-size:13pt;" th:text="${siteUser.birthDate}"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll("#user_post").forEach(function(postElement) {
+            postElement.addEventListener('click', function() {
+                var postId = postElement.querySelector("#post_id").value;
+                window.location.href = "/post/detail/" + postId;
+            });
+        });
+
+
+    </script>
+</div>
+</html>

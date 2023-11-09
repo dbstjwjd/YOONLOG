@@ -82,3 +82,67 @@ a:hover {
 #btn_update:hover {
     color:lightcoral;
 }
+
+.scrollable-container {
+    max-height: 150px;
+    overflow:scroll;
+}
+
+.scrollable-container::-webkit-scrollbar {
+    display:none;
+}
+
+#user_post > div:nth-child(2) {
+    font-size:13pt;
+    display:none;
+}
+
+#user_post:hover > div:nth-child(2) {
+    display:block;
+    color:saddlebrown;
+}
+
+#user_post > div:nth-child(1) {
+    font-size:1.7rem;
+    font-weight:bold;
+    margin-top:40px;
+    margin-bottom:-20px;
+}
+
+#user_post:hover > div:nth-child(1) {
+    font-size:1.5rem;
+    margin-bottom:0px;
+    margin-top:30px;
+    color:saddlebrown;
+}
+
+#user_post {
+    width:24.5%;
+    height:180px;
+    border:0.01px solid gainsboro;
+    border-radius:10px;
+    background:linen;
+    padding:10px;
+    padding-top:20px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s;
+    overflow:hidden;
+    margin:2px;
+}
+
+#post_content {
+    display:none;
+    background:black;
+    opacity:0.4;
+    position:absolute;
+}
+
+.top_bar {
+    width:100%;
+    background:mistyrose;
+    height:150px;
+    z-index:0;
+}
+
+

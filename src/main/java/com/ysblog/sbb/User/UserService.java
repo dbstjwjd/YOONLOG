@@ -70,4 +70,13 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
         this.userRepository.save(user);
     }
+
+    public List<SiteUser> searchUser(String nickname) {
+        return this.userRepository.findByNicknameLike("%" + nickname + "%");
+    }
+
+    public void subscribeUser(SiteUser user1, SiteUser user2) {
+        user1.getSubscriber().add(user2);
+        this.userRepository.save(user1);
+    }
 }

@@ -17,15 +17,7 @@ public class MainController {
 
     @GetMapping("/")
     public String root() {
-        return "redirect:/main";
+        return "redirect:/post/main";
     }
 
-    @GetMapping("/main")
-    public String main(Model model, Principal principal) {
-        if (principal != null) {
-            SiteUser user = this.userService.getUser(principal.getName());
-            model.addAttribute("user", user);
-        }
-        return "main";
-    }
 }

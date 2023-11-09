@@ -36,9 +36,9 @@ public class PostService {
                 return cb.and(
                         cb.or(cb.like(q.get("subject"), "%" + kw + "%"), // 제목
                                 cb.like(q.get("content"), "%" + kw + "%"),      // 내용
-                                cb.like(u1.get("username"), "%" + kw + "%"),    // 질문 작성자
+                                cb.like(u1.get("nickname"), "%" + kw + "%"),    // 질문 작성자
                                 cb.like(a.get("content"), "%" + kw + "%"),      // 답변 내용
-                                cb.like(u2.get("username"), "%" + kw + "%")),    // 답변 작성자
+                                cb.like(u2.get("nickname"), "%" + kw + "%")),    // 답변 작성자
                         cb.like(q.get("category"), "%" + category + "%") // 카테고리
                 );
             }

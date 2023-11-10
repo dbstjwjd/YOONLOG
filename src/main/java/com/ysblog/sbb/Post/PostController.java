@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -54,8 +55,7 @@ public class PostController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String create(@Valid PostForm postForm, BindingResult bindingResult, Principal principal, Model model,
-                         @RequestParam(value = "inputTag", defaultValue = "") String hashtag) {
+    public String create(@Valid PostForm postForm, BindingResult bindingResult, Principal principal, Model model, @RequestParam(value = "inputTag", defaultValue = "") String hashtag) {
         SiteUser user = this.userService.getUser(principal.getName());
         model.addAttribute("user", user);
         if (bindingResult.hasErrors()) {
@@ -68,11 +68,21 @@ public class PostController {
     @GetMapping("/main")
     public String list(Model model, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "kw", defaultValue = "") String kw,
-                       @RequestParam(value = "category", defaultValue = "") String category, @RequestParam(value = "nickname", defaultValue = "") String nickname) {
+                       @RequestParam(value = "category", defaultValue = "") String category,
+                       @RequestParam(value = "nickname", defaultValue = "") String nickname,
+                       @RequestParam(value = "subUser", defaultValue = "") String username) {
         Page<Post> paging = this.postService.getList(page, kw, category);
         List<SiteUser> authorList = this.userService.searchUser(nickname);
+        if (!username.isEmpty()) {
+            List<Post> postList = this.postService.findByAuthor(this.userService.getUser(username));
+            SiteUser user = this.userService.getUser(username);
+            model.addAttribute("selectedUser", user);
+            model.addAttribute("postList", postList);
+        }
         if (principal != null) {
             SiteUser user = this.userService.getUser(principal.getName());
+            Set<SiteUser> subscribed = this.userService.getSubscribed(user);
+            model.addAttribute("subscribed", subscribed);
             model.addAttribute("user", user);
         }
         model.addAttribute("searchKw", nickname);
@@ -84,8 +94,7 @@ public class PostController {
     }
 
     @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id, Principal principal,
-                         @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "nickname", defaultValue = "") String nickname) {
+    public String detail(Model model, @PathVariable("id") Integer id, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "nickname", defaultValue = "") String nickname) {
         Post post = this.postService.getPost(id);
         Page<Comment> paging = this.commentService.getList(post, page);
         List<SiteUser> authorList = this.userService.searchUser(nickname);
@@ -124,8 +133,7 @@ public class PostController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String modify(PostForm postForm, @PathVariable("id") Integer id, Principal principal, Model model,
-                         @RequestParam(value = "nickname", defaultValue = "") String nickname) {
+    public String modify(PostForm postForm, @PathVariable("id") Integer id, Principal principal, Model model, @RequestParam(value = "nickname", defaultValue = "") String nickname) {
         Post post = this.postService.getPost(id);
         SiteUser user = this.userService.getUser(principal.getName());
         List<SiteUser> authorList = this.userService.searchUser(nickname);
@@ -142,13 +150,11 @@ public class PostController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
-    public String modify(@PathVariable("id") Integer id, Principal principal,
-                         @Valid PostForm postForm, BindingResult bindingResult, @RequestParam(value = "inputTag", defaultValue = "") String hashtag) {
+    public String modify(@PathVariable("id") Integer id, Principal principal, @Valid PostForm postForm, BindingResult bindingResult, @RequestParam(value = "inputTag", defaultValue = "") String hashtag) {
         Post post = this.postService.getPost(id);
         if (!post.getAuthor().getUsername().equals(principal.getName()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
-        if (bindingResult.hasErrors())
-            return "post_form";
+        if (bindingResult.hasErrors()) return "post_form";
         this.postService.modifyPost(post, postForm.getCategory(), postForm.getSubject(), postForm.getContent(), hashtag);
         return String.format("redirect:/post/detail/%s", id);
     }
@@ -172,8 +178,7 @@ public class PostController {
     }
 
     @GetMapping("/search/{hashtag}")
-    public String tagList(@PathVariable("hashtag") String hashtag, Model model, Principal principal,
-                          @RequestParam(value = "nickname", defaultValue = "") String nickname) {
+    public String tagList(@PathVariable("hashtag") String hashtag, Model model, Principal principal, @RequestParam(value = "nickname", defaultValue = "") String nickname) {
         List<Post> postList = this.postService.searchTagList(hashtag);
         List<SiteUser> authorList = this.userService.searchUser(nickname);
         if (principal != null) {

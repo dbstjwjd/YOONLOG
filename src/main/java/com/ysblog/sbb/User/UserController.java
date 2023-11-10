@@ -202,7 +202,7 @@ public class UserController {
         SiteUser user1 = this.userService.getUser(principal.getName());
         SiteUser user2 = this.userService.getUser(username);
         this.userService.subscribeUser(user1, user2);
-        return "user_page";
+        return String.format("redirect:/user/page/%s", username);
     }
 }
 

@@ -98,4 +98,8 @@ public class PostService {
         return this.postRepository.findByHashtagLike("%" + hashtag + "%");
     }
 
+    public List<Post> findByAuthor(SiteUser user) {
+        return this.postRepository.findTop5ByAuthorOrderByCreateDateDesc(user);
+    }
+
 }

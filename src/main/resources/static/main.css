@@ -92,6 +92,10 @@ a:hover {
     display:none;
 }
 
+#subBar::-webkit-scrollbar {
+    display:none;
+}
+
 #user_post > div:nth-child(2) {
     font-size:13pt;
     display:none;
@@ -99,7 +103,7 @@ a:hover {
 
 #user_post:hover > div:nth-child(2) {
     display:block;
-    color:saddlebrown;
+    color:white;
 }
 
 #user_post > div:nth-child(1) {
@@ -109,19 +113,12 @@ a:hover {
     margin-bottom:-20px;
 }
 
-#user_post:hover > div:nth-child(1) {
-    font-size:1.5rem;
-    margin-bottom:0px;
-    margin-top:30px;
-    color:saddlebrown;
-}
-
 #user_post {
     width:24.5%;
     height:180px;
     border:0.01px solid gainsboro;
     border-radius:10px;
-    background:linen;
+    background:mistyrose;
     padding:10px;
     padding-top:20px;
     position: relative;
@@ -131,18 +128,29 @@ a:hover {
     margin:2px;
 }
 
-#post_content {
-    display:none;
-    background:black;
-    opacity:0.4;
-    position:absolute;
+.overlay {
+    padding:20px;
+    padding-top:40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:black; /* 원하는 색상 및 투명도로 조절 */
+    opacity:0.6;
+    z-index: 1; /* 겹쳐진 사각형이 user_post 내용 위에 오도록 z-index 설정 */
 }
 
-.top_bar {
-    width:100%;
-    background:mistyrose;
-    height:150px;
-    z-index:0;
+.userImage {
+    height:170px;
+    width:170px;
+    border-radius:30px;
 }
 
+@media only screen and (max-width: 1700px) {
+        .userImage {
+            height: 120px; /* 작아진 크기로 조절 */
+            width: 120px; /* 작아진 크기로 조절 */
+        }
+}
 

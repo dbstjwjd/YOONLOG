@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -78,5 +79,9 @@ public class UserService {
     public void subscribeUser(SiteUser user1, SiteUser user2) {
         user1.getSubscriber().add(user2);
         this.userRepository.save(user1);
+    }
+
+    public Set<SiteUser> getSubscribed(SiteUser user) {
+        return user.getSubscriber();
     }
 }

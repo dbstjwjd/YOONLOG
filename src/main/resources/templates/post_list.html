@@ -1,100 +1,158 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
-    <div style="margin:0 auto; font-size:14pt;">
-        <div class="row mb-2">
-            <div class="col-10 fw-bold fs-3 d-flex ">
-                <div th:if="${category.isEmpty()}" th:text="|전체 게시물 (${paging.totalElements})|"></div>
-                <div class="ms-1" th:if="${!category.isEmpty()}"
-                     th:text="|${category} (${paging.totalElements})|"></div>
-            </div>
-            <div class="col-2">
-                <select class="form-select" aria-label="Default select example" th:value="${category}" id="categoryForm">
-                    <option class="categoryName" href="javascript:void(0)" value="">카테고리를 선택하세요</option>
-                    <option class="categoryName" href="javascript:void(0)" value="일기장" th:selected="${category == '일기장'}">일기장</option>
-                    <option class="categoryName" href="javascript:void(0)" value="개발 일지" th:selected="${category == '개발 일지'}">개발 일지</option>
-                    <option class="categoryName" href="javascript:void(0)" value="잡담" th:selected="${category == '잡담'}">잡담</option>
-                </select>
-            </div>
+    <!-- 구독 정보 -->
+    <div style="background:pink; padding:5px; width:100%; height:200px; margin-bottom:20px; border-radius:10px;
+    display:flex; justify-content:space-between;" sec:authorize="isAuthenticated()">
+        <div style="width:15.6%; background:white; border-radius:10px; padding:15px; padding-top:0; overflow:auto;"
+             id="subBar">
+            <h5 class="fw-bold border-bottom pb-1" th:text="|구독 (${#lists.size(subscribed)})|"
+                style="position: sticky; top: 0; background: white; padding: 10px; z-index: 1;"></h5>
+            <ul>
+                <li class="d-flex align-items-center m-1" th:each="sUser : ${subscribed}"
+                    style="border-bottom:1px solid gainsboro; padding-bottom:2px;">
+                    <img th:src="@{${sUser.imgUrl}}"
+                         style="border-radius:50%; height:25px; width:25px; margin-right:5px;" alt="">
+                    <a class="sUsername" href="javascript:void(0)" style="font-size:14pt;" th:text="${sUser.nickname}"
+                       th:data-username="${sUser.username}"></a>
+                </li>
+            </ul>
         </div>
-        <table class="table table-hover text-center">
-            <thead class="table" style="background:pink;">
-            <tr>
-                <th>번호</th>
-                <th>카테고리</th>
-                <th style="width:55%;">제목</th>
-                <th>조회수</th>
-                <th>작성자</th>
-                <th>작성일자</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="post, loop:${paging}">
-                <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
-                <td th:text="${post.category}"></td>
-                <td class="text-start">
-                    <a style="text-decoration:underline" th:href="@{|/post/detail/${post.id}|}"
-                       th:text="${post.subject}"></a>
-                    <span th:text="${#lists.size(post.commentList)}"
-                          th:if="${#lists.size(post.commentList) > 0}" class="text-danger small ms-2"
-                    ></span>
-                </td>
-                <td th:text="${post.view}"></td>
-                <td><span th:if="${post.author != null}" th:text="${post.author.nickname}"></span></td>
-                <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd')}"></td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="row my-3">
-            <div class="col-3">
-                <a th:href="@{/post/create}" class="btn btn-outline-light" style="background:lightcoral">글쓰기</a>
-            </div>
-            <div class="col-6">
-                <div class="input-group">
-                    <input type="text" id="search_kw" class="form-control" th:value="${kw}">
-                    <button class="btn btn-outline-light" style="background:lightcoral; border:lightcoral" type="button"
-                            id="btn_search">검색
-                    </button>
+        <div style="background:white; width:84%; border-radius:10px; padding:10px;">
+            <div th:if="${selectedUser != null}" class="d-flex justify-content-between" style="height:170px;">
+                <div style="width:29%; border:0.1px solid lightgray; border-radius:10px; padding:30px; display:flex; align-items:center;">
+                    <img th:src="@{${selectedUser.imgUrl}}" alt=""
+                         style="width:100px; height:100px; border-radius:50%; margin-right:10px;">
+                    <div style="width:100%;">
+                        <div class="d-flex border-bottom pb-1 align-items-end">
+                            <div class="fs-5 fw-bold me-2" th:text="${selectedUser.nickname}"></div>
+                            <div th:text="|@${selectedUser.username}|" style="color:gray;"></div>
+                        </div>
+                        <a th:href="@{|/user/page/${selectedUser.username}|}">페이지 보러가기 →</a>
+                    </div>
+                </div>
+                <div style="width:70%;">
+                    <h5 class="border-bottom p-1 fw-bold">최근 게시물</h5>
+                    <div class="d-flex justify-content-start" style="height:130px;">
+                        <div style="width:19%; margin:5px; margin-left:10px; border:0.1px solid lightgray; background:mistyrose; border-radius:10px; padding:10px;"
+                             th:each="sUserPost : ${postList}">
+                            <div class="text-center" style="width:100%;">
+                                <a class="fs-5 fw-bold" th:text="${sUserPost.subject}"
+                                   th:href="@{|/post/detail/${sUserPost.id}|}"></a>
+                                <div style="max-height: 60px; overflow: hidden; word-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                    <div th:text="${sUserPost.content}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- 페이징처리 시작 -->
-    <div th:if="${!paging.isEmpty()}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link" href="javascript:void(0)" th:data-page="${0}">
-                    <span>&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number-1}">
-                    <span><</span>
-                </a>
-            </li>
-            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                th:if="${page >= paging.number-4 and page <= paging.number+4}"
-                th:classappend="${page == paging.number} ? 'active'"
-                class="page-item">
-                <a th:text="${page}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>
-            </li>
-            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number+1}">
-                    <span>></span>
-                </a>
-            </li>
-            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" href="javascript:void(0)" th:data-page="${paging.totalPages-1}">
-                    <span>&raquo;</span>
-                </a>
-            </li>
-        </ul>
+</div>
+<!-- 게시판 시작 -->
+<div style="margin:0 auto; font-size:14pt;">
+    <div class="row mb-2">
+        <div class="col-10 fw-bold fs-3 d-flex ">
+            <div th:if="${category.isEmpty()}" th:text="|전체 게시물 (${paging.totalElements})|"></div>
+            <div class="ms-1" th:if="${!category.isEmpty()}"
+                 th:text="|${category} (${paging.totalElements})|"></div>
+        </div>
+        <div class="col-2">
+            <select class="form-select" aria-label="Default select example" th:value="${category}"
+                    id="categoryForm">
+                <option class="categoryName" href="javascript:void(0)" value="">카테고리를 선택하세요</option>
+                <option class="categoryName" href="javascript:void(0)" value="일기장"
+                        th:selected="${category == '일기장'}">일기장
+                </option>
+                <option class="categoryName" href="javascript:void(0)" value="개발 일지"
+                        th:selected="${category == '개발 일지'}">개발 일지
+                </option>
+                <option class="categoryName" href="javascript:void(0)" value="잡담" th:selected="${category == '잡담'}">
+                    잡담
+                </option>
+            </select>
+        </div>
     </div>
-    <!-- 페이징처리 끝 -->
-    <form th:action="@{/post/main}" method="get" id="searchForm">
-        <input type="hidden" id="kw" name="kw" th:value="${kw}">
-        <input type="hidden" id="page" name="page" th:value="${paging.number}">
-        <input type="hidden" id="category" name="category" th:value="${category}">
-    </form>
+    <table class="table table-hover text-center">
+        <thead class="table" style="background:pink;">
+        <tr>
+            <th>번호</th>
+            <th>카테고리</th>
+            <th style="width:55%;">제목</th>
+            <th>조회수</th>
+            <th>작성자</th>
+            <th>작성일자</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post, loop:${paging}">
+            <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
+            <td th:text="${post.category}"></td>
+            <td class="text-start">
+                <a style="text-decoration:underline" th:href="@{|/post/detail/${post.id}|}"
+                   th:text="${post.subject}"></a>
+                <span th:text="${#lists.size(post.commentList)}"
+                      th:if="${#lists.size(post.commentList) > 0}" class="text-danger small ms-2"
+                ></span>
+            </td>
+            <td th:text="${post.view}"></td>
+            <td><span th:if="${post.author != null}" th:text="${post.author.nickname}"></span></td>
+            <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd')}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="row my-3">
+        <div class="col-3">
+            <a th:href="@{/post/create}" class="btn btn-outline-light" style="background:lightcoral">글쓰기</a>
+        </div>
+        <div class="col-6">
+            <div class="input-group">
+                <input type="text" id="search_kw" class="form-control" th:value="${kw}">
+                <button class="btn btn-outline-light" style="background:lightcoral; border:lightcoral" type="button"
+                        id="btn_search">검색
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 페이징처리 시작 -->
+<div th:if="${!paging.isEmpty()}">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+            <a class="page-link" href="javascript:void(0)" th:data-page="${0}">
+                <span>&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+            <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number-1}">
+                <span><</span>
+            </a>
+        </li>
+        <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+            th:if="${page >= paging.number-4 and page <= paging.number+4}"
+            th:classappend="${page == paging.number} ? 'active'"
+            class="page-item">
+            <a th:text="${page}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>
+        </li>
+        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+            <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number+1}">
+                <span>></span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+            <a class="page-link" href="javascript:void(0)" th:data-page="${paging.totalPages-1}">
+                <span>&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- 페이징처리 끝 -->
+<form th:action="@{/post/main}" method="get" id="searchForm">
+    <input type="hidden" id="kw" name="kw" th:value="${kw}">
+    <input type="hidden" id="page" name="page" th:value="${paging.number}">
+    <input type="hidden" id="category" name="category" th:value="${category}">
+    <input type="hidden" id="subUser" name="subUser" th:value="${subUser}">
+</form>
 </div>
 <script layout:fragment="script" type='text/javascript'>
     const page_elements = document.getElementsByClassName("page-link");
@@ -110,12 +168,23 @@
         document.getElementById('page').value = 0;
         document.getElementById('searchForm').submit();
     });
+
     const choiceCategoryForm = document.querySelector("#categoryForm");
     choiceCategoryForm.addEventListener('change', function() {
         selectedValue = document.querySelector("select[id='categoryForm'] option:checked").value;
         document.getElementById('category').value = selectedValue;
         document.getElementById('page').value = 0;
         document.getElementById('searchForm').submit();
+    });
+
+    const clickUserElements = document.querySelectorAll('.sUsername');
+    clickUserElements.forEach(function(element) {
+        element.addEventListener('click', function() {
+            var username = this.getAttribute('data-username');
+            document.getElementById('subUser').value = username;
+            document.getElementById('page').value = 0;
+            document.getElementById('searchForm').submit();
+        });
     });
 </script>
 </html>

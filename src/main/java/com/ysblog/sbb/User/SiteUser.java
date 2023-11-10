@@ -46,5 +46,5 @@ public class SiteUser {
     private String imgUrl;
 
     @ManyToMany
-    private Set<SiteUser> subscriber;
+    Set<SiteUser> subscriber;
 }

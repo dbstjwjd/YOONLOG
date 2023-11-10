@@ -1,5 +1,6 @@
 package com.ysblog.sbb.Post;
 
+import com.ysblog.sbb.User.SiteUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -11,6 +12,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     Page<Post> findAll(Pageable pageable);
     Page<Post> findAll(Specification<Post> spec, Pageable pageable);
-
     List<Post> findByHashtagLike(String hashtag);
+    List<Post> findTop5ByAuthorOrderByCreateDateDesc(SiteUser user);
 }

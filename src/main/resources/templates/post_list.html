@@ -2,7 +2,7 @@
 <div layout:fragment="content">
     <!-- 구독 정보 -->
     <div style="background:pink; padding:5px; width:100%; height:200px; margin-bottom:20px; border-radius:10px;
-    display:flex; justify-content:space-between;" sec:authorize="isAuthenticated()">
+    display:flex; justify-content:space-between;" sec:authorize="isAuthenticated()" th:if="${!subscribed.isEmpty}">
         <div style="width:15.6%; background:white; border-radius:10px; padding:15px; padding-top:0; overflow:auto;"
              id="subBar">
             <h5 class="fw-bold border-bottom pb-1" th:text="|구독 (${#lists.size(subscribed)})|"

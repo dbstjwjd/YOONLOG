@@ -36,6 +36,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             newUser.setEmail(email);
             newUser.setUsername(username);
             newUser.setNickname(name);
+            newUser.setImgUrl("/profile/defaultImage.jpeg");
             newUser.setJoinDate(LocalDateTime.now());
             this.userRepository.save(newUser);
         }

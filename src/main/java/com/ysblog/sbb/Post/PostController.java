@@ -8,6 +8,7 @@ import com.ysblog.sbb.User.SiteUser;
 import com.ysblog.sbb.User.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/post")
@@ -73,6 +74,7 @@ public class PostController {
                        @RequestParam(value = "subUser", defaultValue = "") String username) {
         Page<Post> paging = this.postService.getList(page, kw, category);
         List<SiteUser> authorList = this.userService.searchUser(nickname);
+        log.info("page:{}, kw:{}", page, kw);
         if (!username.isEmpty()) {
             List<Post> postList = this.postService.findByAuthor(this.userService.getUser(username));
             SiteUser user = this.userService.getUser(username);

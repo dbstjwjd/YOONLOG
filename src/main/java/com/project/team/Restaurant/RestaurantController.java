@@ -32,13 +32,12 @@ public class RestaurantController {
     /*
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/register")
-    public String register(Principal principal, @Valid RestaurantRegisterForm restaurantRegisterForm, BindingResult bindingResult) {
+    public String register(Principal principal) {
         SiteUser user = this.siteUserService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
             return "registerForm";
         }
-        this.restaurantService.registerRestaurant(restaurantRegisterForm.getName(), restaurantRegisterForm.getAddress(),
-                restaurantRegisterForm.getNumber(),user);
+        this.restaurantService.registerRestaurant(user);
         return "redirect:/map";
         }
      */

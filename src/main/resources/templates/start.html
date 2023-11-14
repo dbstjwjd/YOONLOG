@@ -9,7 +9,8 @@
 <body>
 <div class="d-flex">
     <div id="container">
-        <img style="width:100%; height:100vh; opacity:0.5;" src="/startImage.jpg" class="image d-flex align-items-center justify-content-center">
+        <img style="width:100%; height:100vh; opacity:0.5;" src="/startImage.jpg"
+             class="image d-flex align-items-center justify-content-center">
         <div class="text-center">
             <div class="text">
                 <h1 class="mb-3" style="font-size:5rem; font-weight:bold;">logo</h1>
@@ -23,7 +24,7 @@
     <div style="width:30%;" class="d-flex align-items-center justify-content-center">
         <div style="width:60%;">
             <h1 class="border-bottom pb-2 mb-2">logo</h1>
-            <form action="">
+            <form id="loginForm">
                 <div class="d-flex justify-content-between align-items-center">
                     <div style="width:73%;">
                         <div class="mb-3">
@@ -58,9 +59,34 @@
                         카카오 로그인</a>
                 </div>
             </form>
+            <form id="signupForm" action="/user/signup" style="display: none;" th:object="${userCreateForm}"
+                  method="post">
+                <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+                <div class="mb-3">
+                    <label for="loginId" class="form-label">로그인ID</label>
+                    <input type="text" th:field="*{loginId}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">이름</label>
+                    <input type="text" th:field="*{username}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="password1" class="form-label">비밀번호</label>
+                    <input type="password" th:field="*{password1}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="password2" class="form-label">비밀번호 확인</label>
+                    <input type="password" th:field="*{password2}" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">이메일</label>
+                    <input type="email" th:field="*{email}" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">회원가입</button>
+            </form>
             <div class="d-flex justify-content-around">
-                <a href="/user/signup">회원가입</a>
-                <a href="#">비밀번호 찾기</a>
+                <a href="#" onclick="showForm('loginForm')" id="loginLink">로그인</a>
+                <a href="#" onclick="showForm('signupForm')" id="signupLink">회원가입</a>
             </div>
         </div>
     </div>
@@ -79,6 +105,24 @@
             }
         }).open();
     }
+    window.onload = function() {
+        showForm('loginForm');
+    };
+
+    function showForm(formId) {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('signupForm').style.display = 'none';
+
+        document.getElementById(formId).style.display = 'block';
+
+        if (formId === 'signupForm') {
+            document.getElementById('loginLink').style.display = 'inline';
+            document.getElementById('signupLink').style.display = 'none';
+
+        } else {
+            document.getElementById('loginLink').style.display = 'none';
+            document.getElementById('signupLink').style.display = 'inline';
+        }
 
     function aroundMe() {
         document.querySelector('#inputAddress').value = 'aroundMe';

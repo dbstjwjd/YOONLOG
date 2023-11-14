@@ -1,10 +1,4 @@
-<html layout:decorate="~{layout}">
-<div layout:fragment="content">
-    <div id="map" style="width:100vw;height:100vh;"></div>
-    <input type="hidden" id="searchAddress" th:value="${inputAddress}">
-</div>
-<script layout:fragment="script">
-    var inputAddress = document.querySelector('#searchAddress').value;
+var inputAddress = document.querySelector('#searchAddress').value;
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     mapOption = {
         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -90,5 +84,3 @@ function displayMarker(locPosition, message) {
             }
         });
     }
-</script>
-</html>

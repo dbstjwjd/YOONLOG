@@ -11,6 +11,6 @@ public class MapController {
     @GetMapping("/view")
     public String search(Model model, String inputAddress) {
         model.addAttribute("inputAddress", inputAddress);
-        return "map";
+        return "main";
     }
 }

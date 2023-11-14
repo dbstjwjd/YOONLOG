@@ -2,13 +2,15 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
     <link rel="stylesheet" type="text/css" href="/main.css">
     <title>Title</title>
 </head>
 <body>
+<nav th:replace="~{navbar :: navbarFragment}"></nav>
 <th:block layout:fragment="content"></th:block>
-<script th:src="@{/bootstrap.bundle.js}"></script>
+<script th:src="@{/bootstrap.bundle.min.js}"></script>
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ea7706d3cd280b86aceebdabe80d16f0"></script>
 <th:block layout:fragment="script"></th:block>

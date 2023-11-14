@@ -13,10 +13,10 @@
         <div class="text-center">
             <div class="text">
                 <h1 class="mb-3" style="font-size:5rem; font-weight:bold;">logo</h1>
-                <a href="javascript:void(0)" onclick="sample5_execDaumPostcode();">
+                <a href="javascript:void(0)" onclick="searchForAddress();">
                     주소로 맛집 찾기 →</a>
                 <br>
-                <a href="/map">내 주변 맛집 찾기 →</a>
+                <a href="javascript:void(0)" onclick="aroundMe();">내 주변 맛집 찾기 →</a>
             </div>
         </div>
     </div>
@@ -65,19 +65,24 @@
         </div>
     </div>
 </div>
-<form th:action="@{/map}" method="get" id="searchAddress">
+<form th:action="@{/map/view}" method="get" id="searchAddress">
     <input type="hidden" id="inputAddress" name="inputAddress">
 </form>
 <script th:src="@{/bootstrap.bundle.min.js}"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-    function sample5_execDaumPostcode() {
+    function searchForAddress() {
         new daum.Postcode({
             oncomplete: function(data) {
                 document.querySelector('#inputAddress').value = data.address;
                 document.querySelector('#searchAddress').submit();
             }
         }).open();
+    }
+
+    function aroundMe() {
+        document.querySelector('#inputAddress').value = 'aroundMe';
+        document.querySelector('#searchAddress').submit();
     }
 </script>
 </body>

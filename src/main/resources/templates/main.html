@@ -1,10 +1,20 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
-    <div class="d-flex justify-content-around p-3">
-        <div style="width:70%; height:100vh; border:1px solid black;" class="d-flex justify-content-center align-items-center">
-            <h1 style="color:gray;">지도</h1>
+    <div style="background:#F8C3AF; padding:30px;">
+        <div class="d-flex justify-content-around">
+            <div style="width:8%;">
+                <button class="mb-3">내 위치 주변</button>
+                <button>주소 검색</button>
+            </div>
+            <div style="width:70%; height:100vh; border:1px solid black;"
+                 class="d-flex justify-content-center align-items-center bg-light">
+                <h1 style="color:gray;">지도</h1>
+            </div>
+            <div style="width:17%; height:50vh; border:1px solid black; background:white; padding:10px;">
+                <h1>유저 정보</h1>
+                <a href="/restaurant/register" class="btn btn-dark">가게 등록</a>
+            </div>
         </div>
-        <div style="width:25%; height:50vh; border:1px solid black;"></div>
     </div>
 </div>
 </html>

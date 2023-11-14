@@ -9,4 +9,9 @@ public class MainController {
     public String index() {
         return "main";
     }
+
+    @GetMapping("/start")
+    public String start() {
+        return "start";
+    }
 }

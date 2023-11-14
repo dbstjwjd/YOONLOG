@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/main.css" type="text/css">
+    <link rel="stylesheet" href="/bootstrap.min.css" type="text/css">
+</head>
+<body>
+<div class="d-flex">
+    <div id="container">
+        <img style="width:100%; height:100vh; opacity:0.5;"
+             src="https://img.freepik.com/free-vector/flat-design-korean-food-illustration_23-2149285208.jpg?w=1380&t=st=1699926729~exp=1699927329~hmac=2c7c0fb5f75d70050054053e65f72c8468a5d4d3987acec824dcc2381491adf0"
+             class="image d-flex align-items-center justify-content-center">
+        <div class="text-center">
+            <div class="text">
+                <h1 class="mb-3" style="font-size:5rem; font-weight:bold;">logo</h1>
+                <a href="#">주소로 맛집 찾기 →</a>
+                <br>
+                <a href="#">내 주변 맛집 찾기 →</a>
+            </div>
+        </div>
+    </div>
+    <div style="width:30%;" class="d-flex align-items-center justify-content-center">
+        <div style="width:60%;">
+            <h1 class="border-bottom pb-2 mb-2">logo</h1>
+            <form action="">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div style="width:73%;">
+                        <div class="mb-3">
+                            <input type="text" placeholder="ID" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" placeholder="Password" class="form-control">
+                        </div>
+                    </div>
+                    <input type="submit" style="width:25%; height:100px; background:lightsalmon;" class="btn mb-3"
+                           value="로그인">
+                </div>
+                <div class="mb-3">
+                    <a href="/oauth2/authorization/google" class="btn btn-outline-primary fw-bold" style="width:100%">
+                        <img class="me-1" style="width:auto; height:20px;"
+                             src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png"
+                             alt="">
+                        구글 로그인</a>
+                </div>
+                <div class="mb-3">
+                    <a href="/oauth2/authorization/naver" class="btn btn-outline-success fw-bold" style="width:100%">
+                        <img class="me-1" style="width:auto; height:20px;"
+                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkGPv5_VNnO1SFnZNADXZ9972iiFmdMuLPC6r1e_MBDNMVOyPhchKn9wiCl10FaHE3eBo&usqp=CAU"
+                             alt="">
+                        네이버 로그인</a>
+                </div>
+                <div class="mb-3">
+                    <a href="/oauth2/authorization/kakao" class="btn btn-outline-warning fw-bold" style="width:100%">
+                        <img class="me-1" style="width:auto; height:20px;"
+                             src="https://cdn.imweb.me/thumbnail/20220403/a8e484f2dfe39.png"
+                             alt="">
+                        카카오 로그인</a>
+                </div>
+            </form>
+            <div class="d-flex justify-content-around">
+                <a href="#">회원가입</a>
+                <a href="#">비밀번호 찾기</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

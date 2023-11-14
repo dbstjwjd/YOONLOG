@@ -1,4 +1,4 @@
-package com.project.team;
+package com.project.team.User;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

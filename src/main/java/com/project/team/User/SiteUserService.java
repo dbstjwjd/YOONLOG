@@ -1,9 +1,13 @@
-package com.project.team;
+package com.project.team.User;
 
+import com.project.team.DataNotFoundException;
+import com.project.team.User.SiteUser;
+import com.project.team.User.SiteUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,5 +23,13 @@ public class SiteUserService {
         siteUser.setPassword(passwordEncoder.encode(password));
         siteUserRepository.save(siteUser);
         return siteUser;
+    }
+
+    public SiteUser getUser(String LoginId) {
+        Optional<SiteUser> user = this.siteUserRepository.findByLoginId(LoginId);
+        if (user.isPresent()) {
+            return user.get();
+        } else
+            throw new DataNotFoundException("user not found");
     }
 }

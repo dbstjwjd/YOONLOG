@@ -59,7 +59,7 @@
                         카카오 로그인</a>
                 </div>
             </form>
-            <form id="signupForm" action="/user/signup" style="display: none;" th:object="${userCreateForm}" method="post">
+            <form id="signupForm" th:action="@{/user/signup}" style="display: none;" th:object="${userCreateForm}" method="post">
                 <div th:replace="~{form_errors :: formErrorsFragment}"></div>
                 <div class="mb-3">
                     <label for="loginId" class="form-label">로그인ID</label>

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -24,4 +26,6 @@ public class Restaurant {
 
     @ManyToOne
     private SiteUser owner;
+
+    private LocalDateTime regDate;
 }

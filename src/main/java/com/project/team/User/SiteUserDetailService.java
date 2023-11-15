@@ -1,4 +1,4 @@
-package com.project.team;
+package com.project.team.User;
 
 import com.project.team.User.SiteUser;
 import com.project.team.User.SiteUserRepository;

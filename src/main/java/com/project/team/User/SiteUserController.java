@@ -19,12 +19,12 @@ public class SiteUserController {
     @PostMapping("/signup")
     public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "signup_form";
+            return "start";
         }
 
         if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect", "2개의 비밀번호가 일치하지 않습니다.");
-            return "signup_form";
+            return "start";
         }
 
         try{
@@ -39,12 +39,12 @@ public class SiteUserController {
             bindingResult.reject("signupFailed", e.getMessage());
             return "start";
         }
-        return "main";
+        return "redirect:/main";
     }
 
     @GetMapping("/login")
     public String login(){
-        return "map";
+        return "redirect:/main";
     }
 
 }

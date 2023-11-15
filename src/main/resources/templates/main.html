@@ -3,8 +3,8 @@
     <div style="background:#F8C3AF; padding:30px;">
         <div class="d-flex justify-content-around">
             <div style="width:8%;">
-                <button class="mb-3">내 위치 주변</button>
-                <button>주소 검색</button>
+                <button class="mb-3" onclick="aroundMe()">내 위치 주변</button>
+                <button onclick="searchForAddress()">주소 검색</button>
             </div>
             <div id="map" style="width:70%; height:100vh;"></div>
             <div style="width:17%; height:50vh; border:1px solid black; background:white; padding:10px;">
@@ -13,9 +13,28 @@
             </div>
         </div>
     </div>
+    <form th:action="@{/map/view}" method="get" id="address">
+        <input type="hidden" id="inputAddress" name="inputAddress">
+    </form>
     <input type="hidden" id="searchAddress" th:value="${inputAddress}">
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ea7706d3cd280b86aceebdabe80d16f0&libraries=services"></script>
     <script type="text/javascript" th:src="@{/map.js}"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+    function searchForAddress() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                document.querySelector('#inputAddress').value = data.address;
+                document.querySelector('#address').submit();
+            }
+        }).open();
+    }
+
+    function aroundMe() {
+        document.querySelector('#inputAddress').value = 'aroundMe';
+        document.querySelector('#address').submit();
+    }
+    </script>
 </div>
 </html>

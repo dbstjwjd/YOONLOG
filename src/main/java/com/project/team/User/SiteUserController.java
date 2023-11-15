@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,16 +19,16 @@ public class SiteUserController {
     @PostMapping("/signup")
     public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "start";
+            return "signup_form";
         }
 
         if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect", "2개의 비밀번호가 일치하지 않습니다.");
-            return "start";
+            return "signup_form";
         }
 
         try{
-            siteUserService.create(userCreateForm.getLoginId(), userCreateForm.getPassword1(), userCreateForm.getUsername(), userCreateForm.getEmail());
+            siteUserService.create(userCreateForm.getLoginId(), userCreateForm.getPassword1(), userCreateForm.getName(), userCreateForm.getEmail());
 
         }catch(DataIntegrityViolationException e){
             e.printStackTrace();
@@ -38,6 +39,12 @@ public class SiteUserController {
             bindingResult.reject("signupFailed", e.getMessage());
             return "start";
         }
-        return "redirect:/";
+        return "main";
     }
+
+    @GetMapping("/login")
+    public String login(){
+        return "map";
+    }
+
 }

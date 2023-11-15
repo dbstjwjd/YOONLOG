@@ -16,11 +16,12 @@ public class SiteUserService {
     private final SiteUserRepository siteUserRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SiteUser create(String loginId, String password, String username, String email){
+    public SiteUser create(String loginId, String password, String name, String email){
         SiteUser siteUser = new SiteUser();
         siteUser.setLoginId(loginId);
-        siteUser.setName(username);
+        siteUser.setName(name);
         siteUser.setEmail(email);
+        siteUser.setCreateDate(LocalDateTime.now());
         siteUser.setPassword(passwordEncoder.encode(password));
         siteUser.setCreateDate(LocalDateTime.now());
         siteUserRepository.save(siteUser);

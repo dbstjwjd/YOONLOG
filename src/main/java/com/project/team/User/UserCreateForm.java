@@ -15,7 +15,7 @@ public class UserCreateForm {
 
     @Size(min = 3, max = 20)
     @NotEmpty(message = "이름을 입력하세요.")
-    private String username;
+    private String name;
 
     @NotEmpty(message = "로그인 비밀번호를 입력하세요.")
     private String password1;

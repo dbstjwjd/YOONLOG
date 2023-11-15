@@ -16,7 +16,7 @@ public class SiteUserService {
     private final SiteUserRepository siteUserRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SiteUser create(String loginId, String password, String name, String email){
+    public SiteUser create(String loginId, String password, String name, String email, String authority){
         SiteUser siteUser = new SiteUser();
         siteUser.setLoginId(loginId);
         siteUser.setName(name);
@@ -24,6 +24,7 @@ public class SiteUserService {
         siteUser.setCreateDate(LocalDateTime.now());
         siteUser.setPassword(passwordEncoder.encode(password));
         siteUser.setCreateDate(LocalDateTime.now());
+        siteUser.setAuthority(authority);
         siteUserRepository.save(siteUser);
         return siteUser;
     }

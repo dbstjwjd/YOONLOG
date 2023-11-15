@@ -20,14 +20,66 @@ a {
     opacity:0.5;
 }
 
+#main {
+    position:relative;
+}
+
+#image {
+    width:100%;
+    height:90vh;
+    opacity:0.5;
+}
+#content {
+    position:absolute;
+    top:0%;
+    left:0%;
+    background:white;
+    padding:50px;
+}
+
+#map {
+    width:700px;
+    height:700px;
+}
+
 .text {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    font-weight: bold;
     background:lightsalmon;
     padding:30px;
     border-radius:20px;
+    width:700px;
+    height:400px;
+}
+
+#loginBtn {
+    width:25%;
+    height:90px;
+    background:white;
+    color:darksalmon;
+    font-weight:bold;
+    border:0.1px solid lightsalmon;
+}
+
+#loginBtn:hover {
+    background:lightsalmon;
+    color:white;
+    border:0.1px solid white;;
+}
+
+#signupBtn {
+    width:100%;
+    background:white;
+    color:darksalmon;
+    font-weight:bold;
+    border:0.1px solid lightsalmon;
+}
+
+#signupBtn:hover {
+    background:lightsalmon;
+    color:white;
+    border:0.1px solid white;;
 }

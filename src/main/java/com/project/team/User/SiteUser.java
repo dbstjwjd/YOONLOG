@@ -29,6 +29,8 @@ public class SiteUser {
 
     private LocalDateTime createDate;
 
+    private String authority;
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<Restaurant> restaurants;
 }

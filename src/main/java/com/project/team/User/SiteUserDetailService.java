@@ -3,6 +3,7 @@ package com.project.team.User;
 import com.project.team.User.SiteUser;
 import com.project.team.User.SiteUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +27,13 @@ public class SiteUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException(username + "라는 아이디가 존재하지 않습니다.");
         }
         SiteUser siteUser = siteUserOptional.get();
-        String loginId = siteUser.getLoginId();
-        String password = siteUser.getPassword();
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if ("admin".equals(username)) {
+            authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
+        } else {
+            authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
+        }
 
-        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("user"));
-        return new User(loginId, password, authorities);
+        return new User(siteUser.getLoginId(), siteUser.getPassword(), authorities);
     }
 }

@@ -15,4 +15,9 @@ public class MainController {
     public String main() {
         return "main";
     }
+
+    @GetMapping("/test")
+    public String test() {
+        return "test";
+    }
 }

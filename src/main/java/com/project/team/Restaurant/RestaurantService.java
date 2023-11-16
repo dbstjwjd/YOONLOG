@@ -41,3 +41,4 @@ public class RestaurantService {
         this.restaurantRepository.delete(restaurant);
     }
 }
+

@@ -4,6 +4,8 @@ import com.project.team.DataNotFoundException;
 import com.project.team.User.SiteUser;
 import com.project.team.User.SiteUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,4 +38,5 @@ public class SiteUserService {
         } else
             throw new DataNotFoundException("user not found");
     }
+
 }

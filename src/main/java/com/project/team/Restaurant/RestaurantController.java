@@ -1,9 +1,21 @@
 package com.project.team.Restaurant;
 
+import com.project.team.DataNotFoundException;
 import com.project.team.User.SiteUser;
 import com.project.team.User.SiteUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
@@ -68,7 +80,33 @@ public class RestaurantController {
         if (!restaurant.getOwner().getLoginId().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
         }
+
         this.restaurantService.deleteRestaurant(restaurant);
         return "redirect:/main";
+
+    }
+
+    @GetMapping("/restaurant/{id}")
+    public String reserve(Model model,@PathVariable("id") Integer id, BindingResult bindingResult, Principal principal) {
+
+        if (id == null) {
+            throw new DataNotFoundException("음식점 ID가 필요합니다.");
+        }
+
+        Restaurant restaurant = restaurantService.getRestaurant(id);
+        if (restaurant == null) {
+            return "redirect:/form_errors";
+        }
+
+        String userId = principal.getName();
+        SiteUser siteUser = siteUserService.getUser(userId);
+
+        if (siteUser != null) {
+            model.addAttribute("siteUser", siteUser);
+        }
+
+        return "reserve";
+
+
     }
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,4 +29,8 @@ public class Restaurant {
     private SiteUser owner;
 
     private LocalDateTime regDate;
+
+    private String main;
+
+    private List<String> facilities;
 }

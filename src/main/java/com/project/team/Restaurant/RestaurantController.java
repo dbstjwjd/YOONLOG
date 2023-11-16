@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,9 +47,10 @@ public class RestaurantController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/register")
     public String register(Principal principal, @RequestParam(value = "name") String name,
-                           @RequestParam(value = "address") String address, @RequestParam(value = "number") String number) {
+                           @RequestParam(value = "address") String address, @RequestParam(value = "number") String number,
+                           @RequestParam(value = "facilities", required = false) List<String> facilities) {
         SiteUser user = this.siteUserService.getUser(principal.getName());
-        this.restaurantService.registerRestaurant(name, address, number, user);
+        this.restaurantService.registerRestaurant(name, address, number, facilities, user);
         return "redirect:/main";
     }
 
@@ -80,7 +82,6 @@ public class RestaurantController {
         if (!restaurant.getOwner().getLoginId().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
         }
-
         this.restaurantService.deleteRestaurant(restaurant);
         return "redirect:/main";
 
@@ -108,5 +109,19 @@ public class RestaurantController {
         return "reserve";
 
 
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/page/{id}")
+    public String management(@PathVariable("id") String loginId, Model model) {
+        SiteUser user = this.siteUserService.getUser(loginId);
+        List<Restaurant> restaurants = user.getRestaurants();
+        model.addAttribute("restaurants", restaurants);
+        return "management";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable("id") Integer id) {
+        return "restaurantDetail";
     }
 }

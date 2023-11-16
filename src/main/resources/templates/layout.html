@@ -9,7 +9,13 @@
 </head>
 <body>
 <nav th:replace="~{navbar :: navbarFragment}"></nav>
-<th:block layout:fragment="content" class="content"></th:block>
+<th:block layout:fragment="content" class="content">
+    <div id="main">
+        <div id="background" style="background:lightsalmon; width:100%; height:100vh;">
+            <div id="content"></div>
+        </div>
+    </div>
+</th:block>
 <script th:src="@{/bootstrap.bundle.min.js}"></script>
 <th:block layout:fragment="script"></th:block>
 </body>

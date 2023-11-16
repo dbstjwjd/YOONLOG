@@ -5,19 +5,20 @@
     <title>parser</title>
 </head>
 <body>
+<input type="hidden" id="address" th:value="${restaurant.address}">
 <form th:action="@{/restaurant/setLocation}" id="parserForm" method="post">
     <input type="hidden" id="x" name="x">
     <input type="hidden" id="y" name="y">
+    <input type="hidden" name="restaurantId" th:value="${restaurant.id}">
 </form>
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ea7706d3cd280b86aceebdabe80d16f0&libraries=services"></script>
 <script>
     var geocoder = new kakao.maps.services.Geocoder();
+    var param = document.querySelector('#address').value;
 
-    // 주소로 좌표를 검색합니다
-    geocoder.addressSearch('제주특별자치도 제주시 첨단로 242', function(result, status) {
+    geocoder.addressSearch(param, function(result, status) {
 
-        // 정상적으로 검색이 완료됐으면
          if (status === kakao.maps.services.Status.OK) {
 
             document.querySelector('#x').value = result[0].y;

@@ -20,41 +20,9 @@
 
                 displayMarker_myLocation(locPosition);
 
-                var places = new kakao.maps.services.Places();
-
-                var callback = function(data, status) {
-                    for (var i=0; i<data.length; i++) {
-                        displayMarker_restaurant(data[i]);
-                    }
-                    console.log(data);
-                };
-
-                places.categorySearch('FD6', callback, {
-                    location: new kakao.maps.LatLng(lat, lon)
-                });
-
               });
-
         }
 
-        function displayMarker_myLocation(locPosition) {
-
-            var imageSrc = '/image/myLocation.png',
-                imageSize = new kakao.maps.Size(45, 50),
-                imageOption = {offset: new kakao.maps.Point(21, 47)};
-
-            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
-
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: locPosition,
-                image: markerImage
-            });
-
-            marker.setMap(map);
-
-            map.setCenter(locPosition);
-        }
     } else {
         var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
@@ -64,7 +32,6 @@
              if (status === kakao.maps.services.Status.OK) {
 
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                var coords2 = new kakao.maps.LatLng(result[0].y + 0.005, result[0].x + 0.005);
 
                 var marker = new kakao.maps.Marker({
                     map: map,
@@ -78,39 +45,27 @@
 
                 map.setCenter(coords);
 
-                var places = new kakao.maps.services.Places();
-
-                var callback = function(data, status) {
-                    if (status === kakao.maps.services.Status.OK) {
-                        for (var i=0; i<data.length; i++) {
-                            displayMarker_restaurant(data[i]);
-                        }
-                    console.log(data);
-                    }
-                };
-
-                places.categorySearch('FD6', callback, {
-                    location: new kakao.maps.LatLng(result[0].y, result[0].x)
-                });
             }
         });
     }
 
-    function displayMarker_restaurant(place) {
+    function displayMarker_myLocation(locPosition) {
+
+        var imageSrc = '/image/myLocation.png',
+            imageSize = new kakao.maps.Size(45, 50),
+            imageOption = {offset: new kakao.maps.Point(21, 47)};
+
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
+
         var marker = new kakao.maps.Marker({
             map: map,
-            position: new kakao.maps.LatLng(place.y, place.x)
+            position: locPosition,
+            image: markerImage
         });
 
-        kakao.maps.event.addListener(marker, 'click', function() {
-            infowindow.setContent(
-            '<div style="padding:5px;font-size:12px;">' +
-            '<a href="#" style="font-size:15px;font-weight:bold;">' + place.place_name + '</a>' +
-            '<p>' + place.road_address_name + '</p>' +
-            '</div>'
-            );
-            infowindow.open(map, marker);
-        });
+        marker.setMap(map);
+
+        map.setCenter(locPosition);
     }
 
 

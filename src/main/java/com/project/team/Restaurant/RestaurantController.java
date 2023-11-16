@@ -3,22 +3,9 @@ package com.project.team.Restaurant;
 import com.project.team.DataNotFoundException;
 import com.project.team.User.SiteUser;
 import com.project.team.User.SiteUserService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,12 +33,13 @@ public class RestaurantController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/register")
-    public String register(Principal principal, @RequestParam(value = "name") String name,
+    public String register(Principal principal, @RequestParam(value = "name") String name, Model model,
                            @RequestParam(value = "address") String address, @RequestParam(value = "number") String number,
                            @RequestParam(value = "facilities", required = false) List<String> facilities, String main) {
         SiteUser user = this.siteUserService.getUser(principal.getName());
-        this.restaurantService.registerRestaurant(name, address, number, facilities, main, user);
-        return "redirect:/main";
+        Restaurant restaurant = this.restaurantService.registerRestaurant(name, address, number, facilities, main, user);
+        model.addAttribute("restaurant", restaurant);
+        return "addressParser";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -123,5 +111,12 @@ public class RestaurantController {
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Integer id) {
         return "restaurantDetail";
+    }
+
+    @PostMapping("/setLocation")
+    public String setLocation(String x, String y, String restaurantId) {
+        Restaurant restaurant = restaurantService.getRestaurant(Integer.valueOf(restaurantId));
+        restaurantService.setLocation(restaurant, x, y);
+        return "redirect:/main";
     }
 }

@@ -14,13 +14,14 @@ import java.util.Optional;
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
 
-    public void registerRestaurant(String name, String address, String number, List<String> facilities, SiteUser owner) {
+    public void registerRestaurant(String name, String address, String number, List<String> facilities, String main, SiteUser owner) {
         Restaurant restaurant = new Restaurant();
         restaurant.setName(name);
         restaurant.setAddress(address);
         restaurant.setNumber(number);
         restaurant.setOwner(owner);
         restaurant.setFacilities(facilities);
+        restaurant.setMain(main);
         restaurant.setRegDate(LocalDateTime.now());
         this.restaurantRepository.save(restaurant);
     }

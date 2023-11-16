@@ -48,9 +48,9 @@ public class RestaurantController {
     @PostMapping("/register")
     public String register(Principal principal, @RequestParam(value = "name") String name,
                            @RequestParam(value = "address") String address, @RequestParam(value = "number") String number,
-                           @RequestParam(value = "facilities", required = false) List<String> facilities) {
+                           @RequestParam(value = "facilities", required = false) List<String> facilities, String main) {
         SiteUser user = this.siteUserService.getUser(principal.getName());
-        this.restaurantService.registerRestaurant(name, address, number, facilities, user);
+        this.restaurantService.registerRestaurant(name, address, number, facilities, main, user);
         return "redirect:/main";
     }
 

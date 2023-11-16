@@ -2,6 +2,7 @@ package com.project.team;
 
 import com.project.team.User.UserCreateForm;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -12,7 +13,8 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main() {
+    public String mainPage(Model model) {
+        model.addAttribute("inputAddress", "aroundMe");
         return "main";
     }
 

@@ -1,4 +1,4 @@
-var inputAddress = document.querySelector('#searchAddress').value;
+    var inputAddress = document.querySelector('#searchAddress').value;
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     mapOption = {
         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -7,6 +7,7 @@ var inputAddress = document.querySelector('#searchAddress').value;
 
     // 지도를 생성합니다
     var map = new kakao.maps.Map(mapContainer, mapOption);
+
     if (inputAddress == 'aroundMe') {
     var infowindow2 = new kakao.maps.InfoWindow({zIndex:1});
         // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
@@ -32,7 +33,6 @@ var inputAddress = document.querySelector('#searchAddress').value;
                     }
                     console.log(data);
                 };
-
 
                 places.categorySearch('FD6', callback, {
                     // Map 객체를 지정하지 않았으므로 좌표객체를 생성하여 넘겨준다.
@@ -90,6 +90,7 @@ var inputAddress = document.querySelector('#searchAddress').value;
         }
     } else {
         var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
         // 주소-좌표 변환 객체를 생성합니다
         var geocoder = new kakao.maps.services.Geocoder();
         // 주소로 좌표를 검색합니다
@@ -99,6 +100,7 @@ var inputAddress = document.querySelector('#searchAddress').value;
              if (status === kakao.maps.services.Status.OK) {
 
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                var coords2 = new kakao.maps.LatLng(result[0].y + 0.005, result[0].x + 0.005);
 
                 // 결과값으로 받은 위치를 마커로 표시합니다
                 var marker = new kakao.maps.Marker({
@@ -148,3 +150,6 @@ var inputAddress = document.querySelector('#searchAddress').value;
             }
         });
     }
+
+
+

@@ -52,5 +52,9 @@ public class RestaurantService {
         restaurant.setLocationY(y);
         restaurantRepository.save(restaurant);
     }
+
+    public List<Restaurant> getAll() {
+        return restaurantRepository.findAll();
+    }
 }
 

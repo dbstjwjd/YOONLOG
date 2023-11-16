@@ -8,6 +8,15 @@
 
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
+    /* 마크 적용
+    for(var i = 0; i < 10; i++) {
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(33.450701 + i * 0.001, 126.570667 + i * 0.001)
+            });
+        }
+    */
+
     if (inputAddress == 'aroundMe') {
     var infowindow = new kakao.maps.InfoWindow({zIndex:1});
         if (navigator.geolocation) {
@@ -41,6 +50,7 @@
                 var infowindow = new kakao.maps.InfoWindow({
                     content: '<div style="width:150px;text-align:center;padding:6px 0;">' + inputAddress + '</div>'
                 });
+
                 infowindow.open(map, marker);
 
                 map.setCenter(coords);
@@ -62,8 +72,6 @@
             position: locPosition,
             image: markerImage
         });
-
-        marker.setMap(map);
 
         map.setCenter(locPosition);
     }

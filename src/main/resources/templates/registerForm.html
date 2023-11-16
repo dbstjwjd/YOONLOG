@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <input class="btn btn-secondary" type="submit" value="등록" id="regBtn">
+                    <input class="btn btn-secondary" type="button" value="등록" id="regBtn">
                 </div>
             </form>
         </div>
@@ -83,12 +83,12 @@
         }
 
         document.querySelector("#regBtn").addEventListener('click', function() {
-            if(document.querySelector("#name").value == "")
+            if (document.querySelector("#name").value == "")
                 alert("가게 이름을 입력해주세요.");
-            if(document.querySelector("#address").value == "")
-                alert("가게 주소를 입력해주세요.");
-            if(document.querySelector("#number").value == "")
-                alert("전화번호를 입력해주세요.");
+            else if (document.querySelector("#address").value == "")
+                alert ("가게 주소를 입력해주세요.");
+            else if(document.querySelector("#number").value == "")
+                alert ("전화번호를 입력해주세요.");
             else
                 document.querySelector("#regForm").submit();
         });

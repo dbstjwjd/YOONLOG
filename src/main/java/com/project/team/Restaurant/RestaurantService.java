@@ -12,6 +12,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class RestaurantService {
+
     private final RestaurantRepository restaurantRepository;
 
     public Restaurant registerRestaurant(String name, String address, String number, List<String> facilities, String main, SiteUser owner) {

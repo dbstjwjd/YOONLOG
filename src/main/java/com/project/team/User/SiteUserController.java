@@ -43,6 +43,6 @@ public class SiteUserController {
 
     @GetMapping("/login")
     public String login() {
-        return "redirect:/";
+        return "redirect:/main";
     }
 }

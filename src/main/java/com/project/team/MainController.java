@@ -18,6 +18,11 @@ public class MainController {
         return "main";
     }
 
+    @GetMapping("/regTest")
+    public String regTest() {
+        return "registerForm";
+    }
+
     @GetMapping("/test")
     public String test() {
         return "test";

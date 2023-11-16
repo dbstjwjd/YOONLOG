@@ -1,17 +1,18 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
     <div id="main">
-        <img src="/mainImage.jpg" alt="" id="image">
+        <div id="background" style="background:lightsalmon; width:100%; height:100vh;"></div>
         <div id="content">
             <div class="d-flex justify-content-around">
-                <div style="width:8%;">
-                    <button class="mb-3" onclick="aroundMe()">내 위치 주변</button>
-                    <button onclick="searchForAddress()">주소 검색</button>
+                <div id="map" style="width:1000px; height:600px; border-radius:15px; position:relative; z-index:0;">
+                    <div style="position:absolute; z-index:99; top:3%; left:3%;">
+                        <button class="btn btn-sm btn-primary me-2" onclick="aroundMe()">내 위치 주변</button>
+                        <button class="btn btn-sm btn-primary" onclick="searchForAddress()">주소 검색</button>
+                    </div>
                 </div>
-                <div id="map" style=""></div>
                 <div style="width:17%; height:50vh; border:1px solid black; background:white; padding:10px;">
                     <h1>유저 정보</h1>
-                    <a href="/restaurant/register" class="btn btn-dark">가게 등록</a>
+                    <a th:href="@{/restaurant/register}" class="btn btn-dark">가게 등록</a>
                 </div>
             </div>
         </div>

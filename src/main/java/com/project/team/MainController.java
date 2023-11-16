@@ -23,8 +23,10 @@ public class MainController {
 
     @GetMapping("/main")
     public String mainPage(Model model, Principal principal) {
-        SiteUser user = this.siteUserService.getUser(principal.getName());
-        model.addAttribute("user", user);
+        if (principal != null) {
+            SiteUser user = this.siteUserService.getUser(principal.getName());
+            model.addAttribute("user", user);
+        }
         model.addAttribute("inputAddress", "aroundMe");
         return "main";
     }

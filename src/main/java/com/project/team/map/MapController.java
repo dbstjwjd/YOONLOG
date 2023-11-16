@@ -19,7 +19,7 @@ public class MapController {
 
     @GetMapping("/view")
     public String search(Model model, String inputAddress, Principal principal) {
-        if (!principal.getName().isEmpty()) {
+        if (principal != null) {
             SiteUser user = this.siteUserService.getUser(principal.getName());
             model.addAttribute("user", user);
         }

@@ -71,49 +71,88 @@
                 </div>
             </div>
         </div>
+        <!-- 예약 폼 -->
         <div class="card" style="width:28%;">
             <div class="card-header fs-4 fw-bold">예약하기</div>
             <div class="card-body">
                 <div class="card-text">
-                    <div class="my-3">
-                        <label for="datepicker" class="form-label">예약 날짜</label>
-                        <div class="input-group">
-                            <button id="datepicker" class="btn btn-outline-secondary">날짜 선택</button>
-                            <input type="text" id="selectedDate" class="form-control" readonly>
+                    <form action="" method="post">
+                        <div class="my-3">
+                            <label for="datepicker" class="form-label">예약 날짜</label>
+                            <div class="input-group">
+                                <button id="datepicker" class="btn btn-outline-secondary">날짜 선택</button>
+                                <input type="text" id="selectedDate" class="form-control" name="date" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="timepicker" class="form-label">예약시간</label>
-                        <div class="input-group">
-                            <button id="timepicker" class="btn btn-outline-secondary">시간 선택</button>
-                            <input type="text" id="selectedTime" class="form-control" readonly>
+                        <div class="mb-3">
+                            <label for="timepicker" class="form-label">예약시간</label>
+                            <div class="input-group">
+                                <button id="timepicker" class="btn btn-outline-secondary">시간 선택</button>
+                                <input type="text" id="selectedTime" class="form-control" name="time" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="name" class="form-label">예약자 성함</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control">
+                        <div class="mb-3">
+                            <label for="count" class="form-label">인원 수</label>
+                            <div class="btn-group border" style="width:50%;">
+                                <button class="btn btn-secondary" onclick="decreaseCount()">-</button>
+                                <input type="button" class="btn" id="count" value="1" name="count">
+                                <button class="btn btn-secondary" onclick="increaseCount()">+</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phoneNumber" class="form-label">전화번호</label>
-                        <div class="d-flex justify-content-between mb-2">
-                            <input type="text" class="form-control me-1" style="width:72%;">
-                            <button class="btn btn-sm btn-secondary">인증번호 발송</button>
+                        <div class="mb-3">
+                            <!-- 인증 버튼 -->
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-sm btn-outline-secondary me-2"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal" id="verBtn">
+                                    전화번호 인증
+                                </button>
+                                <span style="font-size:13px;">※ '-' 를 제외한 전화번호 11자리를 입력해주세요.</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-start" style="width:70%;">
+                                <div style="width:85%;" class="me-1">
+                                    <input type="text" class="form-control" id="verKey" placeholder="인증번호 입력">
+                                    <div id="verResult"></div>
+                                </div>
+                                <input type="button" class="btn btn-secondary" value="확인"
+                                       onclick="checkVerificationKey()">
+                            </div>
+                            <!-- 모달 -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">전화번호 인증</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="text" class="form-control" placeholder="'-' 없이 입력해주세요."
+                                                   id="phoneNum">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" id="verKeyBtn"
+                                                    onclick="sendMessage()">인증번호 발송
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <input type="text" class="form-control me-1" style="width:72%;">
-                            <button class="btn btn-sm btn-secondary">인증번호 확인</button>
+                        <div class="d-flex justify-content-end">
+                            <input type="button" class="btn btn-secondary" value="예약">
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
         <div style="border-radius:5px; width:28%; border:1px solid lightgray;"></div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.6/dist/flatpickr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.6/dist/l10n/ko.js"></script>
-    <script layout:fragment="script" type='text/javascript'>
+    <script layout:fragment="script" type='text/javascript' th:inline="javascript">
         document.getElementById('copyAddress').addEventListener('click', function() {
             const textToCopy = this.innerText;
             const tempInput = document.createElement('input');
@@ -152,6 +191,96 @@
                 }
             });
         });
+
+        function sendMessage() {
+            var phoneNumber = document.getElementById("phoneNum").value;
+            if (phoneNumber == "")
+                alert("전화번호를 입력해주세요.");
+            else {
+                // URL 매개변수를 사용하여 서버로 전화번호를 보내는 GET 요청
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/send?phoneNumber=" + encodeURIComponent(phoneNumber), true);
+
+                // 서버에서 응답을 받으면 콘솔에 출력
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // 응답이 완료되면 modal을 닫음
+                        $('#exampleModal').modal('hide');
+                        // 새로운 인증번호를 받아오기 위해 requestVerificationKey 함수 호출
+                        requestVerificationKey();
+                    }
+                };
+
+                xhr.send();
+            }
+        }
+
+        var serverVerKey; // 전역 변수로 선언
+
+        // 서버에서 인증번호를 가져오는 함수
+        function requestVerificationKey() {
+            $.ajax({
+                url: "/sendVerKey",
+                type: "GET",
+                data: { timestamp: new Date().getTime() },
+                success: function (response) {
+                    serverVerKey = response.verKey;
+                    console.log(serverVerKey);
+                },
+                error: function () {
+                    console.error("인증번호를 가져오는 중에 오류가 발생했습니다.");
+                }
+            });
+        }
+
+        $("#verKeyBtn").click(function () {
+            // 인증번호 입력란 초기화
+            document.getElementById("verKey").value = "";
+            // 새로운 인증번호를 받아오기 위해 requestVerificationKey 함수 호출
+            requestVerificationKey();
+        });
+
+        // 페이지 로드 시에도 최초 한 번은 인증번호를 가져오도록 호출
+        $(document).ready(function () {
+            requestVerificationKey();
+        });
+
+        // 인증번호를 체크하는 함수
+        function checkVerificationKey() {
+            var enteredKey = document.getElementById("verKey").value;
+            console.log(serverVerKey);
+            console.log(enteredKey);
+
+            if (enteredKey === serverVerKey) {
+                document.getElementById("verKey").classList.remove("is-invalid");
+                document.getElementById("verKey").classList.add("is-valid");
+                document.getElementById("verResult").classList.remove("invalid-feedback");
+                document.getElementById("verResult").classList.add("valid-feedback");
+                document.getElementById("verResult").textContent = "인증 완료되었습니다.";
+            } else {
+                document.getElementById("verKey").classList.add("is-invalid");
+                document.getElementById("verResult").classList.add("invalid-feedback");
+                document.getElementById("verResult").textContent = "인증번호가 일치하지 않습니다.";
+            }
+        }
+
+        let count = 1;
+
+        function updateCount() {
+            document.getElementById("count").value = count;
+        }
+
+        function increaseCount() {
+            count++;
+            updateCount();
+        }
+
+        function decreaseCount() {
+            if (count > 1) {
+                count--;
+                updateCount();
+            }
+        }
     </script>
 </div>
 </html>

@@ -18,10 +18,29 @@
                     <label for="number" class="form-label">메인 메뉴</label>
                 </div>
                 <div class="mb-3">
+                    <textarea rows="5" placeholder="가게 소개" id="introduce" name="introduce"
+                              class="form-control"></textarea>
+                </div>
+                <div class="mb-3">
                     <div class="d-flex">
                         <input type="text" id="address" placeholder="주소" name="address" class="form-control me-2"
                                readonly>
-                        <input class="btn btn-secondary" type="button" onclick="findAddress();" value="주소 찾기">
+                        <input class="버튼 btn btn-secondary" type="button" onclick="findAddress();" value="주소 찾기">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="time" class="mb-1">영업 시간</label>
+                    <div class="d-flex">
+                        <div class="me-2">
+                            <label for="startTime" style="color:gray">OPEN</label>
+                            <input type="text" id="startTime" name="startTime" class="flatpickr form-control"
+                                   data-enable-time="true" data-no-calendar="true"/>
+                        </div>
+                        <div>
+                            <label for="endTime" style="color:gray">CLOSE</label>
+                            <input type="text" id="endTime" name="endTime" class="flatpickr form-control"
+                                   data-enable-time="true" data-no-calendar="true"/>
+                        </div>
                     </div>
                 </div>
                 <label class="form-label">편의 시설 및 서비스</label>
@@ -52,11 +71,12 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <input class="btn btn-secondary" type="button" value="등록" id="regBtn">
+                    <input class="버튼 btn btn-secondary" type="button" value="등록" id="regBtn">
                 </div>
             </form>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script layout:fragment="script" type='text/javascript'>
         function findAddress() {
@@ -89,9 +109,25 @@
                 alert ("가게 주소를 입력해주세요.");
             else if(document.querySelector("#number").value == "")
                 alert ("전화번호를 입력해주세요.");
+            else if(document.querySelector("#startTime").value == "")
+                alert ("영업 시간을 입력해주세요.");
+            else if(document.querySelector("#endTime").value == "")
+                alert ("영업 시간을 입력해주세요.");
             else
                 document.querySelector("#regForm").submit();
         });
+
+        flatpickr("#startTime", {
+              enableTime: true,
+              noCalendar: true,
+              dateFormat: "H:i", // 시간만 표시하도록 설정
+            });
+
+        flatpickr("#endTime", {
+              enableTime: true,
+              noCalendar: true,
+              dateFormat: "H:i", // 시간만 표시하도록 설정
+            });
     </script>
 </div>
 </html>

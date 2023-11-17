@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -36,9 +37,10 @@ public class RestaurantController {
     @PostMapping("/register")
     public String register(Principal principal, @RequestParam(value = "name") String name, Model model,
                            @RequestParam(value = "address") String address, @RequestParam(value = "number") String number,
-                           @RequestParam(value = "facilities", required = false) List<String> facilities, String main) {
+                           @RequestParam(value = "facilities", required = false) List<String> facilities, String main,
+                           LocalTime startTime, LocalTime endTime, String introduce) {
         SiteUser user = this.siteUserService.getUser(principal.getName());
-        Restaurant restaurant = this.restaurantService.registerRestaurant(name, address, number, facilities, main, user);
+        Restaurant restaurant = this.restaurantService.registerRestaurant(name, address, number, facilities, main, user, startTime, endTime, introduce);
         model.addAttribute("restaurant", restaurant);
         return "addressParser";
     }
@@ -56,11 +58,13 @@ public class RestaurantController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String modify(@PathVariable("id") Integer id, Principal principal, @RequestParam(value = "name") String name,
-                         @RequestParam(value = "address") String address, @RequestParam(value = "number") String number) {
+                         @RequestParam(value = "address") String address, @RequestParam(value = "number") String number,
+                         @RequestParam(value = "facilities", required = false) List<String> facilities, String main,
+                         LocalTime startTime, LocalTime endTime, String introduce) {
         Restaurant restaurant = this.restaurantService.getRestaurant(id);
         if (!restaurant.getOwner().getLoginId().equals(principal.getName()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
-        this.restaurantService.modifyRestaurant(name, address, number, restaurant);
+        this.restaurantService.modifyRestaurant(name, address, number, restaurant, facilities, main, startTime, endTime, introduce);
         return "redirect:/main";
     }
 

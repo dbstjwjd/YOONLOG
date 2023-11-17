@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,8 @@ public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
 
-    public Restaurant registerRestaurant(String name, String address, String number, List<String> facilities, String main, SiteUser owner) {
+    public Restaurant registerRestaurant(String name, String address, String number, List<String> facilities, String main,
+                                         SiteUser owner, LocalTime startTime, LocalTime endTime, String introduce) {
         Restaurant restaurant = new Restaurant();
         restaurant.setName(name);
         restaurant.setAddress(address);
@@ -24,7 +26,9 @@ public class RestaurantService {
         restaurant.setFacilities(facilities);
         restaurant.setMain(main);
         restaurant.setRegDate(LocalDateTime.now());
-
+        restaurant.setStartTime(startTime);
+        restaurant.setEndTime(endTime);
+        restaurant.setIntroduce(introduce);
         this.restaurantRepository.save(restaurant);
         return restaurant;
     }
@@ -36,10 +40,16 @@ public class RestaurantService {
         else throw new DataNotFoundException("restaurant not found");
     }
 
-    public void modifyRestaurant(String name, String address, String number, Restaurant restaurant) {
+    public void modifyRestaurant(String name, String address, String number, Restaurant restaurant, List<String> facilities,
+                                 String main, LocalTime startTime, LocalTime endTime, String introduce) {
         restaurant.setName(name);
         restaurant.setAddress(address);
         restaurant.setNumber(number);
+        restaurant.setFacilities(facilities);
+        restaurant.setMain(main);
+        restaurant.setStartTime(startTime);
+        restaurant.setEndTime(endTime);
+        restaurant.setIntroduce(introduce);
         this.restaurantRepository.save(restaurant);
     }
 

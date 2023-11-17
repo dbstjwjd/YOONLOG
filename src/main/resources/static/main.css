@@ -9,6 +9,10 @@ a {
     text-decoration:none;
 }
 
+a:hover {
+    color:sienna;
+}
+
 #container {
     position: relative;
     text-align: center;
@@ -41,40 +45,54 @@ a {
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    background:lightsalmon;
+    background:tan;
     padding:30px;
     border-radius:20px;
     width:50%;
     height:400px;
+    border:2px solid black;
 }
 
 #loginBtn {
     width:25%;
     height:90px;
     background:white;
-    color:darksalmon;
+    color:black;
     font-weight:bold;
-    border:0.1px solid lightsalmon;
+    border:0.1px solid black;
 }
 
 #loginBtn:hover {
-    background:lightsalmon;
+    background:tan;
     color:white;
-    border:0.1px solid white;;
+    border:0.1px solid tan;
 }
 
 #signupBtn {
     width:100%;
     background:white;
-    color:darksalmon;
+    color:black;
     font-weight:bold;
-    border:0.1px solid lightsalmon;
+    border:0.1px solid black;
 }
 
 #signupBtn:hover {
-    background:lightsalmon;
+    background:tan;
     color:white;
-    border:0.1px solid white;;
+    border:0.1px solid tan;;
+}
+
+.버튼 {
+    background:peachpuff;
+    border:0.1px solid black;
+    color:black;
+}
+
+.버튼:hover {
+    color:sienna;
+    background:peachpuff;
+    border:0.1px solid;
+    font-weight:bold;
 }
 
 

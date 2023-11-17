@@ -5,6 +5,12 @@
     <title>Title</title>
     <link rel="stylesheet" href="/main.css" type="text/css">
     <link rel="stylesheet" href="/bootstrap.min.css" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500&display=swap" rel="stylesheet">
+    <style>
+        * {font-family: 'IBM Plex Sans KR', sans-serif;}
+    </style>
     <style>
         a {
             color:inherit;
@@ -12,7 +18,11 @@
         }
 
         a:hover {
-            color:darksalmon;
+            color:sienna;
+        }
+
+        .find:hover {
+            color:sienna;
         }
     </style>
 </head>
@@ -25,19 +35,21 @@
         <div class="text-center">
             <div class="text d-flex align-items-center justify-content-center">
                 <div>
-                    <h1 class="mb-5" style="font-size:6rem; font-weight:bold; text-shadow: 3px 3px 6px gray;">logo</h1>
-                    <a href="javascript:void(0)" onclick="searchForAddress();" class="btn me-3"
-                       style="background:darksalmon; border:0.1px solid; box-shadow:1px 1px 2px;">
-                        주소로 맛집 찾기 →</a>
-                    <a href="javascript:void(0)" onclick="aroundMe();" class="btn"
-                       style="background:darksalmon; border:0.1px solid; box-shadow:1px 1px 2px;">내 주변 맛집 찾기 →</a>
+                    <h1 class="logo mb-5"
+                        style="font-size:6rem; font-weight:bold; text-shadow:-2px -2px 0 #000, 2px -2px 0 #000,-2px 2px 0 #000, 2px 2px 0 #000;">
+                        LOGO</h1>
+                    <a href="javascript:void(0)" onclick="searchForAddress();" class="find btn me-3"
+                       style="background:peachpuff; border:0.1px solid;">
+                        <span class="fw-bold">주소</span>로 맛집 찾기 →</a>
+                    <a href="javascript:void(0)" onclick="aroundMe();" class="find btn"
+                       style="background:peachpuff; border:0.1px solid;"><span class="fw-bold">내 주변</span> 맛집 찾기 →</a>
                 </div>
             </div>
         </div>
     </div>
     <div style="width:30%;" class="d-flex align-items-center justify-content-center">
         <div style="width:60%;">
-            <h1 class="border-bottom pb-2 mb-2">logo</h1>
+            <h1 class="border-bottom pb-2 mb-2" style="color:tan; text-shadow:-1px -1px 0 #000, 1px -1px 0 #000,-1px 1px 0 #000, 1px 1px 0 #000;">logo</h1>
             <form id="loginForm" th:action="@{/user/login}" method="post">
                 <div th:if="${param.error}">
                     <div class="alert alert-danger">

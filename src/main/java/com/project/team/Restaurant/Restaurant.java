@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -43,4 +44,11 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
     private List<Reservation> reservations;
+
+    @Column(columnDefinition = "TEXT")
+    private String introduce;
+
+    private LocalTime startTime;
+
+    private LocalTime endTime;
 }

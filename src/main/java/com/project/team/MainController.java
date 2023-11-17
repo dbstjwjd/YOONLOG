@@ -1,17 +1,11 @@
 package com.project.team;
 
-import com.project.team.Restaurant.Restaurant;
 import com.project.team.Restaurant.RestaurantService;
-import com.project.team.User.SiteUser;
 import com.project.team.User.SiteUserService;
 import com.project.team.User.UserCreateForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,16 +19,8 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String mainPage(Model model, Principal principal) {
-        if (principal != null) {
-            SiteUser user = this.siteUserService.getUser(principal.getName());
-            model.addAttribute("user", user);
-        }
-        model.addAttribute("inputAddress", "aroundMe");
-
-        List<Restaurant> restaurantList = restaurantService.getAll();
-        model.addAttribute("restList", restaurantList);
-        return "main";
+    public String mainPage() {
+        return "redirect:/map/view";
     }
 
     @GetMapping("/regTest")

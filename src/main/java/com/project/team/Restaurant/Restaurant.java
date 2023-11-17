@@ -1,5 +1,6 @@
 package com.project.team.Restaurant;
 
+import com.project.team.Reservation.Reservation;
 import com.project.team.User.SiteUser;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -35,7 +36,11 @@ public class Restaurant {
     private List<String> facilities;
 
     private String locationX;
+
     private String locationY;
 
     private String image;
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
+    private List<Reservation> reservations;
 }

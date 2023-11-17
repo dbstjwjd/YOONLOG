@@ -1,5 +1,6 @@
 package com.project.team.User;
 
+import com.project.team.Reservation.Reservation;
 import com.project.team.Restaurant.Restaurant;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -33,4 +34,7 @@ public class SiteUser {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<Restaurant> restaurants;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
+    private List<Reservation> reservations;
 }

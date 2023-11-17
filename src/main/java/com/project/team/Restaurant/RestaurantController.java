@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -72,30 +73,6 @@ public class RestaurantController {
         }
         this.restaurantService.deleteRestaurant(restaurant);
         return "redirect:/main";
-
-    }
-
-    @GetMapping("/restaurant/{id}")
-    public String reserve(Model model,@PathVariable("id") Integer id, BindingResult bindingResult, Principal principal) {
-
-        if (id == null) {
-            throw new DataNotFoundException("음식점 ID가 필요합니다.");
-        }
-
-        Restaurant restaurant = restaurantService.getRestaurant(id);
-        if (restaurant == null) {
-            return "redirect:/form_errors";
-        }
-
-        String userId = principal.getName();
-        SiteUser siteUser = siteUserService.getUser(userId);
-
-        if (siteUser != null) {
-            model.addAttribute("siteUser", siteUser);
-        }
-
-        return "reserve";
-
 
     }
 

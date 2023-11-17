@@ -47,7 +47,7 @@
                         </svg>
                         <div th:each="facility, stat : ${restaurant.facilities}">
                             <span th:text="${facility}"></span>
-                            <span th:if="${!stat.last}">, </span>
+                            <span th:if="${!stat.last}">,</span>
                         </div>
                     </div>
                     <!-- 가게 소개 -->
@@ -76,83 +76,106 @@
             <div class="card-header fs-4 fw-bold">예약하기</div>
             <div class="card-body">
                 <div class="card-text">
-                    <form action="" method="post">
-                        <div class="my-3">
-                            <label for="datepicker" class="form-label">예약 날짜</label>
-                            <div class="input-group">
-                                <button id="datepicker" class="btn btn-outline-secondary">날짜 선택</button>
-                                <input type="text" id="selectedDate" class="form-control" name="date" readonly>
-                            </div>
+                    <div class="my-3">
+                        <label for="datepicker" class="form-label border-bottom">예약 날짜</label>
+                        <div class="input-group">
+                            <button type="button" id="datepicker" class="btn btn-outline-secondary">날짜 선택</button>
+                            <input type="text" id="selectedDate" class="form-control" readonly>
                         </div>
-                        <div class="mb-3">
-                            <label for="timepicker" class="form-label">예약시간</label>
-                            <div class="input-group">
-                                <button id="timepicker" class="btn btn-outline-secondary">시간 선택</button>
-                                <input type="text" id="selectedTime" class="form-control" name="time" readonly>
-                            </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="timepicker" class="form-label border-bottom">예약시간</label>
+                        <div class="input-group">
+                            <button type="button" id="timepicker" class="btn btn-outline-secondary">시간 선택</button>
+                            <input type="text" id="selectedTime" class="form-control" readonly>
                         </div>
-                        <div class="mb-3">
-                            <label for="count" class="form-label">인원 수</label>
-                            <div class="btn-group border" style="width:50%;">
-                                <button class="btn btn-secondary" onclick="decreaseCount()">-</button>
-                                <input type="button" class="btn" id="count" value="1" name="count">
-                                <button class="btn btn-secondary" onclick="increaseCount()">+</button>
-                            </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputCount" class="form-label border-bottom">인원 수</label>
+                        <br>
+                        <div class="btn-group border" style="width:50%;">
+                            <button class="btn btn-secondary" onclick="decreaseCount()">-</button>
+                            <input type="button" class="btn" id="inputCount" value="1">
+                            <button class="btn btn-secondary" onclick="increaseCount()">+</button>
                         </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label border-bottom" for="verify">전화번호 인증</label>
+                        <!-- 인증 버튼 -->
                         <div class="mb-3">
-                            <!-- 인증 버튼 -->
-                            <div class="mb-3">
-                                <button type="button" class="btn btn-sm btn-outline-secondary me-2"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal" id="verBtn">
-                                    전화번호 인증
-                                </button>
-                                <span style="font-size:13px;">※ '-' 를 제외한 전화번호 11자리를 입력해주세요.</span>
+                            <button type="button" class="btn btn-sm btn-outline-secondary me-2"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal" id="verBtn">
+                                전화번호 인증
+                            </button>
+                            <span style="font-size:13px;">※ '-' 를 제외한 전화번호 11자리를 입력해주세요.</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-start" style="width:70%;">
+                            <div style="width:85%;" class="me-1">
+                                <input type="text" class="form-control" id="verKey" placeholder="인증번호 입력">
+                                <div id="verResult"></div>
                             </div>
-                            <div class="d-flex justify-content-between align-items-start" style="width:70%;">
-                                <div style="width:85%;" class="me-1">
-                                    <input type="text" class="form-control" id="verKey" placeholder="인증번호 입력">
-                                    <div id="verResult"></div>
-                                </div>
-                                <input type="button" class="btn btn-secondary" value="확인"
-                                       onclick="checkVerificationKey()">
-                            </div>
-                            <!-- 모달 -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">전화번호 인증</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <input type="text" class="form-control" placeholder="'-' 없이 입력해주세요."
-                                                   id="phoneNum">
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" id="verKeyBtn"
-                                                    onclick="sendMessage()">인증번호 발송
-                                            </button>
-                                        </div>
+                            <input type="button" class="btn btn-secondary" value="확인"
+                                   onclick="checkVerificationKey()">
+                        </div>
+                        <!-- 모달 -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">전화번호 인증</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="text" class="form-control" placeholder="'-' 없이 입력해주세요."
+                                               id="phoneNum">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" id="verKeyBtn"
+                                                onclick="sendMessage()">인증번호 발송
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-end">
-                            <input type="button" class="btn btn-secondary" value="예약">
-                        </div>
-                    </form>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <input id="reserveBtn" type="button" class="btn btn-secondary" value="예약">
+                    </div>
                 </div>
             </div>
         </div>
         <div style="border-radius:5px; width:28%; border:1px solid lightgray;"></div>
+        <form th:action="@{|/reserve/${restaurant.id}|}" method="post" id="reserveForm">
+            <input type="hidden" id="date" name="date">
+            <input type="hidden" id="time" name="time">
+            <input type="hidden" id="count" name="count">
+        </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.6/dist/flatpickr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.6/dist/l10n/ko.js"></script>
     <script layout:fragment="script" type='text/javascript' th:inline="javascript">
+        const reserve = document.getElementById("reserveBtn");
+            reserve.addEventListener('click', function() {
+                if (document.getElementById('selectedDate').value == "")
+                    alert("예약 날짜를 선택해주세요.");
+                else if (document.getElementById('selectedTime').value == "")
+                    alert("예약 시간을 선택해주세요.");
+                else if (document.getElementById('inputCount').value == "")
+                    alert("인원 수를 선택해주세요.");
+                else if (!document.getElementById('verResult').classList.contains('valid-feedback'))
+                    alert("인증이 완료되지 않았습니다.");
+                else {
+                    alert("예약이 완료되었습니다.");
+                    document.getElementById('date').value = document.getElementById('selectedDate').value;
+                    document.getElementById('time').value = document.getElementById('selectedTime').value;
+                    document.getElementById('count').value = document.getElementById('inputCount').value;
+                    document.getElementById('reserveForm').submit();
+                }
+            });
         document.getElementById('copyAddress').addEventListener('click', function() {
             const textToCopy = this.innerText;
             const tempInput = document.createElement('input');
@@ -267,7 +290,7 @@
         let count = 1;
 
         function updateCount() {
-            document.getElementById("count").value = count;
+            document.getElementById("inputCount").value = count;
         }
 
         function increaseCount() {

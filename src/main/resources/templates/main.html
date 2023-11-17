@@ -33,7 +33,20 @@
     <input type="hidden" id="searchAddress" th:value="${inputAddress}">
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ea7706d3cd280b86aceebdabe80d16f0&libraries=services"></script>
-    <script type="text/javascript" th:src="@{/map.js}" th:inline="javascript"></script>
+    <script type="text/javascript" th:inline="javascript">
+        var resArr = new Array();
+        [# th:each="res : ${resList}"]
+            var resObj = new Object();
+            resObj.id = [[${res.id}]];
+            resObj.name = [[${res.name}]];
+            resObj.address = [[${res.address}]];
+            resObj.x = [[${res.locationX}]];
+            resObj.y = [[${res.locationY}]];
+            resObj.image = [[${res.image}]];
+            resArr.push(resObj);
+        [/]
+    </script>
+    <script type="text/javascript" th:src="@{/map.js}"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
         function searchForAddress() {

@@ -36,4 +36,6 @@ public class Restaurant {
 
     private String locationX;
     private String locationY;
+
+    private String image;
 }

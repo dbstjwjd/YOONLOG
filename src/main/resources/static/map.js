@@ -8,14 +8,49 @@
 
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
-    /* 마크 적용
-    for(var i = 0; i < 10; i++) {
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: new kakao.maps.LatLng(33.450701 + i * 0.001, 126.570667 + i * 0.001)
-            });
-        }
-    */
+    resArr.forEach(function(element) {
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(element.x, element.y),
+            clickable: true
+        });
+        console.log(typeof(element.y));
+
+        var tmpOverlay = new kakao.maps.CustomOverlay({
+            content: '<div class="card">'+element.name+'</div>',
+            position: marker.getPosition(),
+            map: map,
+            yAnchor: 2.6
+        });
+
+        var content =
+        '<div class="card">' +
+            ((element.image != null) ? ('<img th:src="@{${'+element.image+'}}" class="card-img-top" alt="">') : (""))+
+            '<div class="card-body">'+
+                '<a href="/restaurant/detail/'+element.id+'" class="card-title text-center">'+
+                    '<h5>'+
+                        element.name +
+                    '</h5>'+
+                '</a>'+
+                '<p class="card-text text-secondary">'+
+                    element.address +
+                '</p>'+
+            '</div>'+
+        '</div>'
+        ;
+
+        var overlay = new kakao.maps.CustomOverlay({
+            content: content,
+            position: marker.getPosition(),
+            yAnchor: 1.4
+        });
+
+        kakao.maps.event.addListener(marker, 'click', function() {
+            infowindow.close();
+            overlay.setMap(map);
+            tmpOverlay.setVisible(false);
+        });
+    });
 
     if (inputAddress == 'aroundMe') {
     var infowindow = new kakao.maps.InfoWindow({zIndex:1});

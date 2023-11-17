@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>getData</title>
+</head>
+<body>
+<script>
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(function() {
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+    });
+</script>
+<script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ea7706d3cd280b86aceebdabe80d16f0&libraries=services"></script>
+<script>
+    var places = new kakao.maps.services.Places();
+
+    var callback = function(dataList, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            $.ajax({
+                type: 'post',
+                contentType: "application/json",
+                url: '/getData',
+                data: JSON.stringify(dataList),
+                success: function(response) {
+                    console.log(response);
+                },
+                success: function(success) {
+                    console.log(success);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+            location.href='/main';
+        }
+    };
+
+    places.categorySearch('FD6', callback, {
+        location: new kakao.maps.LatLng(37.564968, 126.939909)
+    });
+</script>
+</body>
+</html>

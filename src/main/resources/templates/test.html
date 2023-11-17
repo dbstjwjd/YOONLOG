@@ -2,24 +2,26 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <title>parser</title>
 </head>
 <body>
-<script type="text/javascript"
-        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ea7706d3cd280b86aceebdabe80d16f0&libraries=services"></script>
+<form th:action="@{/test/receive}" method="get" id="testForm">
+    <input type="hidden" name="data" id="data">
+</form>
 <script>
-    var places = new kakao.maps.services.Places();
-
-    var callback = function(result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-            console.log(result);
-        }
-    };
-
-    // 공공기관 코드 검색
-    places.categorySearch('FD6', callback, {
-        location: new kakao.maps.LatLng(37.564968, 126.939909)
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(function() {
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
     });
 </script>
+<script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ea7706d3cd280b86aceebdabe80d16f0&libraries=services"></script>
 </body>
 </html>

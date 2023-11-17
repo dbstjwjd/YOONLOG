@@ -5,25 +5,21 @@
     <title>parser</title>
 </head>
 <body>
-<div id="map" style="width:100vw;height:100vh;"></div>
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ea7706d3cd280b86aceebdabe80d16f0&libraries=services"></script>
 <script>
-    var mapContainer = document.getElementById('map'),
-    mapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 3 // 지도의 확대 레벨
+    var places = new kakao.maps.services.Places();
+
+    var callback = function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            console.log(result);
+        }
     };
 
-    var map = new kakao.maps.Map(mapContainer, mapOption);
-
-    for(var i = 0; i < 10; i++) {
-        var marker = new kakao.maps.Marker({
-            map: map,
-            position: new kakao.maps.LatLng(33.450701 + i * 0.001, 126.570667 + i * 0.001)
-        });
-    }
-
+    // 공공기관 코드 검색
+    places.categorySearch('FD6', callback, {
+        location: new kakao.maps.LatLng(37.564968, 126.939909)
+    });
 </script>
 </body>
 </html>

@@ -8,6 +8,10 @@
 
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
+    var overlay = new kakao.maps.CustomOverlay({
+        yAnchor: 1.4
+    });
+
     resArr.forEach(function(element) {
         var marker = new kakao.maps.Marker({
             map: map,
@@ -24,9 +28,12 @@
         });
 
         var content =
-        '<div class="card">' +
+        '<div class="card">'+
+            '<div class="text-end pb-0">'+
+               '<button type="button" class="btn-close mt-2 me-2" aria-label="Close" onclick="closeOverlay();"></button>'+
+            '</div>'+
             ((element.image != null) ? ('<img th:src="@{${'+element.image+'}}" class="card-img-top" alt="">') : (""))+
-            '<div class="card-body">'+
+            '<div class="card-body pt-0">'+
                 '<a href="/restaurant/detail/'+element.id+'" class="card-title text-center">'+
                     '<h5>'+
                         element.name +
@@ -39,16 +46,12 @@
         '</div>'
         ;
 
-        var overlay = new kakao.maps.CustomOverlay({
-            content: content,
-            position: marker.getPosition(),
-            yAnchor: 1.4
-        });
-
-        kakao.maps.event.addListener(marker, 'click', function() {
+    kakao.maps.event.addListener(marker, 'click', function() {
             infowindow.close();
+            overlay.setContent(content);
+            overlay.setPosition(marker.getPosition());
             overlay.setMap(map);
-            tmpOverlay.setVisible(false);
+            tmpOverlay.setMap(null);
         });
     });
 
@@ -109,6 +112,10 @@
         });
 
         map.setCenter(locPosition);
+    }
+
+    function closeOverlay() {
+        overlay.setMap(null);
     }
 
 

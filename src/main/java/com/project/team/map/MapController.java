@@ -27,6 +27,8 @@ public class MapController {
                          @RequestParam(value = "inputAddress", defaultValue = "aroundMe") String inputAddress,
                          Principal principal) {
         if (principal != null) {
+            System.out.println("Principal Name: " + principal.getName());
+
             SiteUser user = this.siteUserService.getUser(principal.getName());
             model.addAttribute("user", user);
         }

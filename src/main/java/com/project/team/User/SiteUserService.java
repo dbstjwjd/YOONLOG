@@ -23,7 +23,6 @@ public class SiteUserService {
         siteUser.setLoginId(loginId);
         siteUser.setName(name);
         siteUser.setEmail(email);
-        siteUser.setCreateDate(LocalDateTime.now());
         siteUser.setPassword(passwordEncoder.encode(password));
         siteUser.setCreateDate(LocalDateTime.now());
         siteUser.setAuthority(authority);
@@ -31,8 +30,8 @@ public class SiteUserService {
         return siteUser;
     }
 
-    public SiteUser getUser(String LoginId) {
-        Optional<SiteUser> user = this.siteUserRepository.findByLoginId(LoginId);
+    public SiteUser getUser(String loginId) {
+        Optional<SiteUser> user = this.siteUserRepository.findByLoginId(loginId);
         if (user.isPresent()) {
             return user.get();
         } else

@@ -3,15 +3,18 @@ package com.project.team.User;
 import com.project.team.Reservation.Reservation;
 import com.project.team.Restaurant.Restaurant;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+
 public class SiteUser {
 
     @Id
@@ -32,9 +35,33 @@ public class SiteUser {
 
     private String authority;
 
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<Restaurant> restaurants;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Reservation> reservations;
+
+
+    private String picture;
+    private String role = "ROLE_USER";
+
+    public SiteUser(){
+
+    }
+
+    public SiteUser(String loginId, String name, String email, String picture,LocalDateTime createDate) {
+        this.loginId = loginId;
+        this.name = name;
+        this.email = email;
+        this.picture = picture;
+        this.createDate = createDate;
+    }
+
+    public SiteUser update(String name, String picture) {
+        this.name = name;
+        this.picture = picture;
+
+        return this;
+    }
 }

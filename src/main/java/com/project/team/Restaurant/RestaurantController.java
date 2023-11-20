@@ -20,7 +20,8 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/restaurant")
-public class RestaurantController {
+public class
+RestaurantController {
 
     private final RestaurantService restaurantService;
 

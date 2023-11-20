@@ -18,7 +18,6 @@
             position: new kakao.maps.LatLng(element.x, element.y),
             clickable: true
         });
-        console.log(typeof(element.y));
 
         var tmpOverlay = new kakao.maps.CustomOverlay({
             content: '<div class="card">'+element.name+'</div>',
@@ -67,9 +66,10 @@
 
                 displayMarker_myLocation(locPosition);
 
-              });
-        }
+                createRes(locPosition);
 
+            });
+        }
     } else {
         var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
@@ -79,6 +79,8 @@
              if (status === kakao.maps.services.Status.OK) {
 
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                createRes(coords);
 
                 var marker = new kakao.maps.Marker({
                     map: map,
@@ -118,5 +120,33 @@
         overlay.setMap(null);
     }
 
+    function createRes(dataLocation) {
+        var places = new kakao.maps.services.Places();
 
+        var callback = function(result, status, pagination) {
+            if (status === kakao.maps.services.Status.OK) {
+                pagination.nextPage();
+                $.ajax({
+                    type: 'post',
+                    contentType: "application/json",
+                    url: '/getData',
+                    data: JSON.stringify(result),
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    success: function(success) {
+                        console.log(success);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        };
 
+        // 공공기관 코드 검색
+        places.categorySearch('FD6', callback, {
+            // Map 객체를 지정하지 않았으므로 좌표객체를 생성하여 넘겨준다.
+            location:dataLocation
+        });
+    }

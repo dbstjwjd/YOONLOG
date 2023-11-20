@@ -66,5 +66,9 @@ public class RestaurantService {
     public List<Restaurant> getAll() {
         return restaurantRepository.findAll();
     }
+
+    public List<Restaurant> getByAddress(String address) {
+        return restaurantRepository.findByAddress(address);
+    }
 }
 

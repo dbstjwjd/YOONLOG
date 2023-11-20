@@ -2,9 +2,9 @@
 <div layout:fragment="content">
     <h3 class="border-bottom pb-2">예약 관리</h3>
     <div class="btn-group my-3">
-        <a href="#" class="버튼 btn active" aria-current="page">예약 목록</a>
-        <a href="#" class="버튼 btn">가게별</a>
-        <a href="#" class="버튼 btn ">날짜별</a>
+        <a href="javascript:void(0)" class="버튼 btn" aria-current="page" id="searchAll">예약 목록</a>
+        <a href="javascript:void(0)" class="버튼 btn" id="searchByRestaurant">가게별</a>
+        <a href="javascript:void(0)" class="버튼 btn" id="searchByDate">날짜별</a>
     </div>
     <table class="table table-hover">
         <thead style="background:peachpuff;">
@@ -18,7 +18,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="reservation : ${paging}" class="text-center">
+        <tr th:each="reservation, loop:${paging}" class="text-center">
             <td th:text="${reservation.restaurant.name}"></td>
             <td th:text="${reservation.user.name}"></td>
             <td th:text="${reservation.count}"></td>
@@ -48,13 +48,40 @@
         </tr>
         </tbody>
     </table>
-
+    <div th:if="${!paging.isEmpty()}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{|?page=${paging.number-1}|}">
+                    <span>이전</span>
+                </a>
+            </li>
+            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                th:classappend="${page == paging.number} ? 'active'"
+                class="page-item">
+                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+            </li>
+            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                    <span>다음</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <form th:action="@{/reserve/manage}" method="get" id="viewForm">
+        <input type="hidden" id="view" name="view">
+    </form>
     <script layout:fragment="script" type='text/javascript'>
+        const byRestaurant = document.getElementById("searchByRestaurant");
+        byRestaurant.addEventListener('click', function() {
+            document.querySelector("#view").value = byRestaurant.innerText;
+            document.querySelector("#viewForm").submit();
+        });
+
         var approveText = document.getElementById("approveBtn").innerText;
         const approve = document.getElementById("approveBtn");
         approve.addEventListener('click', function() {
             document.querySelector("#status").value = approveText;
-            console.log(document.querySelector("#status").value);
             if (confirm("예약을 확정하시겠습니까?")) {
                 document.querySelector("#statusForm").submit();
             }
@@ -64,8 +91,9 @@
         const refuse = document.getElementById("refuseBtn");
         refuse.addEventListener('click', function() {
             document.querySelector("#status").value = refuseText;
-            document.querySelector("#statusForm").submit();
-        });
+            if (confirm("예약을 거부하시겠습니까?")) {
+                document.querySelector("#statusForm").submit();
+            }
     </script>
 </div>
 </html>

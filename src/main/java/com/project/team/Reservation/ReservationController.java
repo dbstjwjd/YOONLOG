@@ -41,14 +41,24 @@ public class ReservationController {
     // 사장 -> 예약 관리
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/manage")
-    public String manage(Principal principal, Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
+    public String manage(Principal principal, Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                         @RequestParam(value = "view", defaultValue = "") String view) {
         SiteUser user = this.siteUserService.getUser(principal.getName());
+        if (view.equals("가게별")) {
+            List<Restaurant> restaurants = user.getRestaurants();
+            model.addAttribute("restaurants", restaurants);
+        }
+        else if (view.equals("날짜별")) {
+            List<Reservation> reservations = this.reservationService.getAllByUser(user);
+            model.addAttribute("restaurants", reservations);
+        }
         Page<Reservation> paging = this.reservationService.getAllReservation(page, user);
         model.addAttribute("paging", paging);
         model.addAttribute("user", user);
         return "reserveManagement";
     }
 
+    // 예약 승인 거부
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/status/{id}")
     public String status(@PathVariable("id") Integer id, String status) {

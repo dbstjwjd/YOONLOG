@@ -21,14 +21,11 @@
                     <label for="number" class="form-label">메인 메뉴</label>
                 </div>
                 <div class="mb-3">
-                    <textarea rows="5" placeholder="가게 소개" id="introduce" name="introduce"
-                              class="form-control" th:text="${restaurant.introduce}"></textarea>
+                    <textarea rows="5" placeholder="가게 소개" id="introduce" name="introduce" class="form-control"></textarea>
                 </div>
                 <div class="mb-3">
                     <div class="d-flex">
-                        <input type="text" id="address" placeholder="주소" name="address" class="form-control me-2"
-                               th:value="${restaurant.address}"
-                               readonly>
+                        <input type="text" id="address" placeholder="주소" name="address" class="form-control me-2" readonly>
                         <input class="버튼 btn btn-secondary" type="button" onclick="findAddress();" value="주소 찾기">
                     </div>
                 </div>
@@ -38,12 +35,12 @@
                         <div class="me-2">
                             <label for="startTime" style="color:gray">OPEN</label>
                             <input type="text" id="startTime" name="startTime" class="flatpickr form-control"
-                                   data-enable-time="true" data-no-calendar="true" th:value="${restaurant.startTime}"/>
+                                   data-enable-time="true" data-no-calendar="true">
                         </div>
                         <div>
                             <label for="endTime" style="color:gray">CLOSE</label>
                             <input type="text" id="endTime" name="endTime" class="flatpickr form-control"
-                            data-enable-time="true" data-no-calendar="true" th:value="${restaurant.endTime}"/>
+                            data-enable-time="true" data-no-calendar="true">
                         </div>
                     </div>
                 </div>

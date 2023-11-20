@@ -56,4 +56,8 @@ public class ReservationService {
     public void refuseReservation(Reservation reservation) {
         this.reservationRepository.delete(reservation);
     }
+
+    public List<Reservation> getAllByUser(SiteUser user) {
+        return this.reservationRepository.findByUser(user);
+    }
 }

@@ -88,11 +88,40 @@ a:hover {
     color:black;
 }
 
+.버튼.active {
+    background:burlywood;
+    color:saddlebrown;
+    font-weight:bold;
+    border:0.3px solid saddlebrown;
+}
+
 .버튼:hover {
     color:sienna;
     background:peachpuff;
     border:0.1px solid;
     font-weight:bold;
 }
+
+.card-container {
+    max-height: 700px;
+    overflow: hidden;
+}
+
+.card-container:hover {
+    overflow: scroll;
+}
+
+.card-container::-webkit-scrollbar {
+    width:8px;
+}
+
+.card-container::-webkit-scrollbar-thumb {
+    background-color: tan;
+}
+
+.card-container::-webkit-scrollbar-track {
+    background-color: linen;
+}
+
 
 

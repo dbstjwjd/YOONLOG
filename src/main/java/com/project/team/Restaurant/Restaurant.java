@@ -51,4 +51,5 @@ public class Restaurant {
     private LocalTime startTime;
 
     private LocalTime endTime;
+
 }

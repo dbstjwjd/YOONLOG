@@ -37,7 +37,7 @@ public class SMSController {
         // 세션에 verKey 저장
         session.setAttribute("verKey", verKey);
 
-        return "registerForm";
+        return "redirect:/";
     }
 
 

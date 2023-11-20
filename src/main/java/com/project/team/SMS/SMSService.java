@@ -22,7 +22,7 @@ public class SMSService {
         params.put("to", phoneNumber);
         params.put("from", "01024616781");
         params.put("type", "SMS");
-        params.put("text", "[팀프로젝트] 인증번호는" + "["+verKey+"]" + "입니다.");
+        params.put("text", "[팀프로젝트] 인증번호는 " + "["+verKey+"]" + " 입니다.");
 
         try {
             JSONObject obj = (JSONObject) coolsms.send(params);

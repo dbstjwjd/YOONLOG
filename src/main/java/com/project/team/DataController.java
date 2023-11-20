@@ -34,7 +34,7 @@ public class DataController {
                     data.get("phone"),
                     null,
                     null,
-                    user
+                    user,null, null, null
             );
             restaurantService.setLocation(restaurant, data.get("y"), data.get("x"));
         }

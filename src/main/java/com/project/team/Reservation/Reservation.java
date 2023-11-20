@@ -26,8 +26,10 @@ public class Reservation {
     private int count;
 
     @ManyToOne
-    private SiteUser customer;
+    private SiteUser user;
 
     @ManyToOne
     private Restaurant restaurant;
+
+    private String status;
 }

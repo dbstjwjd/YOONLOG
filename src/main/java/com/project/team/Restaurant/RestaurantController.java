@@ -81,6 +81,31 @@ RestaurantController {
 
     }
 
+
+    @GetMapping("/restaurant/{id}")
+    public String reserve(Model model, @PathVariable("id") Integer id, BindingResult bindingResult, Principal principal) {
+
+        if (id == null) {
+            throw new DataNotFoundException("음식점 ID가 필요합니다.");
+        }
+
+        Restaurant restaurant = restaurantService.getRestaurant(id);
+        if (restaurant == null) {
+            return "redirect:/form_errors";
+        }
+
+        String userId = principal.getName();
+        SiteUser siteUser = siteUserService.getUser(userId);
+
+        if (siteUser != null) {
+            model.addAttribute("siteUser", siteUser);
+        }
+
+        return "reserve";
+
+
+    }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/page/{id}")
     public String management(@PathVariable("id") String loginId, Model model) {
@@ -97,10 +122,19 @@ RestaurantController {
         return "restaurantDetail";
     }
 
+
     @PostMapping("/setLocation")
     public String setLocation(String x, String y, String restaurantId) {
+
+
+
         Restaurant restaurant = restaurantService.getRestaurant(Integer.valueOf(restaurantId));
         restaurantService.setLocation(restaurant, x, y);
+
+
         return "redirect:/main";
     }
+
 }
+
+

@@ -6,6 +6,7 @@
                 <button class="버튼 btn btn-sm me-2" onclick="aroundMe()">내 위치 주변</button>
                 <button class="버튼 btn btn-sm" onclick="searchForAddress()">주소 검색</button>
             </div>
+
         </div>
         <div style="width:25%; height:30vh; border:2px solid tan; background:white; padding:20px; border-radius:15px;">
             <div class="d-flex align-items-center mb-2" sec:authorize="isAuthenticated()">
@@ -33,7 +34,12 @@
             <a th:href="@{/restaurant/register}" class="버튼 btn" th:if="${user.authority == '사장님'}"
                sec:authorize="isAuthenticated()">가게 등록</a>
         </div>
+        <div><a th:href="@{|/user/userDetail/${user.loginId}|}">유저정보</a></div>
+
     </div>
+
+
+
     <form th:action="@{/map/view}" method="get" id="address">
         <input type="hidden" id="inputAddress" name="inputAddress">
     </form>
@@ -80,4 +86,5 @@
         }
     </script>
 </div>
+
 </html>

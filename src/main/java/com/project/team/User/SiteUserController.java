@@ -3,7 +3,11 @@ package com.project.team.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class SiteUserController {
     private final SiteUserService siteUserService;
+
 
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm) {
@@ -45,4 +50,15 @@ public class SiteUserController {
     public String login() {
         return "redirect:/";
     }
+
+    @GetMapping("/userDetail/{loginId}")
+    public String userDetail(Model model, @PathVariable("loginId") String loginId) {
+        SiteUser siteUser = this.siteUserService.getUser(loginId);
+        model.addAttribute("siteUser", siteUser);
+        return "userDetail";
+    }
+
+
+
+
 }

@@ -5,8 +5,10 @@ import com.project.team.User.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -21,6 +23,8 @@ public class  Reservation {
     private LocalDate date;
 
     private LocalTime time;
+
+    private LocalDateTime dateTime;
 
     private int count;
 

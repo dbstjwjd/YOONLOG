@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public class ReservationService {
         reservation.setRestaurant(restaurant);
         reservation.setDate(date);
         reservation.setTime(time);
+        reservation.setDateTime(LocalDateTime.of(date, time));
         reservation.setCount(count);
         this.reservationRepository.save(reservation);
     }

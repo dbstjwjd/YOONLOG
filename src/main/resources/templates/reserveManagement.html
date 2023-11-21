@@ -162,17 +162,19 @@
                 initialView: 'dayGridMonth',
                 height: 630,
                 events: [
-                  {
-                    title: 'Event 1',
-                    start: '2023-11-21',
+                    /*[# th:each="reservation : ${reservations}"]*/
+                    {
+                    title: /*[[${reservation.restaurant.name}]]*/,
+                    start: [[${reservation.dateTime}]],
                     color: 'tan'
-                  },
-                  {
-                    title: 'Event 2',
-                    start: '2023-11-23',
-                    color: 'tan'
-                  }
-                ]
+                    },
+                /*[/]*/
+                ],
+                eventTimeFormat: { // 시간 형식 설정
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    meridiem: 'short'
+                }
               });
               calendar.render();
         });

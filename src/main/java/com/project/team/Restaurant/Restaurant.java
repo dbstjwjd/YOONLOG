@@ -2,6 +2,7 @@ package com.project.team.Restaurant;
 
 import com.project.team.Reservation.Reservation;
 import com.project.team.User.SiteUser;
+import com.project.team.review.Review;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -53,4 +54,6 @@ public class Restaurant {
 
     private LocalTime endTime;
 
+    @OneToMany(mappedBy = "restaurant")
+    private List<Review> reviews;
 }

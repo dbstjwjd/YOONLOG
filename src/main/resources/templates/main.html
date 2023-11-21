@@ -58,8 +58,8 @@
             </div>
         </div>
     </div>
-    <form th:action="@{/map/view}" method="get" id="address">
-        <input type="hidden" id="inputAddress" name="inputAddress">
+    <form th:action="@{/interprocess}" method="get" id="address">
+        <input type="hidden" id="inputAddress" name="inputAddress" th:value="${inputAddress}">
     </form>
     <input type="hidden" id="searchAddress" th:value="${inputAddress}">
     <script>

@@ -2,13 +2,12 @@ package com.project.team.User;
 
 import com.project.team.Reservation.Reservation;
 import com.project.team.Restaurant.Restaurant;
+import com.project.team.review.Review;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 
 @Entity
@@ -42,6 +41,8 @@ public class SiteUser {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Reservation> reservations;
 
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews;
 
     private String picture;
     private String role = "ROLE_USER";

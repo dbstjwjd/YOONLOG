@@ -2,73 +2,12 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
-    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <title>parser</title>
 </head>
 <body>
-<div id="map" style="width:100vw;height:100vh;"></div>
-<button type="button" class="btn btn-primary" style="position:absolute;bottom:3%;left:3%;z-index:1;" onclick="searchData();">검색</button>
-<script>
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-    $(function() {
-        $(document).ajaxSend(function(e, xhr, options) {
-            xhr.setRequestHeader(header, token);
-        });
-    });
-</script>
-<script type="text/javascript"
-        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ea7706d3cd280b86aceebdabe80d16f0&libraries=services"></script>
-<script>
-    var container = document.getElementById('map'),
-    options = {
-         center: new kakao.maps.LatLng(38, 126),
-         level: 5
-    };
 
-    var map = new kakao.maps.Map(container, options);
-
-    function searchData() {
-
-        for(var i = 331; i < 386; i += 20) {
-            for(var j = 1250; j < 1319; j += 20) {
-                var places = new kakao.maps.services.Places();
-
-                var lo = new kakao.maps.LatLng(i * 0.1, j * 0.1);
-
-                var places = new kakao.maps.services.Places();
-
-                var callback = function(result, status, pagination) {
-                    if (status === kakao.maps.services.Status.OK) {
-                        pagination.nextPage();
-                        $.ajax({
-                            type: 'post',
-                            contentType: "application/json",
-                            url: '/getData',
-                            data: JSON.stringify(result),
-                            success: function(response) {
-                                console.log(response);
-                            },
-                            success: function(success) {
-                                console.log(success);
-                            },
-                            error: function(error) {
-                                console.log(error);
-                            }
-                        });
-                    }
-                };
-
-                places.categorySearch('FD6', callback, {
-                    location: lo
-                });
-            }
-        }
-    }
-</script>
 </body>
+<script th:inline="javascript">
+    console.log([[${doc}]]);
+</script>
 </html>

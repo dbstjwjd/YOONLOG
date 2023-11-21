@@ -30,7 +30,7 @@ public class SecurityConfig {
 
                 .formLogin((formLogin) -> formLogin
                         .loginPage("/user/login")
-                        .defaultSuccessUrl("/main"))
+                        .defaultSuccessUrl("/interprocess"))
 
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
@@ -39,7 +39,7 @@ public class SecurityConfig {
 
                 .oauth2Login((oauth2Login) -> oauth2Login
                         .loginPage("/user/login")
-                        .defaultSuccessUrl("/main")
+                        .defaultSuccessUrl("/interprocess")
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(customOAuth2UserService)))
 
         ;

@@ -1,4 +1,6 @@
     var inputAddress = document.querySelector('#searchAddress').value;
+    var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+    var locPosition = new kakao.maps.LatLng(myY, myX);
 
     var mapContainer = document.getElementById('map'),
     mapOption = {
@@ -55,49 +57,22 @@
     });
 
     if (inputAddress == 'aroundMe') {
-    var infowindow = new kakao.maps.InfoWindow({zIndex:1});
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-
-                var lat = position.coords.latitude,
-                    lon = position.coords.longitude;
-
-                var locPosition = new kakao.maps.LatLng(lat, lon);
-
-                displayMarker_myLocation(locPosition);
-
-                createRes(locPosition);
-
-            });
-        }
+        displayMarker_myLocation(locPosition);
     } else {
-        var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
-        var geocoder = new kakao.maps.services.Geocoder();
-        geocoder.addressSearch(inputAddress, function(result, status) {
-
-             if (status === kakao.maps.services.Status.OK) {
-
-                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-                createRes(coords);
-
-                var marker = new kakao.maps.Marker({
-                    map: map,
-                    position: coords
-                });
-
-                var infowindow = new kakao.maps.InfoWindow({
-                    content: '<div style="width:150px;text-align:center;padding:6px 0;">' + inputAddress + '</div>'
-                });
-
-                infowindow.open(map, marker);
-
-                map.setCenter(coords);
-
-            }
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: locPosition
         });
+
+        var infowindow = new kakao.maps.InfoWindow({
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">' + inputAddress + '</div>'
+        });
+
+        infowindow.open(map, marker);
     }
+
+    map.setCenter(locPosition);
 
     function displayMarker_myLocation(locPosition) {
 
@@ -112,39 +87,8 @@
             position: locPosition,
             image: markerImage
         });
-
-        map.setCenter(locPosition);
     }
 
     function closeOverlay() {
         overlay.setMap(null);
-    }
-
-    function createRes(dataLocation) {
-        var places = new kakao.maps.services.Places();
-
-        var callback = function(result, status, pagination) {
-            if (status === kakao.maps.services.Status.OK) {
-                pagination.nextPage();
-                $.ajax({
-                    type: 'post',
-                    contentType: "application/json",
-                    url: '/getData',
-                    data: JSON.stringify(result),
-                    success: function(response) {
-                        console.log(response);
-                    },
-                    success: function(success) {
-                        console.log(success);
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    }
-                });
-            }
-        };
-
-        places.categorySearch('FD6', callback, {
-            location:dataLocation
-        });
     }

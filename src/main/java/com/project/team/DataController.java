@@ -5,9 +5,11 @@ import com.project.team.Restaurant.RestaurantService;
 import com.project.team.User.SiteUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -46,5 +48,12 @@ public class DataController {
             );
             restaurantService.setLocation(restaurant, data.get("x"), data.get("y"));
         }
+    }
+
+    @GetMapping("/interprocess")
+    public String interprocess(@RequestParam(value = "inputAddress", defaultValue = "aroundMe") String inputAddress,
+                                Model model) {
+        model.addAttribute("inputAddress", inputAddress);
+        return "interprocess";
     }
 }

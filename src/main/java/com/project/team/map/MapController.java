@@ -25,6 +25,7 @@ public class MapController {
     @GetMapping("/view")
     public String search(Model model,
                          @RequestParam(value = "inputAddress", defaultValue = "aroundMe") String inputAddress,
+                         String lat, String lon,
                          Principal principal) {
         if (principal != null) {
             System.out.println("Principal Name: " + principal.getName());
@@ -34,8 +35,10 @@ public class MapController {
         }
         model.addAttribute("inputAddress", inputAddress);
 
-        List<Restaurant> restaurantList = restaurantService.getAll();
+        List<Restaurant> restaurantList = restaurantService.getAround(lon, lat, 0.005);
         model.addAttribute("resList", restaurantList);
+        model.addAttribute("y", lat);
+        model.addAttribute("x", lon);
 
         return "main";
     }

@@ -6,7 +6,6 @@
                 <button class="버튼 btn btn-sm me-2" onclick="aroundMe()">내 위치 주변</button>
                 <button class="버튼 btn btn-sm" onclick="searchForAddress()">주소 검색</button>
             </div>
-
         </div>
         <div style="width:25%; border:2px solid tan; background:white; padding:20px; border-radius:15px;">
             <div class="d-flex align-items-center mb-3" sec:authorize="isAuthenticated()">
@@ -59,8 +58,8 @@
             </div>
         </div>
     </div>
-    <form th:action="@{/map/view}" method="get" id="address">
-        <input type="hidden" id="inputAddress" name="inputAddress">
+    <form th:action="@{/interprocess}" method="get" id="address">
+        <input type="hidden" id="inputAddress" name="inputAddress" th:value="${inputAddress}">
     </form>
     <input type="hidden" id="searchAddress" th:value="${inputAddress}">
     <script>
@@ -86,6 +85,8 @@
             resObj.image = [[${res.image}]];
             resArr.push(resObj);
         [/]
+        var myX = [[${x}]];
+        var myY = [[${y}]];
     </script>
     <script type="text/javascript" th:src="@{/map.js}"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -105,5 +106,4 @@
         }
     </script>
 </div>
-
 </html>

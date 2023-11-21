@@ -44,7 +44,7 @@ public class DataController {
                     null,
                     null, LocalTime.MIN, LocalTime.MAX, null
             );
-            restaurantService.setLocation(restaurant, data.get("y"), data.get("x"));
+            restaurantService.setLocation(restaurant, data.get("x"), data.get("y"));
         }
     }
 }

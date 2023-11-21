@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,6 +70,20 @@ public class RestaurantService {
 
     public List<Restaurant> getByAddress(String address) {
         return restaurantRepository.findByAddress(address);
+    }
+
+    public List<Restaurant> getAround(String x, String y, Long radius) {
+        Long myX = Long.parseLong(x);
+        Long myY = Long.parseLong(y);
+        List<Restaurant> restaurantList = restaurantRepository.findAll();
+        List<Restaurant> restaurants = new ArrayList<>();
+        for (Restaurant restaurant : restaurantList) {
+            Long resX = Long.parseLong(restaurant.getLocationX());
+            Long resY = Long.parseLong(restaurant.getLocationY());
+            if (resX < myX + radius && resX > myX - radius && resY < myY + radius && resY > myY - radius)
+                restaurants.add(restaurant);
+        }
+        return restaurants;
     }
 }
 

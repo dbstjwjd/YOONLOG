@@ -15,7 +15,7 @@
     resArr.forEach(function(element) {
         var marker = new kakao.maps.Marker({
             map: map,
-            position: new kakao.maps.LatLng(element.x, element.y),
+            position: new kakao.maps.LatLng(element.y, element.x),
             clickable: true
         });
 
@@ -144,9 +144,7 @@
             }
         };
 
-        // 공공기관 코드 검색
         places.categorySearch('FD6', callback, {
-            // Map 객체를 지정하지 않았으므로 좌표객체를 생성하여 넘겨준다.
             location:dataLocation
         });
     }

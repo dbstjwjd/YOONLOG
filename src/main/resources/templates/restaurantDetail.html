@@ -214,7 +214,7 @@
                 // 선택된 날짜가 오늘이면서 현재 시간 이후의 시간을 계산
                 var minTime = (selectedDate === flatpickr.formatDate(currentDate, "Y-m-d")) ?
                     (currentDate.getHours() + ":" + currentDate.getMinutes()) :
-                    "09:00";
+                    [[${restaurant.startTime}]];
 
                 // 예약 시간의 minTime을 업데이트
                 document.getElementById("timepicker")._flatpickr.set("minTime", minTime);

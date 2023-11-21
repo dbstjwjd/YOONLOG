@@ -2,98 +2,217 @@
 <div layout:fragment="content">
     <h3 class="border-bottom pb-2">예약 관리</h3>
     <div class="btn-group my-3">
-        <a href="javascript:void(0)" class="버튼 btn" aria-current="page" id="searchAll">예약 목록</a>
-        <a href="javascript:void(0)" class="버튼 btn" id="searchByRestaurant">가게별</a>
-        <a href="javascript:void(0)" class="버튼 btn" id="searchByDate">날짜별</a>
+        <a href="javascript:void(0)" class="버튼 btn" aria-current="page" id="searchAll"
+           th:classappend="${view == ''} ? 'active'">예약 목록</a>
+        <a href="javascript:void(0)" class="버튼 btn" id="searchByRestaurant"
+           th:classappend="${view == '가게별'} ? 'active'">가게별</a>
+        <a href="javascript:void(0)" class="버튼 btn" id="searchByDate"
+           th:classappend="${view == '날짜별'} ? 'active'">날짜별</a>
     </div>
-    <table class="table table-hover">
-        <thead style="background:peachpuff;">
-        <tr class="text-center">
-            <th>가게</th>
-            <th>예약자 성함</th>
-            <th>인원 수</th>
-            <th>날짜</th>
-            <th>시간</th>
-            <th>예약 상태</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="reservation, loop:${paging}" class="text-center">
-            <td th:text="${reservation.restaurant.name}"></td>
-            <td th:text="${reservation.user.name}"></td>
-            <td th:text="${reservation.count}"></td>
-            <td th:text="${reservation.date}"></td>
-            <td th:text="${reservation.time}"></td>
-            <td style="width:10%;">
-                <div th:if="${reservation.status == null}">
-                    <button class="btn btn-sm btn-outline-success me-2" id="approveBtn">승인
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-check" viewBox="0 0 16 16">
-                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                        </svg>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger" id="refuseBtn">거절
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-x"
-                             viewBox="0 0 16 16">
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                        </svg>
-                    </button>
+    <!-- 전체 예약 목록 조회 -->
+    <div th:if="${view == ''}">
+        <table class="table table-hover">
+            <thead style="background:peachpuff;">
+            <tr class="text-center">
+                <th>가게</th>
+                <th>예약자</th>
+                <th>인원 수</th>
+                <th>날짜</th>
+                <th>시간</th>
+                <th>예약 상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reservation, loop:${paging}" class="text-center">
+                <td th:text="${reservation.restaurant.name}"></td>
+                <td th:text="${reservation.user.name}"></td>
+                <td th:text="${reservation.count}"></td>
+                <td th:text="${#temporals.format(reservation?.date, 'yyyy-MM-dd')}"></td>
+                <td th:text="${#temporals.format(reservation?.time, 'HH:mm')}"></td>
+                <td style="width:10%;">
+                    <div th:if="${reservation.status == null}">
+                        <a class="approveBtn btn btn-sm btn-outline-success me-2"
+                           th:data-uri="@{|/reserve/approve/${reservation.id}|}" href="javascript:void(0)">승인
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-check" viewBox="0 0 16 16">
+                                <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                            </svg>
+                        </a>
+                        <a class="refuseBtn btn btn-sm btn-outline-danger"
+                           th:data-uri="@{|/reserve/refuse/${reservation.id}|}" href="javascript:void(0)">거절
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-x"
+                                 viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div th:if="${reservation.status != null}" th:text="${reservation.status}"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div th:if="${!paging.isEmpty()}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{|?page=${paging.number-1}|}">
+                        <span>이전</span>
+                    </a>
+                </li>
+                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                    th:classappend="${page == paging.number} ? 'active'"
+                    class="page-item">
+                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                </li>
+                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                    <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                        <span>다음</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 전체 조회 끝 -->
+    <!-- 가게별 조회 -->
+    <div th:if="${view == '가게별'}">
+        <div style="width:100%; border:2px solid tan; border-radius:15px; padding:15px;">
+            <div class="d-flex align-items-center border-bottom pb-1 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                     class="bi bi-shop me-1" viewBox="0 0 16 16">
+                    <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z"/>
+                </svg>
+                <div class="fs-5 fw-bold">가게별 예약 관리</div>
+            </div>
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item" th:each="restaurant : ${restaurants}">
+                    <h2 class="accordion-header">
+                        <button th:text="${restaurant.name}" class="accordion-button fw-bold" type="button"
+                                data-bs-toggle="collapse" th:data-bs-target="|#collapse${restaurant.id}|" aria-expanded="true"
+                                th:aria-controls="|collapse${restaurant.id}|">
+                        </button>
+                    </h2>
+                    <div th:id="|collapse${restaurant.id}|" class="accordion-collapse collapse row" data-bs-parent="#accordionExample">
+                        <div class="acContainer accordion-body">
+                            <table class="table table-hover">
+                                <thead style="background:peachpuff;">
+                                <tr class="text-center">
+                                    <th>예약자</th>
+                                    <th>인원 수</th>
+                                    <th>날짜</th>
+                                    <th>시간</th>
+                                    <th>예약 상태</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="reservation : ${restaurant.reservations}" class="text-center">
+                                    <td th:text="${reservation.user.name}"></td>
+                                    <td th:text="${reservation.count}"></td>
+                                    <td th:text="${#temporals.format(reservation?.date, 'yyyy-MM-dd')}"></td>
+                                    <td th:text="${#temporals.format(reservation?.time, 'HH:mm')}"></td>
+                                    <td style="width:10%;">
+                                        <div th:if="${reservation.status == null}">
+                                            <a class="approveBtn btn btn-sm btn-outline-success me-2"
+                                               th:data-uri="@{|/reserve/approve/${reservation.id}|}" href="javascript:void(0)">승인
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                     class="bi bi-check" viewBox="0 0 16 16">
+                                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                                                </svg>
+                                            </a>
+                                            <a class="refuseBtn btn btn-sm btn-outline-danger"
+                                               th:data-uri="@{|/reserve/refuse/${reservation.id}|}" href="javascript:void(0)">거절
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                     class="bi bi-x"
+                                                     viewBox="0 0 16 16">
+                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                        <div th:if="${reservation.status != null}" th:text="${reservation.status}"></div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div th:if="${reservation.status != null}" th:text="${reservation.status}"></div>
-            </td>
-            <form th:action="@{|/reserve/status/${reservation.id}|}" method="post" id="statusForm">
-                <input type="hidden" id="status" name="status">
-            </form>
-        </tr>
-        </tbody>
-    </table>
-    <div th:if="${!paging.isEmpty()}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link"
-                   th:href="@{|?page=${paging.number-1}|}">
-                    <span>이전</span>
-                </a>
-            </li>
-            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                th:classappend="${page == paging.number} ? 'active'"
-                class="page-item">
-                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
-            </li>
-            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
-                    <span>다음</span>
-                </a>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
+    <!-- 가게별 조회 끝 -->
+    <!-- 날짜별 조회 -->
+    <div th:if="${view == '날짜별'}">
+        <div id="calendar"></div>
+    </div>
+    <!-- 날짜별 조회 끝 -->
     <form th:action="@{/reserve/manage}" method="get" id="viewForm">
         <input type="hidden" id="view" name="view">
     </form>
-    <script layout:fragment="script" type='text/javascript'>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar"></script>
+    <script layout:fragment="script" type='text/javascript' th:inline="javascript">
+
+        document.addEventListener('DOMContentLoaded', function() {
+              var calendarEl = document.getElementById('calendar');
+              var calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                },
+                initialView: 'dayGridMonth',
+                height: 630,
+                events: [
+                  {
+                    title: 'Event 1',
+                    start: '2023-11-21',
+                    color: 'tan'
+                  },
+                  {
+                    title: 'Event 2',
+                    start: '2023-11-23',
+                    color: 'tan'
+                  }
+                ]
+              });
+              calendar.render();
+        });
+
         const byRestaurant = document.getElementById("searchByRestaurant");
         byRestaurant.addEventListener('click', function() {
             document.querySelector("#view").value = byRestaurant.innerText;
             document.querySelector("#viewForm").submit();
         });
 
-        var approveText = document.getElementById("approveBtn").innerText;
-        const approve = document.getElementById("approveBtn");
-        approve.addEventListener('click', function() {
-            document.querySelector("#status").value = approveText;
-            if (confirm("예약을 확정하시겠습니까?")) {
-                document.querySelector("#statusForm").submit();
-            }
+        const byDate = document.getElementById("searchByDate");
+        byDate.addEventListener('click', function() {
+            document.querySelector("#view").value = byDate.innerText;
+            document.querySelector("#viewForm").submit();
         });
 
-        var refuseText = document.getElementById("refuseBtn").innerText;
-        const refuse = document.getElementById("refuseBtn");
-        refuse.addEventListener('click', function() {
-            document.querySelector("#status").value = refuseText;
-            if (confirm("예약을 거부하시겠습니까?")) {
-                document.querySelector("#statusForm").submit();
-            }
+        const all = document.getElementById("searchAll");
+        all.addEventListener('click', function() {
+            document.querySelector("#view").value = "";
+            document.querySelector("#viewForm").submit();
+        });
+
+        const approve = document.querySelectorAll(".approveBtn");
+        Array.from(approve).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if (confirm("예약을 확정하시겠습니까?")) {
+                    location.href = this.dataset.uri;
+                };
+            });
+        });
+
+        const refuse = document.querySelectorAll(".refuseBtn");
+        Array.from(refuse).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if (confirm("예약을 거부하시겠습니까?")) {
+                    location.href = this.dataset.uri;
+                };
+            });
+        });
+
     </script>
 </div>
 </html>

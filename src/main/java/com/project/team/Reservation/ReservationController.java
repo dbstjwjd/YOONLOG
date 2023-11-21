@@ -44,15 +44,15 @@ public class ReservationController {
     public String manage(Principal principal, Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                          @RequestParam(value = "view", defaultValue = "") String view) {
         SiteUser user = this.siteUserService.getUser(principal.getName());
+        List<Restaurant> restaurants = user.getRestaurants();
+        List<Reservation> reservations = this.reservationService.getAllByUser(user);
         if (view.equals("가게별")) {
-            List<Restaurant> restaurants = user.getRestaurants();
             model.addAttribute("restaurants", restaurants);
+        } else if (view.equals("날짜별")) {
+            model.addAttribute("reservations", reservations);
         }
-        else if (view.equals("날짜별")) {
-            List<Reservation> reservations = this.reservationService.getAllByUser(user);
-            model.addAttribute("restaurants", reservations);
-        }
-        Page<Reservation> paging = this.reservationService.getAllReservation(page, user);
+        Page<Reservation> paging = this.reservationService.getAllReservation(page, restaurants);
+        model.addAttribute("view", view);
         model.addAttribute("paging", paging);
         model.addAttribute("user", user);
         return "reserveManagement";
@@ -60,15 +60,21 @@ public class ReservationController {
 
     // 예약 승인 거부
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/status/{id}")
-    public String status(@PathVariable("id") Integer id, String status) {
+    @GetMapping("/approve/{id}")
+    public String approve(@PathVariable("id") Integer id) {
         Reservation reservation = this.reservationService.getReservation(id);
-        if (status.equals("승인 ")) {
-            this.reservationService.approveReservation("예약 확정", reservation);
-        } else
-            this.reservationService.refuseReservation(reservation);
+        this.reservationService.approveReservation("예약 확정", reservation);
         return String.format("redirect:/reserve/manage");
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/refuse/{id}")
+    public String refuse(@PathVariable("id") Integer id) {
+        Reservation reservation = this.reservationService.getReservation(id);
+        this.reservationService.refuseReservation(reservation);
+        return String.format("redirect:/reserve/manage");
+    }
+
 
     // 손님 -> 예약 조회
     @PreAuthorize("isAuthenticated()")

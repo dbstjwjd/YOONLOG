@@ -107,7 +107,16 @@ a:hover {
     overflow: hidden;
 }
 
+.acContainer {
+    max-height:500px;
+    overflow: hidden;
+}
+
 .card-container:hover {
+    overflow: scroll;
+}
+
+.acContainer:hover {
     overflow: scroll;
 }
 
@@ -115,7 +124,15 @@ a:hover {
     width:8px;
 }
 
+.acContainer::-webkit-scrollbar {
+    width:8px;
+}
+
 .card-container::-webkit-scrollbar-thumb {
+    background-color: tan;
+}
+
+.acContainer::-webkit-scrollbar-thumb {
     background-color: tan;
 }
 
@@ -123,5 +140,6 @@ a:hover {
     background-color: linen;
 }
 
-
-
+.acContainer::-webkit-scrollbar-track {
+    background-color: linen;
+}

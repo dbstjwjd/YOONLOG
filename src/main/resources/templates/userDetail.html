@@ -49,7 +49,7 @@
             display: flex;
             justify-content: space-between;
         }
-        .box-number1, .box-number2 {
+        .box-number1, .box-number2, .box-number3 {
         flex: 1;
         flex-direction: column;
         align-items: flex-start;
@@ -60,7 +60,7 @@
     .box-number2 {
         align-items: center;
     }
-        .user-info-box1, .user-info-box2 {
+        .user-info-box1, .user-info-box2, .user-info-box3 {
         background-color: #fff;
         border: 1px solid #dee2e6;
         border-radius: 5px;
@@ -108,8 +108,16 @@
 <body>
 
 <div class="header-form">
+    <div class="logo">
+        <a th:href="@{/main}">logo</a>
+    </div>
+
+
+
     <header class="user-info-header">
-        <div><img class="profile-img" src="https://media.istockphoto.com/id/1327592506/ko/%EB%B2%A1%ED%84%B0/%EA%B8%B0%EB%B3%B8-%EC%95%84%EB%B0%94%ED%83%80-%EC%82%AC%EC%A7%84-%EC%9E%90%EB%A6%AC-%ED%91%9C%EC%8B%9C%EC%9E%90-%EC%95%84%EC%9D%B4%EC%BD%98%EC%9E%85%EB%8B%88%EB%8B%A4-%ED%9A%8C%EC%83%89-%ED%94%84%EB%A1%9C%ED%95%84-%EC%82%AC%EC%A7%84%EC%9E%85%EB%8B%88%EB%8B%A4-%EB%B9%84%EC%A6%88%EB%8B%88%EC%8A%A4-%EB%A7%A8.jpg?s=612x612&w=0&k=20&c=qkN6eSn9wlcukA0YNjDPk4Vsq5W_KRW9pFZddOUgN_U=" alt="프로필이미지"></div>
+        <div><img class="profile-img"
+                  src="https://media.istockphoto.com/id/1327592506/ko/%EB%B2%A1%ED%84%B0/%EA%B8%B0%EB%B3%B8-%EC%95%84%EB%B0%94%ED%83%80-%EC%82%AC%EC%A7%84-%EC%9E%90%EB%A6%AC-%ED%91%9C%EC%8B%9C%EC%9E%90-%EC%95%84%EC%9D%B4%EC%BD%98%EC%9E%85%EB%8B%88%EB%8B%A4-%ED%9A%8C%EC%83%89-%ED%94%84%EB%A1%9C%ED%95%84-%EC%82%AC%EC%A7%84%EC%9E%85%EB%8B%88%EB%8B%A4-%EB%B9%84%EC%A6%88%EB%8B%88%EC%8A%A4-%EB%A7%A8.jpg?s=612x612&w=0&k=20&c=qkN6eSn9wlcukA0YNjDPk4Vsq5W_KRW9pFZddOUgN_U="
+                  alt="프로필이미지"></div>
     </header>
     <div class="info-item-header">
 
@@ -124,29 +132,33 @@
 
 <div id="wrap">
     <div class="box-number1">
-    <div class="user-info-box1" th:if="${siteUser != null}">
-        <h1 class="my-profile">내 프로필</h1>
-        <div class="info-item-body">
-            <span class="label">아이디:</span>
-            <span th:text="${siteUser.loginId}"></span>
+        <div class="user-info-box1" th:if="${siteUser != null}">
+            <h1 class="my-profile">내 프로필</h1>
+            <div class="info-item-body">
+                <span class="label">아이디:</span>
+                <span th:text="${siteUser.loginId}"></span>
+            </div>
+            <div class="info-item">
+                <span class="label">가입 일시:</span>
+                <span th:text="${#temporals.format(siteUser.createDate, 'yyyy년 MM월 dd일')}"></span>
+            </div>
         </div>
-        <div class="info-item">
-            <span class="label">가입 일시:</span>
-            <span th:text="${#temporals.format(siteUser.createDate, 'yyyy년 MM월 dd일')}"></span>
-        </div>
-    </div>
     </div>
     <div class="box-number2">
-        <ul class="user-info-box2" > <h1>예약</h1>
-            <li th:if="${siteUser.reservations != null and not #lists.isEmpty(siteUser.reservations)}"></li>
+        <h1>예약목록</h1>
+        <ul class="user-info-box2" >
+            <li th:each="reservation : ${userReservation}" th:text="${reservation.restaurant.name}">
+            </li>
         </ul>
     </div>
+    <div class="box-number3">
 
-    <h2>작성한 리뷰</h2>
-    <ul th:if="${siteUser.restaurants != null and not #lists.isEmpty(siteUser.restaurants)}">
-        <li th:each="restaurant : ${siteUser.restaurants}" th:text="${restaurant.name}"></li>
-    </ul>
-
+        <ul class="user-info-box3">
+            <h2>작성한 리뷰</h2>
+            <li>리뷰 1</li>
+            <li>리뷰 2</li>
+        </ul>
+    </div>
 
 
     <div th:unless="${siteUser != null}">

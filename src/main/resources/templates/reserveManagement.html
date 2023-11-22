@@ -143,6 +143,23 @@
     <!-- 날짜별 조회 -->
     <div th:if="${view == '날짜별'}">
         <div id="calendar"></div>
+        <!-- 모달 -->
+        <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eventModalLabel">이벤트 정보</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="eventModalBody">
+                        <!-- 이벤트 정보를 표시할 내용이 들어갈 자리 -->
+                    </div>
+                    <div class="modal-footer" id="eventModalFooter">
+                        <button type="button" class="버튼 btn" data-bs-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- 날짜별 조회 끝 -->
     <form th:action="@{/reserve/manage}" method="get" id="viewForm">
@@ -166,6 +183,8 @@
                     {
                     title: /*[[${reservation.restaurant.name}]]*/,
                     start: [[${reservation.dateTime}]],
+                    username: [[${reservation.user.name}]],
+                    status: [[${reservation.status}]],
                     color: 'tan'
                     },
                 /*[/]*/
@@ -174,10 +193,41 @@
                     hour: 'numeric',
                     minute: '2-digit',
                     meridiem: 'short'
+                },
+                eventClick: function(info) {
+                  // 클릭한 이벤트의 정보를 모달에 표시
+                  var modalTitle = document.getElementById('eventModalLabel');
+                  var modalBody = document.getElementById('eventModalBody');
+                  var modalFooter = document.getElementById('eventModalFooter');
+
+                  modalTitle.textContent = info.event.title;
+
+                  var modalContent = '<p>예약일시: ' + info.event.start.toLocaleString() + '</p>' +
+                                     '<p>가게 이름: ' + info.event.title + '</p>' +
+                                     '<p>예약자: ' + info.event.extendedProps.username + '</p>';
+
+                  if (info.event.extendedProps.status !== null) {
+                    // 예약 상태가 null이 아닌 경우에만 표시
+                    modalContent += '<p>예약 상태: ' + info.event.extendedProps.status + '</p>';
+                  }
+
+                  modalBody.innerHTML = modalContent;
+
+                  // 버튼 추가
+                  if (info.event.extendedProps.status === null) {
+                    modalFooter.innerHTML = '<button type="button" class="btn btn-sm btn-outline-success" onclick="approveReservation()">승인</button>' +
+                                            '<button type="button" class="btn btn-sm btn-outline-danger" onclick="refuseReservation()">거절</button>';
+                  } else {
+                    modalFooter.innerHTML = '';
+                  }
+
+                  // 모달 띄우기
+                  $('#eventModal').modal('show');
                 }
               });
               calendar.render();
         });
+        
 
         const byRestaurant = document.getElementById("searchByRestaurant");
         byRestaurant.addEventListener('click', function() {

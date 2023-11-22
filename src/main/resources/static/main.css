@@ -143,3 +143,12 @@ a:hover {
 .acContainer::-webkit-scrollbar-track {
     background-color: linen;
 }
+
+.fc-event-time,
+.fc-event-title {
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+

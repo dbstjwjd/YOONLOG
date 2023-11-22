@@ -5,12 +5,15 @@ import com.project.team.Reservation.ReservationService;
 import jakarta.validation.Path;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.maven.model.Site;
+import org.hibernate.engine.jdbc.mutation.spi.BindingGroup;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +29,8 @@ import java.util.List;
 public class SiteUserController {
     private final SiteUserService siteUserService;
     private final ReservationService reservationService;
+
+    private final PasswordEncoder passwordEncoder;
 
 
     @GetMapping("/signup")
@@ -48,7 +53,7 @@ public class SiteUserController {
             e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자 입니다.");
             return "start";
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", e.getMessage());
             return "start";
@@ -69,6 +74,46 @@ public class SiteUserController {
         model.addAttribute("siteUser", siteUser);
         return "userDetail";
     }
+
+    @GetMapping("/userModify/{loginId}")
+    @PreAuthorize("isAuthenticated()")
+    public String userModify(Model model, UserModifyForm userModifyForm, @PathVariable("loginId") String loginId, Principal principal) {
+        SiteUser siteUser = this.siteUserService.getUser(loginId);
+        if (!siteUser.getLoginId().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+        userModifyForm.setAuthority(siteUser.getAuthority());
+        userModifyForm.setPassword(siteUser.getPassword());
+        userModifyForm.setName(siteUser.getName());
+        userModifyForm.setEmail(siteUser.getEmail());
+
+        return "userModify";
+    }
+    @PostMapping("/userModify/{loginId}")
+    @PreAuthorize("isAuthenticated()")
+    public String userModify(Model model,@Valid UserModifyForm userModifyForm, @PathVariable("loginId") String loginId, Principal principal, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "userModify";
+        }
+        SiteUser siteUser = siteUserService.getUser(loginId);
+        if(!siteUser.getLoginId().equals(principal.getName())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+        this.siteUserService.modifyUser(siteUser,userModifyForm.getName(), userModifyForm.getEmail(), userModifyForm.getPassword(), userModifyForm.getAuthority());
+        model.addAttribute("siteUser", siteUser);
+
+
+        return "userDetail";
+    }
+
+
+
+
+
+
+
+
+
 
 
 

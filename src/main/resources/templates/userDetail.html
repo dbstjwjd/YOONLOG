@@ -50,26 +50,26 @@
             justify-content: space-between;
         }
         .box-number1, .box-number2, .box-number3 {
-        flex: 1;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .box-number1{
+            flex: 1;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .box-number1{
             width:50%;
-    }
-    .box-number2 {
-        align-items: center;
-    }
+        }
+        .box-number2 {
+            align-items: center;
+        }
         .user-info-box1, .user-info-box2, .user-info-box3 {
-        background-color: #fff;
-        border: 1px solid #dee2e6;
-        border-radius: 5px;
-        padding: 20px;
-        margin-top: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-bottom: 1px solid #ccc;
-        height: 100%;
-    }
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #ccc;
+            height: 100%;
+        }
 
         .my-profile{
             max-width: 100%;
@@ -112,6 +112,16 @@
         <a th:href="@{/main}">logo</a>
     </div>
 
+    <div class="my-3">
+        <a th:href="@{|/user/userModify/${siteUser.loginId}|}"
+           sec:authorize="isAuthenticated()"
+        th:if="${siteUser.loginId != null}"
+        th:text="수정"></a>
+    </div>
+
+
+
+
 
 
     <header class="user-info-header">
@@ -146,7 +156,11 @@
     </div>
     <div class="box-number2">
         <h1>예약목록</h1>
+
+
+
         <ul class="user-info-box2" >
+
             <li th:each="reservation : ${userReservation}" th:text="${reservation.restaurant.name}">
             </li>
         </ul>

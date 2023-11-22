@@ -32,13 +32,12 @@ public class DataController {
     public void receive(@RequestBody List<Map<String, String>> result) {
         boolean skip;
         for (Map<String, String> data : result) {
-            System.out.println(data);
             skip = false;
             String address = data.get("road_address_name");
             String name = data.get("place_name");
             List<Restaurant> restaurants = restaurantService.getByAddress(address);
-            for(Restaurant res : restaurants) {
-                if(res.getName().equals(name)) skip = true;
+            for (Restaurant res : restaurants) {
+                if (res.getName().equals(name)) skip = true;
             }
             if (skip) continue;
             Restaurant restaurant = restaurantService.registerRestaurant(
@@ -50,13 +49,13 @@ public class DataController {
                     null, LocalTime.MIN, LocalTime.MAX, null
             );
             restaurantService.setLocation(restaurant, data.get("x"), data.get("y"));
-            // reviewService.createTmp(restaurant, data.get("place_url"));
+            reviewService.createTmp(restaurant, data.get("place_url"));
         }
     }
 
     @GetMapping("/interprocess")
     public String interprocess(@RequestParam(value = "inputAddress", defaultValue = "aroundMe") String inputAddress,
-                                Model model) {
+                               Model model) {
         model.addAttribute("inputAddress", inputAddress);
         return "interprocess";
     }

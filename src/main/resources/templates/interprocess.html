@@ -4,11 +4,19 @@
     <meta charset="UTF-8">
     <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
     <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <title>InterProcessing</title>
+    <title>Wait..</title>
 </head>
 <body>
+<div style="position:absolute;left:30%;top:30%;display:flex;align-items:center;">
+    <h1>데이터 수집중..</h1>
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<!-- 여기 아래는 건들지 마슈 -->
 <form th:action="@{/map/view}" id="viewMap" method="get">
     <input type="hidden" id="inputAddress" name="inputAddress">
     <input type="hidden" id="lat" name="lat">
@@ -64,9 +72,6 @@
                     contentType: "application/json",
                     url: '/getData',
                     data: JSON.stringify(result),
-                    success: function(response) {
-                        console.log(response);
-                    },
                     success: function(success) {
                         submit(lat, lon, inputVal);
                     },

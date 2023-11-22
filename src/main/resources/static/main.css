@@ -112,7 +112,16 @@ a:hover {
     overflow: hidden;
 }
 
+.reviewContainer {
+    max-height:290px;
+    overflow:hidden;
+}
+
 .card-container:hover {
+    overflow: scroll;
+}
+
+.reviewContainer:hover {
     overflow: scroll;
 }
 
@@ -124,7 +133,7 @@ a:hover {
     width:8px;
 }
 
-.acContainer::-webkit-scrollbar {
+.acContainer, .reviewContainer::-webkit-scrollbar {
     width:8px;
 }
 
@@ -149,6 +158,13 @@ a:hover {
     white-space: nowrap;
     display: inline-block;
     vertical-align: middle;
+}
+
+.뱃지 {
+    background:peachpuff;
+    border:1px solid burlywood;
+    color:black;
+    font-size:11pt;
 }
 
 

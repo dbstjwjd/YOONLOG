@@ -11,12 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
-import java.time.LocalDateTime;
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-
 @SpringBootTest
 class TeamApplicationTests {
 	@Autowired
@@ -27,28 +21,6 @@ class TeamApplicationTests {
 
 	@Test
 	void contextLoads() {
-
-
-
-
-		Restaurant r1 = new Restaurant();
-		r1.setName("떡반집");
-		r1.setAddress("대전 서구 둔산로 8");
-		r1.setNumber("042-472-2921");
-		r1.setOwner(null);
-		r1.setRegDate(LocalDateTime.now());
-		r1.setMain("떡반");
-
-
-
-
-
-
-
-
-
-
-		this.restaurantRepository.save(r1);
 
 	}
 }

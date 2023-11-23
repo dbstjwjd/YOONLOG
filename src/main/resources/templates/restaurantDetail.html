@@ -252,7 +252,8 @@
                                              th:text="|${#temporals.format(review.modifyDate, 'MM.dd (E)')} 수정|"></div>
                                     </div>
                                     <div class="d-flex justify-content-end p-1 ms-5" style="font-size:10pt;"
-                                         th:if="${user.loginId == review.user.loginId}" sec:authorize="isAuthenticated()">
+                                         sec:authorize="isAuthenticated()"
+                                         th:if="${user.loginId == review.user.loginId}">
                                         <a type="button" th:href="@{|/review/modify/${review.id}|}">수정</a>
                                         <span class="mx-1">|</span>
                                         <a href="javascript:void(0)" th:data-uri="@{|/review/delete/${review.id}|}"

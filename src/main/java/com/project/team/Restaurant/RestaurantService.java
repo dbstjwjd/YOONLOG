@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -102,6 +103,11 @@ public class RestaurantService {
         FileCopyUtils.copy(image.getBytes(), dest);
         restaurant.setImage("/restaurant/image/" + restaurant.getId());
         this.restaurantRepository.save(restaurant);
+    }
+
+    public void setImage(Restaurant restaurant, String image) {
+        restaurant.setImage(image);
+        restaurantRepository.save(restaurant);
     }
 }
 

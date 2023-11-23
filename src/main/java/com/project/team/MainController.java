@@ -29,18 +29,12 @@ public class MainController {
 
     @GetMapping("/test")
     public String test(Model model) throws IOException, ParseException {
-        // Document doc = Jsoup.connect().get();
         String doc = Jsoup.connect("https://place.map.kakao.com/main/v/1874862905").ignoreContentType(true).execute().body();
         JSONParser jsonParser = new JSONParser();
         JSONObject detail = (JSONObject) jsonParser.parse(doc);
         JSONObject basicInfo = (JSONObject) detail.get("basicInfo");
         String target = ((JSONObject)((JSONArray)((JSONObject)((JSONArray)((JSONObject)basicInfo.get("openHour")).get("periodList")).get(0)).get("timeList")).get(0)).get("timeSE").toString();
-        /*
-        String data = ((JSONObject) ((JSONArray) ((JSONObject) ((JSONObject) ((JSONObject) basicInfo.get("openHour")).get("realtime"))
-                .get("currentPeriod")).get("timeList")).get(0)).get("timeSE").toString();;
-
-         */
-        model.addAttribute("data", target);
+        model.addAttribute("data", detail);
         return "test";
     }
 

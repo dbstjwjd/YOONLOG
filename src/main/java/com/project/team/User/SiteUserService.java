@@ -1,13 +1,7 @@
 package com.project.team.User;
 
 import com.project.team.DataNotFoundException;
-import com.project.team.User.SiteUser;
-import com.project.team.User.SiteUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.maven.model.Site;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +44,11 @@ public class SiteUserService {
         this.siteUserRepository.save(siteUser);
     }
 
+    public SiteUser getTestUser() {
+        Optional<SiteUser> user = this.siteUserRepository.findByLoginId("testUser");
+        if (user.isPresent()) {
+            return user.get();
+        } else return create("testUser", "temp", "익명", null, "손님");
+    }
 
 }

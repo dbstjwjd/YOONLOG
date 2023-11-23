@@ -208,8 +208,10 @@
                         <!-- 리뷰 작성 폼 -->
                         <div class="mb-2">
                             <label for="review" class="border-bottom mb-3">리뷰 작성</label>
+                            <textarea class="form-control" rows="5" placeholder="로그인 후 이용 가능합니다."
+                                      sec:authorize="isAnonymous()" disabled></textarea>
                             <textarea name="comment" id="comment" class="form-control" rows="5"
-                                      placeholder="리뷰를 작성해주세요."></textarea>
+                                      placeholder="리뷰를 작성해주세요." sec:authorize="isAuthenticated()"></textarea>
                         </div>
                         <div class="d-flex justify-content-end">
                             <input type="button" value="등록" class="버튼 btn btn-sm" id="reviewBtn">
@@ -242,13 +244,17 @@
                                             </svg>
                                             <div th:text="|(${review.star})|"></div>
                                         </div>
-                                        <div style="font-size:10pt; color:dimgray;"
+                                        <div style="font-size:10pt; color:dimgray;" th:if="${review.modifyDate == null}"
                                              th:text="${#temporals.format(review.regDate, 'MM.dd (E)')}"></div>
+                                        <div style="font-size:10pt; color:dimgray;" th:if="${review.modifyDate != null}"
+                                             th:text="|${#temporals.format(review.modifyDate, 'MM.dd (E)')} 수정|"></div>
                                     </div>
-                                    <div class="d-flex justify-content-end p-1 ms-5" style="font-size:10pt;">
-                                        <a th:href="@{|/review/modify/${review.id}|}">수정</a>
+                                    <div class="d-flex justify-content-end p-1 ms-5" style="font-size:10pt;"
+                                         th:if="${user.loginId == review.user.loginId}">
+                                        <a type="button" th:href="@{|/review/modify/${review.id}|}">수정</a>
                                         <span class="mx-1">|</span>
-                                        <a href="javascript:void(0)" th:data-uri="@{|/review/delete/${review.id}|}" id="deleteBtn">삭제</a>
+                                        <a href="javascript:void(0)" th:data-uri="@{|/review/delete/${review.id}|}"
+                                           id="deleteBtn">삭제</a>
                                     </div>
                                 </div>
                                 <div class="d-flex my-2 align-items-center px-2">
@@ -265,6 +271,10 @@
                 </div>
             </div>
         </div>
+        <form action="" method="post" id="reviewModifyForm">
+            <input type="hidden" id="modifyStar" name="modifyStar">
+            <input type="hidden" id="modifyComment" name="modifyComment">
+        </form>
         <form th:action="@{|/reserve/${restaurant.id}|}" method="post" id="reserveForm">
             <input type="hidden" id="date" name="date">
             <input type="hidden" id="time" name="time">

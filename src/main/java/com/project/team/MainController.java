@@ -43,4 +43,9 @@ public class MainController {
         model.addAttribute("data", target);
         return "test";
     }
+
+    @GetMapping("/process")
+    public String interProcess() {
+        return "interprocess";
+    }
 }

@@ -1,5 +1,6 @@
 package com.project.team.Restaurant;
 
+import com.project.team.ImageService;
 import com.project.team.User.SiteUser;
 import com.project.team.User.SiteUserService;
 import com.project.team.review.Review;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.awt.*;
 import java.security.Principal;
 import java.util.List;
 
@@ -28,6 +30,9 @@ RestaurantController {
     private final SiteUserService siteUserService;
 
     private final ReviewService reviewService;
+
+    private final ImageService imageService;
+
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/register")
@@ -101,7 +106,11 @@ RestaurantController {
     }
 
     @GetMapping("/detail/{id}")
-    public String detail(@PathVariable("id") Integer id, Model model) {
+    public String detail(@PathVariable("id") Integer id, Model model, Principal principal) {
+        if (principal != null) {
+            SiteUser user = this.siteUserService.getUser(principal.getName());
+            model.addAttribute("user", user);
+        }
         Restaurant restaurant = this.restaurantService.getRestaurant(id);
         List<Review> reviews = this.reviewService.getReviews(restaurant);
         double averageStar = this.reviewService.averageStar(reviews);

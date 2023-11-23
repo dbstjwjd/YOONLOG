@@ -88,11 +88,13 @@
                 <div class="accordion-item" th:each="restaurant : ${restaurants}">
                     <h2 class="accordion-header">
                         <button th:text="${restaurant.name}" class="accordion-button fw-bold" type="button"
-                                data-bs-toggle="collapse" th:data-bs-target="|#collapse${restaurant.id}|" aria-expanded="true"
+                                data-bs-toggle="collapse" th:data-bs-target="|#collapse${restaurant.id}|"
+                                aria-expanded="true"
                                 th:aria-controls="|collapse${restaurant.id}|">
                         </button>
                     </h2>
-                    <div th:id="|collapse${restaurant.id}|" class="accordion-collapse collapse row" data-bs-parent="#accordionExample">
+                    <div th:id="|collapse${restaurant.id}|" class="accordion-collapse collapse row"
+                         data-bs-parent="#accordionExample">
                         <div class="acContainer accordion-body">
                             <table class="table table-hover">
                                 <thead style="background:peachpuff;">
@@ -113,22 +115,27 @@
                                     <td style="width:10%;">
                                         <div th:if="${reservation.status == null}">
                                             <a class="approveBtn btn btn-sm btn-outline-success me-2"
-                                               th:data-uri="@{|/reserve/approve/${reservation.id}|}" href="javascript:void(0)">승인
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                               th:data-uri="@{|/reserve/approve/${reservation.id}|}"
+                                               href="javascript:void(0)">승인
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     fill="currentColor"
                                                      class="bi bi-check" viewBox="0 0 16 16">
                                                     <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
                                                 </svg>
                                             </a>
                                             <a class="refuseBtn btn btn-sm btn-outline-danger"
-                                               th:data-uri="@{|/reserve/refuse/${reservation.id}|}" href="javascript:void(0)">거절
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                               th:data-uri="@{|/reserve/refuse/${reservation.id}|}"
+                                               href="javascript:void(0)">거절
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     fill="currentColor"
                                                      class="bi bi-x"
                                                      viewBox="0 0 16 16">
                                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                                                 </svg>
                                             </a>
                                         </div>
-                                        <div th:if="${reservation.status != null}" th:text="${reservation.status}"></div>
+                                        <div th:if="${reservation.status != null}"
+                                             th:text="${reservation.status}"></div>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -144,7 +151,8 @@
     <div th:if="${view == '날짜별'}">
         <div id="calendar"></div>
         <!-- 모달 -->
-        <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -185,6 +193,7 @@
                     start: [[${reservation.dateTime}]],
                     username: [[${reservation.user.name}]],
                     status: [[${reservation.status}]],
+                    reservationId:  [[${reservation.id}]],
                     color: 'tan'
                     },
                 /*[/]*/
@@ -194,40 +203,53 @@
                     minute: '2-digit',
                     meridiem: 'short'
                 },
-                eventClick: function(info) {
-                  // 클릭한 이벤트의 정보를 모달에 표시
-                  var modalTitle = document.getElementById('eventModalLabel');
-                  var modalBody = document.getElementById('eventModalBody');
-                  var modalFooter = document.getElementById('eventModalFooter');
+                eventClick: function (info) {
+                    // 클릭한 이벤트의 정보를 모달에 표시
+                    var modalTitle = document.getElementById('eventModalLabel');
+                    var modalBody = document.getElementById('eventModalBody');
+                    var modalFooter = document.getElementById('eventModalFooter');
 
-                  modalTitle.textContent = info.event.title;
+                    modalTitle.textContent = info.event.title;
 
-                  var modalContent = '<p>예약일시: ' + info.event.start.toLocaleString() + '</p>' +
-                                     '<p>가게 이름: ' + info.event.title + '</p>' +
-                                     '<p>예약자: ' + info.event.extendedProps.username + '</p>';
+                    var modalContent = '<p>예약일시: ' + info.event.start.toLocaleString() + '</p>' +
+                        '<p>가게 이름: ' + info.event.title + '</p>' +
+                        '<p>예약자: ' + info.event.extendedProps.username + '</p>';
 
-                  if (info.event.extendedProps.status !== null) {
-                    // 예약 상태가 null이 아닌 경우에만 표시
-                    modalContent += '<p>예약 상태: ' + info.event.extendedProps.status + '</p>';
-                  }
+                    if (info.event.extendedProps.status !== null) {
+                        // 예약 상태가 null이 아닌 경우에만 표시
+                        modalContent += '<p>예약 상태: ' + info.event.extendedProps.status + '</p>';
+                    }
 
-                  modalBody.innerHTML = modalContent;
+                    modalBody.innerHTML = modalContent;
 
-                  // 버튼 추가
-                  if (info.event.extendedProps.status === null) {
-                    modalFooter.innerHTML = '<button type="button" class="btn btn-sm btn-outline-success" onclick="approveReservation()">승인</button>' +
-                                            '<button type="button" class="btn btn-sm btn-outline-danger" onclick="refuseReservation()">거절</button>';
-                  } else {
-                    modalFooter.innerHTML = '';
-                  }
+                    // 버튼 추가
+                    if (info.event.extendedProps.status === null) {
+                        modalFooter.innerHTML = '<button type="button" class="btn btn-sm btn-outline-success" onclick="approveReservation(' + info.event.extendedProps.reservationId + ')">승인</button>' +
+                            '<button type="button" class="btn btn-sm btn-outline-danger" onclick="refuseReservation(' + info.event.extendedProps.reservationId + ')">거절</button>';
+                    } else {
+                        modalFooter.innerHTML = '';
+                    }
 
-                  // 모달 띄우기
-                  $('#eventModal').modal('show');
+                    // 모달 띄우기
+                    $('#eventModal').modal('show');
                 }
-              });
-              calendar.render();
+            });
+
+            calendar.render();
+
         });
-        
+
+            function approveReservation(reservationId) {
+                if (confirm("예약을 확정하시겠습니까?")) {
+                    window.location.href = '/reserve/approve/' + reservationId;
+                }
+            }
+
+            function refuseReservation(reservationId) {
+                if (confirm("예약을 거절하시겠습니까?")) {
+                    window.location.href = '/reserve/refuse/' + reservationId;
+                }
+            }
 
         const byRestaurant = document.getElementById("searchByRestaurant");
         byRestaurant.addEventListener('click', function() {

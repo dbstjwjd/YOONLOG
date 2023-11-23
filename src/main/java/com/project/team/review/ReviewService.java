@@ -18,6 +18,7 @@ import java.util.Optional;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
+
     private final SiteUserService siteUserService;
     private final String HEAD = "https://place.map.kakao.com/main/v";
 
@@ -53,25 +54,33 @@ public class ReviewService {
         }
     }
 
-
     public List<Review> getReviews(Restaurant restaurant) {
         return this.reviewRepository.findByRestaurant(restaurant);
     }
 
     public Review getReview(Integer id) {
         Optional<Review> review = this.reviewRepository.findById(id);
-        if (review.isPresent()) return review.get();
+        if (review.isPresent())
+            return review.get();
         else throw new DataNotFoundException("review not found");
     }
 
     public double averageStar(List<Review> reviews) {
-        if (reviews.isEmpty()) return 0;
+        if (reviews.isEmpty())
+            return 0;
         int totalStar = reviews.stream().mapToInt(Review::getStar).sum();
         return (double) totalStar / reviews.size();
     }
 
     public void deleteReview(Review review) {
         this.reviewRepository.delete(review);
+    }
+
+    public void modifyReview(Review review, Integer star, String comment) {
+        review.setStar(star);
+        review.setComment(comment);
+        review.setModifyDate(LocalDateTime.now());
+        this.reviewRepository.save(review);
     }
 
 }

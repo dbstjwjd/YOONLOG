@@ -1,18 +1,41 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html layout:decorate="~{layout}" lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
     <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        * {font-family: 'IBM Plex Sans KR', sans-serif;}
+    </style>
     <title>Wait..</title>
 </head>
-<body>
-<div style="position:absolute;left:30%;top:30%;display:flex;align-items:center;">
-    <h1>데이터 수집중..</h1>
-    <div class="spinner-border text-primary" role="status">
+<body layout:fragment="content">
+<div style="display:flex; align-items:center; position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    <div class="slideshow-container me-3">
+        <div class="mySlides">
+            <img src="/image/loading1.jpg" style="width:auto; height:100px; border-radius:20px;">
+        </div>
+        <div class="mySlides">
+            <img src="/image/loading2.jpg" style="width:auto; height:100px; border-radius:20px;">
+        </div>
+        <div class="mySlides">
+            <img src="/image/loading3.jpg" style="width:auto; height:100px; border-radius:20px;">
+        </div>
+        <div class="mySlides">
+            <img src="/image/loading4.jpg" style="width:auto; height:100px; border-radius:20px;">
+        </div>
+        <div class="mySlides">
+            <img src="/image/loading5.jpg" style="width:auto; height:100px; border-radius:20px;">
+        </div>
+    </div>
+    <h1 style="margin-right:10px;">데이터 수집중..</h1>
+    <div class="spinner-border" role="status" style="color:tan;">
         <span class="visually-hidden">Loading...</span>
     </div>
 </div>
@@ -30,6 +53,23 @@
             xhr.setRequestHeader(header, token);
         });
     });
+
+  let slideIndex = 0;
+  showSlides();
+
+  function showSlides() {
+    let i;
+    const slides = document.getElementsByClassName("mySlides");
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    slideIndex++;
+    if (slideIndex > slides.length) {
+      slideIndex = 1;
+    }
+    slides[slideIndex - 1].style.display = "block";
+    setTimeout(showSlides, 300); // 0.1초마다 변경
+  }
 </script>
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ea7706d3cd280b86aceebdabe80d16f0&libraries=services"></script>

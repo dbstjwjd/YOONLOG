@@ -11,12 +11,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -40,15 +39,16 @@ RestaurantController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/register")
-    public String register(Principal principal, Model model,
-                           @Valid RestaurantRegisterForm restaurantRegisterForm, BindingResult bindingResult) {
+    public String register(Principal principal, @Valid RestaurantRegisterForm restaurantRegisterForm,
+                           BindingResult bindingResult, Model model, @RequestPart(value = "image") MultipartFile image) throws IOException {
         SiteUser user = this.siteUserService.getUser(principal.getName());
         if (bindingResult.hasErrors())
             return "registerForm";
         Restaurant restaurant = this.restaurantService.registerRestaurant(restaurantRegisterForm.getName(), restaurantRegisterForm.getAddress(),
                 restaurantRegisterForm.getNumber(), restaurantRegisterForm.getFacilities(), restaurantRegisterForm.getMain(), user,
                 restaurantRegisterForm.getStartTime(), restaurantRegisterForm.getEndTime(), restaurantRegisterForm.getIntroduce());
-        model.addAttribute("restaurant", restaurant);
+        this.restaurantService.uploadImage(restaurant, image);
+        model.addAttribute("restaurant",restaurant);
         return "addressParser";
     }
 

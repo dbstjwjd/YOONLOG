@@ -1,6 +1,5 @@
 package com.project.team.Restaurant;
 
-import com.project.team.ImageService;
 import com.project.team.User.SiteUser;
 import com.project.team.User.SiteUserService;
 import com.project.team.review.Review;
@@ -32,9 +31,6 @@ RestaurantController {
     private final SiteUserService siteUserService;
 
     private final ReviewService reviewService;
-
-    private final ImageService imageService;
-
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/register")
@@ -76,12 +72,13 @@ RestaurantController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String modify(@PathVariable("id") Integer id, Principal principal,
-                         @Valid RestaurantRegisterForm restaurantRegisterForm, BindingResult bindingResult) {
+                         @Valid RestaurantRegisterForm restaurantRegisterForm, BindingResult bindingResult, Model model) {
         Restaurant restaurant = this.restaurantService.getRestaurant(id);
         if (!restaurant.getOwner().getLoginId().equals(principal.getName()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
         if (bindingResult.hasErrors())
             return "registerForm";
+        model.addAttribute("restaurant", restaurant);
         this.restaurantService.modifyRestaurant(restaurantRegisterForm.getName(), restaurantRegisterForm.getAddress(),
                 restaurantRegisterForm.getNumber(), restaurant, restaurantRegisterForm.getFacilities(), restaurantRegisterForm.getMain(),
                 restaurantRegisterForm.getStartTime(), restaurantRegisterForm.getEndTime(), restaurantRegisterForm.getIntroduce());

@@ -7,8 +7,6 @@ import com.project.team.User.SiteUserService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,7 +18,6 @@ import java.util.Optional;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-
     private final SiteUserService siteUserService;
     private final String HEAD = "https://place.map.kakao.com/main/v";
 
@@ -34,27 +31,28 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    public void createTmp(Restaurant restaurant, String url) {
-        try {
-            String data = Jsoup.connect(this.HEAD + url.substring(url.lastIndexOf("/"))).ignoreContentType(true).execute().body();
-            JSONParser jsonParser = new JSONParser();
-            JSONObject json = (JSONObject) jsonParser.parse(data);
-            if (json.get("comment") == null) return;
-            JSONArray comments = (JSONArray) ((JSONObject) json.get("comment")).get("list");
-            for (Object o : comments) {
-                JSONObject comment = (JSONObject) o;
-                SiteUser user = siteUserService.create(null, "temp", comment.get("username").toString(), null, "손님");
-                Review review = new Review();
-                review.setRestaurant(restaurant);
-                review.setUser(user);
-                review.setComment(comment.get("contents").toString());
-                review.setStar((Integer.valueOf(comment.get("point").toString())));
-                reviewRepository.save(review);
+    public void createTmp(Restaurant restaurant, JSONArray comments) {
+        for (Object o : comments) {
+            JSONObject comment = (JSONObject) o;
+            SiteUser user = null;
+            String contents = null;
+            String username = null;
+            try {
+                contents = comment.get("contents").toString();
+                username = comment.get("username").toString();
+            } catch (Exception ignored) {
             }
-        } catch (Exception e) {
-            System.out.println(e);
+            if (username != null)
+                user = siteUserService.create(null, "temp", comment.get("username").toString(), null, "손님");
+            Review review = new Review();
+            review.setRestaurant(restaurant);
+            review.setUser(user);
+            review.setComment(contents);
+            review.setStar((Integer.valueOf(comment.get("point").toString())));
+            reviewRepository.save(review);
         }
     }
+
 
     public List<Review> getReviews(Restaurant restaurant) {
         return this.reviewRepository.findByRestaurant(restaurant);
@@ -62,14 +60,12 @@ public class ReviewService {
 
     public Review getReview(Integer id) {
         Optional<Review> review = this.reviewRepository.findById(id);
-        if (review.isPresent())
-            return review.get();
+        if (review.isPresent()) return review.get();
         else throw new DataNotFoundException("review not found");
     }
 
     public double averageStar(List<Review> reviews) {
-        if (reviews.isEmpty())
-            return 0;
+        if (reviews.isEmpty()) return 0;
         int totalStar = reviews.stream().mapToInt(Review::getStar).sum();
         return (double) totalStar / reviews.size();
     }

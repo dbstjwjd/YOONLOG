@@ -85,5 +85,10 @@ public class RestaurantService {
         }
         return restaurants;
     }
+
+    public void setImage(Restaurant restaurant, String image) {
+        restaurant.setImage(image);
+        restaurantRepository.save(restaurant);
+    }
 }
 

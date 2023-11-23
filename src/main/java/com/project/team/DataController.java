@@ -52,13 +52,13 @@ public class DataController {
                 String doc = Jsoup.connect(this.HEAD + url.substring(url.lastIndexOf("/"))).ignoreContentType(true).execute().body();
                 JSONParser jsonParser = new JSONParser();
                 JSONObject detail = (JSONObject) jsonParser.parse(doc);
-                String detailStr = detail.toString();
-
                 JSONObject basicInfo = (JSONObject) detail.get("basicInfo");
                 String realTime = null;
+                String image = null;
                 try {
                     realTime = ((JSONObject) ((JSONArray) ((JSONObject) ((JSONArray) ((JSONObject) basicInfo.get("openHour"))
                             .get("periodList")).get(0)).get("timeList")).get(0)).get("timeSE").toString();
+                    image = ((JSONObject)detail.get("placeOwnerInfos")).get("mainPhoto").toString();
                 } catch (Exception ignored) {
                 }
                 String info = null;
@@ -80,7 +80,7 @@ public class DataController {
                 Restaurant restaurant = restaurantService.registerRestaurant(name, address, data.get("phone"),
                         null, null, null, startTime, endTime, info);
                 restaurantService.setLocation(restaurant, data.get("x"), data.get("y"));
-
+                restaurantService.setImage(restaurant, image);
                 if (detail.get("comment") == null)
                     continue;
 

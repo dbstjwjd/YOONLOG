@@ -1,6 +1,7 @@
 package com.project.team.Restaurant;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,10 +26,10 @@ public class RestaurantRegisterForm {
     @NotEmpty(message = "가게 주소를 입력해주세요.")
     private String address;
 
-    @NotEmpty(message = "영업 시작시간을 입력해주세요.")
+    @NotNull(message = "영업 시작시간을 입력해주세요.")
     private LocalTime startTime;
 
-    @NotEmpty(message = "가게 영업 마감시간을 입력해주세요.")
+    @NotNull(message = "가게 영업 마감시간을 입력해주세요.")
     private LocalTime endTime;
 
     private List<String> facilities;

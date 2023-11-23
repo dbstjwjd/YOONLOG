@@ -24,7 +24,7 @@ public class MainController {
 
     @GetMapping("/main")
     public String mainPage() {
-        return "redirect:/map/view";
+        return "redirect:/interprocess";
     }
 
     @GetMapping("/test")

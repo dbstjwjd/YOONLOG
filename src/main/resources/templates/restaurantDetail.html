@@ -171,11 +171,10 @@
             <div class="card-header fs-4 fw-bold" style="background:linen;">리뷰쓰기</div>
             <div class="card-body">
                 <div class="card-text">
-                    <!-- 리뷰 작성 폼 -->
                     <form th:action="@{|/review/create/${restaurant.id}|}" method="post" id="reviewForm"
                           enctype="multipart/form-data">
-                        <div class="my-3">
-                            <div class="d-flex align-items-center">
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-2">
                                 <label for="star" class="border-bottom me-1">별점</label>
                                 <div id="starCount" style="font-size:10pt; color:gray;"></div>
                             </div>
@@ -214,12 +213,39 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-2">
-                            <label for="image" class="border-bottom mb-1">사진 첨부</label>
-                            <input type="file" accept="image/*" required multiple style="display:none;" class="upload">
-                            <div class="d-flex">
-                                <img class="clickUpload" src="/image/inputImage.jpg" alt="" style="width:auto; height:35px; border:2px solid tan; border-radius:10px; margin-right:5px;">
-                                <div id="fileName" class="px-2 p-1" style="border-radius:10px; font-size:11pt; background:peachpuff; border:1px solid tan;">사진을 첨부하세요.</div>
+                        <div class="mb-4">
+                            <label for="image" class="border-bottom mb-2">사진 첨부</label>
+                            <input type="file" accept="image/*" required multiple style="display:none;" class="upload1"
+                                   name="image1">
+                            <input type="file" accept="image/*" required multiple style="display:none;" class="upload2"
+                                   name="image2">
+                            <input type="file" accept="image/*" required multiple style="display:none;" class="upload3"
+                                   name="image3">
+                            <div class="d-flex justify-content-around">
+                                <div style="width:21%;">
+                                    <img class="clickUpload1" src="/image/inputImage.jpg" alt=""
+                                         style="width:100%; height:115px; border:2px solid tan; border-radius:10px; margin-bottom:5px;">
+                                    <div id="fileName1" class="px-2 p-1"
+                                         style="border-radius:10px; font-size:11pt; background:peachpuff; border:1px solid tan;">
+                                        선택된 파일 없음
+                                    </div>
+                                </div>
+                                <div style="width:21%;">
+                                    <img class="clickUpload2" src="/image/inputImage.jpg" alt=""
+                                         style="width:100%; height:115px; border:2px solid tan; border-radius:10px; margin-bottom:5px;">
+                                    <div id="fileName2" class="px-2 p-1"
+                                         style="border-radius:10px; font-size:11pt; background:peachpuff; border:1px solid tan;">
+                                        선택된 파일 없음
+                                    </div>
+                                </div>
+                                <div style="width:21%;">
+                                    <img class="clickUpload3" src="/image/inputImage.jpg" alt=""
+                                         style="width:100%; height:115px; border:2px solid tan; border-radius:10px; margin-bottom:5px;">
+                                    <div id="fileName3" class="px-2 p-1"
+                                         style="border-radius:10px; font-size:11pt; background:peachpuff; border:1px solid tan;">
+                                        선택된 파일 없음
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="mb-2">
@@ -234,53 +260,75 @@
                         </div>
                     </form>
                     <div>
-                        <!-- 리뷰 출력 -->
-                        <label style="font-size:14pt;" class="border-bottom mb-3"
-                               th:text="|작성된 리뷰 (${#lists.size(reviews)})|"></label>
-                        <div class="reviewContainer">
-                            <div th:each="review : ${reviews}" class="mb-3 border-bottom">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center">
-                                        <div class="뱃지 badge me-2">
-                                            <div class="d-flex align-items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                     fill="currentColor"
-                                                     class="bi bi-person-circle me-1" viewBox="0 0 16 16">
-                                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        <!-- 리뷰 모달 버튼 -->
+                        <button type="button" class="버튼 btn mt-5" style="width:100%;" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                            리뷰 보기
+                        </button>
+                        <!-- 리뷰 모달 -->
+                        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="reviewModalLabel" style="font-size:14pt;"
+                                            th:text="|작성된 리뷰 (${#lists.size(reviews)})|">
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div th:each="review : ${reviews}" class="mb-3 border-bottom">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="뱃지 badge me-2">
+                                                        <div class="d-flex align-items-center">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                                 fill="currentColor"
+                                                                 class="bi bi-person-circle me-1" viewBox="0 0 16 16">
+                                                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                                                <path fill-rule="evenodd"
+                                                                      d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                                            </svg>
+                                                            <div th:text="${review.user.name}"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex align-items-center me-2">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="red"
+                                                             class="bi bi-star-fill me-1" viewBox="0 0 16 16">
+                                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                                        </svg>
+                                                        <div th:text="|(${review.star})|"></div>
+                                                    </div>
+                                                    <div style="font-size:10pt; color:dimgray;" th:if="${review.modifyDate == null}"
+                                                         th:text="${#temporals.format(review.regDate, 'MM.dd (E)')}"></div>
+                                                    <div style="font-size:10pt; color:dimgray;" th:if="${review.modifyDate != null}"
+                                                         th:text="|${#temporals.format(review.modifyDate, 'MM.dd (E)')} 수정|"></div>
+                                                </div>
+                                                <div class="d-flex justify-content-end p-1 ms-5" style="font-size:10pt;"
+                                                     sec:authorize="isAuthenticated()"
+                                                     th:if="${user.loginId == review.user.loginId}">
+                                                    <a type="button" th:href="@{|/review/modify/${review.id}|}">수정</a>
+                                                    <span class="mx-1">|</span>
+                                                    <a href="javascript:void(0)" th:data-uri="@{|/review/delete/${review.id}|}"
+                                                       id="deleteBtn">삭제</a>
+                                                </div>
+                                            </div>
+                                            <div style="margin:5px; display:inline-block;">
+                                                <img th:src="@{${review.image1}}" alt="" th:if="${review.image1 != null}"
+                                                     style="width:80px; height:80px; border-radius:10px;">
+                                                <img th:src="@{${review.image2}}" alt="" th:if="${review.image2 != null}"
+                                                     style="width:80px; height:80px; border-radius:10px;">
+                                                <img th:src="@{${review.image3}}" alt="" th:if="${review.image3 != null}"
+                                                     style="width:80px; height:80px; border-radius:10px;">
+                                            </div>
+                                            <div class="d-flex my-2 align-items-center px-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="darkgray"
+                                                     class="bi bi-arrow-return-right me-1" viewBox="0 0 16 16">
                                                     <path fill-rule="evenodd"
-                                                          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                                          d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
                                                 </svg>
-                                                <div th:text="${review.user.name}"></div>
+                                                <div th:text="${review.comment}"></div>
                                             </div>
                                         </div>
-                                        <div class="d-flex align-items-center me-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="red"
-                                                 class="bi bi-star-fill me-1" viewBox="0 0 16 16">
-                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                                            </svg>
-                                            <div th:text="|(${review.star})|"></div>
-                                        </div>
-                                        <div style="font-size:10pt; color:dimgray;" th:if="${review.modifyDate == null}"
-                                             th:text="${#temporals.format(review.regDate, 'MM.dd (E)')}"></div>
-                                        <div style="font-size:10pt; color:dimgray;" th:if="${review.modifyDate != null}"
-                                             th:text="|${#temporals.format(review.modifyDate, 'MM.dd (E)')} 수정|"></div>
                                     </div>
-                                    <div class="d-flex justify-content-end p-1 ms-5" style="font-size:10pt;"
-                                         sec:authorize="isAuthenticated()"
-                                         th:if="${user.loginId == review.user.loginId}">
-                                        <a type="button" th:href="@{|/review/modify/${review.id}|}">수정</a>
-                                        <span class="mx-1">|</span>
-                                        <a href="javascript:void(0)" th:data-uri="@{|/review/delete/${review.id}|}"
-                                           id="deleteBtn">삭제</a>
-                                    </div>
-                                </div>
-                                <div class="d-flex my-2 align-items-center px-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="darkgray"
-                                         class="bi bi-arrow-return-right me-1" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd"
-                                              d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
-                                    </svg>
-                                    <div th:text="${review.comment}"></div>
                                 </div>
                             </div>
                         </div>
@@ -298,6 +346,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.6/dist/flatpickr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.6/dist/l10n/ko.js"></script>
     <script src="/starScore.js"></script>
+    <script src="/imageButton.js"></script>
     <script layout:fragment="script" type='text/javascript' th:inline="javascript">
 
         const upload = document.querySelector(".upload");

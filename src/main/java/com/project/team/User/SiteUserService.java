@@ -70,6 +70,10 @@ public class SiteUserService {
     }
 
 
+
+
+
+
     public MailDto createMail(String email) {
         String str = getAuthNum();
         MailDto dto = new MailDto();
@@ -161,4 +165,6 @@ public class SiteUserService {
         }
         else throw new DataNotFoundException("user not found");
     }
+
 }
+

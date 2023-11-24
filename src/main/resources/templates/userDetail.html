@@ -109,19 +109,14 @@
 
 <div class="header-form">
     <div class="logo">
-        <a th:href="@{/main}">logo</a>
+        <a th:href="@{/interprocess}">logo</a>
     </div>
-
+    <!-- 정보수정 버튼 -->
     <div class="my-3">
-        <a th:href="@{|/user/userModify/${siteUser.loginId}|}"
-           sec:authorize="isAuthenticated()"
-        th:if="${siteUser.loginId != null}"
-        th:text="수정"></a>
+        <button type="button" id="modifyButton" class="btn btn-primary" data-toggle="modal" th:attr="data-target=${#authorization.expression('isAuthenticated()')} ? '#passwordModal' : ''">
+            정보수정
+        </button>
     </div>
-
-
-
-
 
 
     <header class="user-info-header">
@@ -155,18 +150,15 @@
         </div>
     </div>
     <div class="box-number2">
-        <h1>예약목록</h1>
 
 
-
-        <ul class="user-info-box2" >
-
-            <li th:each="reservation : ${userReservation}" th:text="${reservation.restaurant.name}">
-            </li>
-        </ul>
+        <ul class="user-info-box2">
+            <h1>예약목록</h1>
+                <li th:each="reservation : ${userReservation}" th:text="${reservation.restaurant.name}">
+                </li>
+            </ul>
     </div>
     <div class="box-number3">
-
         <ul class="user-info-box3">
             <h2>작성한 리뷰</h2>
             <li>리뷰 1</li>
@@ -175,8 +167,35 @@
     </div>
 
 
+
     <div th:unless="${siteUser != null}">
         <p>유저정보를 찾을 수 없습니다.</p>
+    </div>
+</div>
+
+
+<div th:if="${#authorization.expression('isAuthenticated()')}" class="modal" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passwordModalLabel">비밀번호 확인</h5>
+
+            </div>
+            <div class="modal-body">
+                <form th:action="@{|/user/userCheckPassword/${siteUser.loginId}|}" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <div class="form-group">
+                        <label for="loginId" >아이디</label>
+                        <span id="loginId" class="form-control-plaintext" th:text="${siteUser.loginId}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">비밀번호</label>
+                        <input type="password" name="password" class="form-control" id="password" placeholder="비밀번호 확인" required/>
+                    </div>
+                    <button type="submit" id="submitButton" class="btn btn-primary">확인</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -184,5 +203,12 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:inline="javascript">
+    if ([[${error}]] == true) {
+        alert('비밀번호가 일치하지 않습니다');
+        document.querySelector('#modifyButton').click();
+    }
+</script>
+
 </body>
 </html>

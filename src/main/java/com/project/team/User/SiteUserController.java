@@ -1,17 +1,15 @@
 package com.project.team.User;
 
+import com.project.team.DataNotFoundException;
 import com.project.team.Reservation.Reservation;
 import com.project.team.Reservation.ReservationService;
-import jakarta.validation.Path;
+import com.project.team.test.MailDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.maven.model.Site;
-import org.hibernate.engine.jdbc.mutation.spi.BindingGroup;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -31,6 +29,7 @@ public class SiteUserController {
     private final ReservationService reservationService;
 
     private final PasswordEncoder passwordEncoder;
+    private final JavaMailSender mailSender;
 
 
     @GetMapping("/signup")
@@ -89,39 +88,60 @@ public class SiteUserController {
 
         return "userModify";
     }
+
     @PostMapping("/userModify/{loginId}")
     @PreAuthorize("isAuthenticated()")
-    public String userModify(Model model,@Valid UserModifyForm userModifyForm, @PathVariable("loginId") String loginId, Principal principal, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public String userModify(Model model, @Valid UserModifyForm userModifyForm, @PathVariable("loginId") String loginId, Principal principal, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "userModify";
         }
         SiteUser siteUser = siteUserService.getUser(loginId);
-        if(!siteUser.getLoginId().equals(principal.getName())){
+        if (!siteUser.getLoginId().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
-        this.siteUserService.modifyUser(siteUser,userModifyForm.getName(), userModifyForm.getEmail(), userModifyForm.getPassword(), userModifyForm.getAuthority());
+        this.siteUserService.modifyUser(siteUser, userModifyForm.getName(), userModifyForm.getEmail(), userModifyForm.getPassword(), userModifyForm.getAuthority());
         model.addAttribute("siteUser", siteUser);
 
 
         return "userDetail";
     }
 
+    @GetMapping("/findPw")
+    public String findPw(){
+        return "findPw";
+    }
 
+    @PostMapping("/sendEmail")
+    public String findPw(String loginId){
+        String email = siteUserService.getUser(loginId).getEmail();
+        MailDto dto = siteUserService.createMail(email);
+        siteUserService.sendPasswordResetEmail(loginId);
+        return "redirect:/";
+    }
 
+    @GetMapping("/resetPassword/{token}")
+    public String showResetPasswordForm(@PathVariable("token") String token, Model model) {
+        SiteUser user = siteUserService.getUserByToken(token);
+        model.addAttribute("token", token);
+        return "resetPasswordForm";
+    }
 
+    @PostMapping("/resetPassword/{token}")
+    public String resetPassword(@RequestParam("token") String token, @RequestParam("newPassword") String newPassword) {
+        try {
+            // 비밀번호를 재설정
+            siteUserService.resetPassword(token, newPassword);
+            SiteUser user = siteUserService.getUserByToken(token);
+            user.setToken(siteUserService.createToken(user.getLoginId()));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            return "redirect:/"; // 비밀번호 재설정이 성공한 경우 로그인 페이지로 리다이렉트
+        } catch (DataNotFoundException e) {
+            // 토큰이 유효하지 않은 경우 처리
+            return "redirect:/error?message=InvalidToken";
+        } catch (Exception e) {
+            // 기타 예외 처리
+            return "redirect:/error?message=ResetPasswordError";
+        }
+    }
 }
+

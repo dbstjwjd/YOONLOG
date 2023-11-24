@@ -33,6 +33,10 @@ public class Review {
 
     private LocalDateTime modifyDate;
 
-    private List<String> images;
+    private String image1;
+
+    private String image2;
+
+    private String image3;
 
 }

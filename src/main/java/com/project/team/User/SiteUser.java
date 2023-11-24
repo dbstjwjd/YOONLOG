@@ -34,6 +34,10 @@ public class SiteUser {
 
     private String authority;
 
+//    ========================================
+    @Column(unique = true)
+    private String token;
+
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private List<Restaurant> restaurants;

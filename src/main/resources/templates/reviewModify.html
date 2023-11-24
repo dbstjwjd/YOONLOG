@@ -4,7 +4,7 @@
         <div class="card-header fs-4 fw-bold" style="background:linen;">리뷰 수정</div>
         <div class="card-body">
             <div class="card-text">
-                <form th:action="@{|/review/modify/${review.id}|}" method="post" id="reviewForm">
+                <form th:action="@{|/review/modify/${review.id}|}" method="post" id="reviewForm" enctype="multipart/form-data">
                     <div class="my-3">
                         <div class="d-flex align-items-center">
                             <label for="star" class="border-bottom me-1">별점</label>
@@ -45,10 +45,45 @@
                             </div>
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <label for="image" class="border-bottom mb-2">사진 첨부</label>
+                        <input type="file" accept="image/*" required multiple style="display:none;" class="upload1"
+                               name="image1">
+                        <input type="file" accept="image/*" required multiple style="display:none;" class="upload2"
+                               name="image2">
+                        <input type="file" accept="image/*" required multiple style="display:none;" class="upload3"
+                               name="image3">
+                        <div class="d-flex justify-content-around">
+                            <div style="width:21%;">
+                                <img class="clickUpload1" th:src="@{${review.image1}}" alt=""
+                                     style="width:100%; height:115px; border:2px solid tan; border-radius:10px; margin-bottom:5px;">
+                                <div id="fileName1" class="px-2 p-1"
+                                     style="border-radius:10px; font-size:11pt; background:peachpuff; border:1px solid tan;">
+                                    파일 선택
+                                </div>
+                            </div>
+                            <div style="width:21%;">
+                                <img class="clickUpload2" th:src="@{${review.image2}}" alt=""
+                                     style="width:100%; height:115px; border:2px solid tan; border-radius:10px; margin-bottom:5px;">
+                                <div id="fileName2" class="px-2 p-1"
+                                     style="border-radius:10px; font-size:11pt; background:peachpuff; border:1px solid tan;">
+                                    파일 선택
+                                </div>
+                            </div>
+                            <div style="width:21%;">
+                                <img class="clickUpload3" th:src="@{${review.image3}}" alt=""
+                                     style="width:100%; height:115px; border:2px solid tan; border-radius:10px; margin-bottom:5px;">
+                                <div id="fileName3" class="px-2 p-1"
+                                     style="border-radius:10px; font-size:11pt; background:peachpuff; border:1px solid tan;">
+                                    파일 선택
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- 리뷰 작성 폼 -->
                     <div class="mb-3">
                         <label for="review" class="border-bottom mb-3">리뷰 작성</label>
-                        <textarea name="comment" id="comment" class="form-control" rows="18"
+                        <textarea name="comment" id="comment" class="form-control" rows="10"
                                   placeholder="리뷰를 작성해주세요." th:text="${review.comment}"></textarea>
                     </div>
                     <div class="d-flex justify-content-end">
@@ -61,6 +96,7 @@
         </div>
     </div>
     <script src="/starScore.js"></script>
+    <script src="/imageButton.js"></script>
     <script layout:fragment="script" type='text/javascript'>
         const review = document.getElementById("reviewBtn");
         review.addEventListener('click', function() {

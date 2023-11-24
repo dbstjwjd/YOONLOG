@@ -9,6 +9,5 @@ import java.util.Optional;
 public interface SiteUserRepository extends JpaRepository<SiteUser, Long> {
     Optional<SiteUser> findByLoginId(String loginId);
     Optional<SiteUser> findByEmail(String email);
-
-
+    Optional<SiteUser> findByToken(String token);
 }

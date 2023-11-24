@@ -16,14 +16,26 @@
     });
 
     resArr.forEach(function(element) {
+        var imageSrc,
+            imageSize = new kakao.maps.Size(45, 50),
+            imageOption = {offset: new kakao.maps.Point(21, 47)};
+
+        if (element.averageStar > 4.5) imageSrc = '/image/mark/red.png';
+        else if (element.averageStar > 4) imageSrc = '/image/mark/yellow.png';
+        else if (element.averageStar > 3) imageSrc = '/image/mark/green.png';
+        else imageSrc = '/image/mark/blue.png';
+
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
+
         var marker = new kakao.maps.Marker({
             map: map,
             position: new kakao.maps.LatLng(element.y, element.x),
-            clickable: true
+            clickable: true,
+            image: markerImage
         });
 
         var tmpOverlay = new kakao.maps.CustomOverlay({
-            content: '<div class="card">'+element.name+'</div>',
+            content: '<div href="javascript:void(0);" class="card">'+element.name+'</div>',
             position: marker.getPosition(),
             map: map,
             yAnchor: 2.6
@@ -79,7 +91,7 @@
 
     function displayMarker_myLocation(locPosition) {
 
-        var imageSrc = '/image/myLocation.png',
+        var imageSrc = '/image/mark/me.png',
             imageSize = new kakao.maps.Size(45, 50),
             imageOption = {offset: new kakao.maps.Point(21, 47)};
 

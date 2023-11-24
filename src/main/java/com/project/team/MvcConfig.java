@@ -12,6 +12,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     private String reviewPath = "C:/uploads/review";
 
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/restaurant/image/**")

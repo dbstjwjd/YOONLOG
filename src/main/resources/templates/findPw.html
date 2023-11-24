@@ -1,0 +1,18 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container">
+    <h5 class="my-3 border-bottom pb-2">비밀번호 찾기</h5>
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <p th:text="${error}"></p>
+    </div>
+    <form th:action="@{/user/sendEmail}" method="post" class="mb-3">
+        <div class="mb-3">
+            <label for="loginId" class="form-label">ID</label>
+            <input type="text" name="loginId" class="form-control" style="width: 50%;" placeholder="아이디" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="submit" value="인증링크 발급" class="btn btn-primary">
+        </div>
+    </form>
+</div>
+</html>

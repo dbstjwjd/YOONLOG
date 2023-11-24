@@ -349,6 +349,20 @@
     <script src="/imageButton.js"></script>
     <script layout:fragment="script" type='text/javascript' th:inline="javascript">
 
+        const upload = document.querySelector(".upload");
+        const uploadBtn = document.querySelector(".clickUpload");
+
+        uploadBtn.addEventListener('click', () => upload.click());
+
+        upload.addEventListener('change', function () {
+        const files = this.files;
+
+        if (files.length > 0) {
+            const fileName = files[0].name;
+            document.querySelector('#fileName').innerText = fileName;
+        }
+    });
+
         const deleteReview = document.querySelectorAll("#deleteBtn");
         Array.from(deleteReview).forEach(function(element) {
             element.addEventListener('click', function() {

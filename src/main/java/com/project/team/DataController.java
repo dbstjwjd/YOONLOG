@@ -86,7 +86,6 @@ public class DataController {
 
                 JSONArray comments = (JSONArray) ((JSONObject) detail.get("comment")).get("list");
                 if (comments != null) reviewService.createTmp(restaurant, comments);
-
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage());
             }

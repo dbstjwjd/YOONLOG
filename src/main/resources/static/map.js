@@ -35,7 +35,7 @@
         });
 
         var tmpOverlay = new kakao.maps.CustomOverlay({
-            content: '<div href="javascript:void(0);" class="card">'+element.name+'</div>',
+            content: '<div class="card">'+element.name+'</div>',
             position: marker.getPosition(),
             map: map,
             yAnchor: 2.6
@@ -63,7 +63,6 @@
         ;
 
     kakao.maps.event.addListener(marker, 'click', function() {
-            infowindow.close();
             overlay.setContent(content);
             overlay.setPosition(marker.getPosition());
             overlay.setMap(map);

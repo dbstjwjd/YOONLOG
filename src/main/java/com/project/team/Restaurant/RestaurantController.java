@@ -72,7 +72,8 @@ RestaurantController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String modify(@PathVariable("id") Integer id, Principal principal,
-                         @Valid RestaurantRegisterForm restaurantRegisterForm, BindingResult bindingResult, Model model) {
+                         @Valid RestaurantRegisterForm restaurantRegisterForm, BindingResult bindingResult, Model model,
+                         @RequestPart(value = "image") MultipartFile image) throws IOException {
         Restaurant restaurant = this.restaurantService.getRestaurant(id);
         if (!restaurant.getOwner().getLoginId().equals(principal.getName()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
@@ -82,6 +83,7 @@ RestaurantController {
         this.restaurantService.modifyRestaurant(restaurantRegisterForm.getName(), restaurantRegisterForm.getAddress(),
                 restaurantRegisterForm.getNumber(), restaurant, restaurantRegisterForm.getFacilities(), restaurantRegisterForm.getMain(),
                 restaurantRegisterForm.getStartTime(), restaurantRegisterForm.getEndTime(), restaurantRegisterForm.getIntroduce());
+        this.restaurantService.uploadImage(restaurant, image);
         return "addressParser";
     }
 
@@ -93,7 +95,7 @@ RestaurantController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
         }
         this.restaurantService.deleteRestaurant(restaurant);
-        return "redirect:/main";
+        return "redirect:/restaurant/page/" + restaurant.getOwner().getLoginId();
 
     }
 

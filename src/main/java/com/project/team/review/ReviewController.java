@@ -10,8 +10,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.security.Principal;
 
 @Controller
@@ -27,10 +29,15 @@ public class ReviewController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
-    public String create(String comment, Integer star, @PathVariable("id") Integer id, Principal principal) {
+    public String create(String comment, Integer star, @PathVariable("id") Integer id, Principal principal,
+                         @RequestParam("images") MultipartFile[] images) throws IOException {
         SiteUser user = this.siteUserService.getUser(principal.getName());
         Restaurant restaurant = this.restaurantService.getRestaurant(id);
-        this.reviewService.createReview(restaurant, user, star, comment);
+        Review review = this.reviewService.createReview(restaurant, user, star, comment);
+        restaurant.setAverageStar(this.reviewService.averageStar(restaurant.getReviews()));
+        for (MultipartFile image : images) {
+            this.reviewService.uploadImage(review, image);
+        }
         return String.format("redirect:/restaurant/detail/%s", id);
     }
 

@@ -261,18 +261,21 @@
                     </form>
                     <div>
                         <!-- 리뷰 모달 버튼 -->
-                        <button type="button" class="버튼 btn mt-5" style="width:100%;" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                        <button type="button" class="버튼 btn mt-5" style="width:100%;" data-bs-toggle="modal"
+                                data-bs-target="#reviewModal">
                             리뷰 보기
                         </button>
                         <!-- 리뷰 모달 -->
-                        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel"
+                             aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="reviewModalLabel" style="font-size:14pt;"
                                             th:text="|작성된 리뷰 (${#lists.size(reviews)})|">
                                         </h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <div th:each="review : ${reviews}" class="mb-3 border-bottom">
@@ -280,7 +283,8 @@
                                                 <div class="d-flex align-items-center">
                                                     <div class="뱃지 badge me-2">
                                                         <div class="d-flex align-items-center">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                 height="16"
                                                                  fill="currentColor"
                                                                  class="bi bi-person-circle me-1" viewBox="0 0 16 16">
                                                                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -291,15 +295,18 @@
                                                         </div>
                                                     </div>
                                                     <div class="d-flex align-items-center me-2">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="red"
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                             fill="red"
                                                              class="bi bi-star-fill me-1" viewBox="0 0 16 16">
                                                             <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                                                         </svg>
                                                         <div th:text="|(${review.star})|"></div>
                                                     </div>
-                                                    <div style="font-size:10pt; color:dimgray;" th:if="${review.modifyDate == null}"
+                                                    <div style="font-size:10pt; color:dimgray;"
+                                                         th:if="${review.modifyDate == null}"
                                                          th:text="${#temporals.format(review.regDate, 'MM.dd (E)')}"></div>
-                                                    <div style="font-size:10pt; color:dimgray;" th:if="${review.modifyDate != null}"
+                                                    <div style="font-size:10pt; color:dimgray;"
+                                                         th:if="${review.modifyDate != null}"
                                                          th:text="|${#temporals.format(review.modifyDate, 'MM.dd (E)')} 수정|"></div>
                                                 </div>
                                                 <div class="d-flex justify-content-end p-1 ms-5" style="font-size:10pt;"
@@ -307,20 +314,26 @@
                                                      th:if="${user.loginId == review.user.loginId}">
                                                     <a type="button" th:href="@{|/review/modify/${review.id}|}">수정</a>
                                                     <span class="mx-1">|</span>
-                                                    <a href="javascript:void(0)" th:data-uri="@{|/review/delete/${review.id}|}"
+                                                    <a href="javascript:void(0)"
+                                                       th:data-uri="@{|/review/delete/${review.id}|}"
                                                        id="deleteBtn">삭제</a>
                                                 </div>
                                             </div>
-                                            <div style="margin:5px; display:inline-block;">
-                                                <img th:src="@{${review.image1}}" alt="" th:if="${review.image1 != null}"
+                                            <div style="margin:5px; display:inline-block;"
+                                                 th:if="${review.image1 != null || review.image2 != null || review.image3 != null}">
+                                                <img th:if="${review.image1 != null}"
+                                                     th:src="@{${review.image1}}" alt=""
                                                      style="width:80px; height:80px; border-radius:10px;">
-                                                <img th:src="@{${review.image2}}" alt="" th:if="${review.image2 != null}"
+                                                <img th:src="@{${review.image2}}" alt=""
+                                                     th:if="${review.image2 != null}"
                                                      style="width:80px; height:80px; border-radius:10px;">
-                                                <img th:src="@{${review.image3}}" alt="" th:if="${review.image3 != null}"
+                                                <img th:src="@{${review.image3}}" alt=""
+                                                     th:if="${review.image3 != null}"
                                                      style="width:80px; height:80px; border-radius:10px;">
                                             </div>
                                             <div class="d-flex my-2 align-items-center px-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="darkgray"
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     fill="darkgray"
                                                      class="bi bi-arrow-return-right me-1" viewBox="0 0 16 16">
                                                     <path fill-rule="evenodd"
                                                           d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
@@ -348,20 +361,6 @@
     <script src="/starScore.js"></script>
     <script src="/imageButton.js"></script>
     <script layout:fragment="script" type='text/javascript' th:inline="javascript">
-
-        const upload = document.querySelector(".upload");
-        const uploadBtn = document.querySelector(".clickUpload");
-
-        uploadBtn.addEventListener('click', () => upload.click());
-
-        upload.addEventListener('change', function () {
-        const files = this.files;
-
-        if (files.length > 0) {
-            const fileName = files[0].name;
-            document.querySelector('#fileName').innerText = fileName;
-        }
-    });
 
         const deleteReview = document.querySelectorAll("#deleteBtn");
         Array.from(deleteReview).forEach(function(element) {
@@ -400,6 +399,7 @@
                     document.getElementById('reserveForm').submit();
                 }
             });
+
         document.getElementById('copyAddress').addEventListener('click', function() {
             const textToCopy = this.innerText;
             const tempInput = document.createElement('input');

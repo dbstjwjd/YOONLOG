@@ -5,10 +5,8 @@ import com.project.team.User.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -38,5 +36,4 @@ public class Review {
     private String image2;
 
     private String image3;
-
 }

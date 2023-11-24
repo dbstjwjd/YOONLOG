@@ -2,7 +2,6 @@ package com.project.team.Restaurant;
 
 import com.project.team.DataNotFoundException;
 import com.project.team.User.SiteUser;
-import com.project.team.review.Review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;

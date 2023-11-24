@@ -1,4 +1,4 @@
-package com.project.team.review;
+package com.project.team.Review;
 
 import com.project.team.Restaurant.Restaurant;
 import com.project.team.Restaurant.RestaurantService;
@@ -15,7 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor

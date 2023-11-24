@@ -3,7 +3,7 @@ package com.project.team;
 import com.project.team.Restaurant.Restaurant;
 import com.project.team.Restaurant.RestaurantService;
 import com.project.team.User.SiteUserService;
-import com.project.team.review.ReviewService;
+import com.project.team.Review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

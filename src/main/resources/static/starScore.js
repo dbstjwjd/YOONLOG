@@ -23,19 +23,7 @@
             document.querySelector("#starCount").innerText = '(' + inputHidden.value + ')';
         }
 
-        function handleMouseOut() {
-            setStarFill(selectedStars);
-        }
-
         for (let i = 0; i < starContainers.length; i++) {
-            starContainers[i].addEventListener('mouseover', function () {
-                handleStarFill(i + 1);
-            });
-
-            starContainers[i].addEventListener('mouseout', function () {
-                handleMouseOut();
-            });
-
             starContainers[i].addEventListener('click', function () {
                 handleStarClick(i + 1);
             });

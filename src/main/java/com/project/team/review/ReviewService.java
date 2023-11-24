@@ -8,8 +8,14 @@ import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,10 +24,13 @@ import java.util.Optional;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
+
     private final SiteUserService siteUserService;
     private final String HEAD = "https://place.map.kakao.com/main/v";
 
-    public void createReview(Restaurant restaurant, SiteUser user, Integer star, String comment) {
+    private String uploadPath = "C:/uploads/review";
+
+    public Review createReview(Restaurant restaurant, SiteUser user, Integer star, String comment) {
         Review review = new Review();
         review.setRestaurant(restaurant);
         review.setUser(user);
@@ -29,6 +38,7 @@ public class ReviewService {
         review.setComment(comment);
         review.setRegDate(LocalDateTime.now());
         reviewRepository.save(review);
+        return review;
     }
 
     public void createTmp(Restaurant restaurant, JSONArray comments) {
@@ -79,6 +89,24 @@ public class ReviewService {
         review.setComment(comment);
         review.setModifyDate(LocalDateTime.now());
         this.reviewRepository.save(review);
+    }
+
+    public void uploadImage(Review review, MultipartFile image) throws IOException {
+        File uploadDirectory = new File(uploadPath);
+        if (!uploadDirectory.exists()) {
+            uploadDirectory.mkdirs();
+        }
+        String fileExtension = StringUtils.getFilenameExtension(image.getOriginalFilename());
+        String fileName = review.getId() + "." + fileExtension;
+        File dest = new File(uploadPath + File.separator + fileName);
+        FileCopyUtils.copy(image.getBytes(), dest);
+        List<String> images = review.getImages();
+        if (images == null) {
+            images = new ArrayList<>();
+        }
+        images.add("/review/image/" + fileName);
+        review.setImages(images);
+        reviewRepository.save(review);
     }
 
 }

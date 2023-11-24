@@ -4,7 +4,12 @@ import com.project.team.DataNotFoundException;
 import com.project.team.User.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -17,8 +22,10 @@ public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
 
+    private String uploadPath = "C:/uploads/restaurant";
+
     public Restaurant registerRestaurant(String name, String address, String number, List<String> facilities, String main,
-                                         SiteUser owner, LocalTime startTime, LocalTime endTime, String introduce) {
+                                         SiteUser owner, LocalTime startTime, LocalTime endTime, String introduce) throws IOException {
         Restaurant restaurant = new Restaurant();
         restaurant.setName(name);
         restaurant.setAddress(address);
@@ -84,6 +91,23 @@ public class RestaurantService {
                 restaurants.add(restaurant);
         }
         return restaurants;
+    }
+
+    public void uploadImage(Restaurant restaurant, MultipartFile image) throws IOException {
+        File uploadDirectory = new File(uploadPath);
+        if (!uploadDirectory.exists()) {
+            uploadDirectory.mkdirs();
+        }
+        if (image.isEmpty())
+            restaurant.setImage("/image/startImage.jpg");
+        else {
+            String fileExtension = StringUtils.getFilenameExtension(image.getOriginalFilename());
+            String fileName = restaurant.getId() + "." + fileExtension;
+            File dest = new File(uploadPath + File.separator + fileName);
+            FileCopyUtils.copy(image.getBytes(), dest);
+            restaurant.setImage("/restaurant/image/" + restaurant.getId() + "." + fileExtension);
+        }
+        this.restaurantRepository.save(restaurant);
     }
 
     public void setImage(Restaurant restaurant, String image) {

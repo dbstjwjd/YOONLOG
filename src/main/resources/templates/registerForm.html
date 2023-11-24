@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-center align-items-center">
         <div style="padding:30px; width:80%;">
             <h3 class="border-bottom pb-2 mb-2">가게 등록</h3>
-            <form method="post" th:object="${restaurantRegisterForm}">
+            <form method="post" th:object="${restaurantRegisterForm}" enctype="multipart/form-data">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <div th:replace="~{form_errors :: formErrorsFragment}"></div>
                 <div class="form-floating mb-3">
@@ -28,7 +28,8 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <input class="form-control" type="file" id="formFile">
+                    <label for="image" class="mb-1">대표 사진</label>
+                    <input class="form-control" type="file" id="image" name="image" accept="image/*">
                 </div>
                 <div class="mb-3">
                     <label for="time" class="mb-1">영업 시간</label>

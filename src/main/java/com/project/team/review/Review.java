@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,4 +32,7 @@ public class Review {
     private LocalDateTime regDate;
 
     private LocalDateTime modifyDate;
+
+    private List<String> images;
+
 }

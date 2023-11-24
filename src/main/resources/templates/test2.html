@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+<h2>음식점 추천</h2>
+<div th:each="restaurant, loop:${restaurant}">
+    <h2  th:text="${restaurant.name}">  </h2>
+    <div th:text="${restaurant.address}"></div>
+    <div th:text="${restaurant.number}"></div>
+    <div th:text="${restaurant.endTime}"></div>
+    <div th:text="${restaurant.introduce}"></div>
+    <div>(로그인한 유저네임) 을 위한 오늘의 메뉴</div>
+</div>
+
+</body>
+</html>

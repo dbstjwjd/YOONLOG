@@ -91,22 +91,32 @@ public class ReviewService {
         this.reviewRepository.save(review);
     }
 
-    public void uploadImage(Review review, MultipartFile image) throws IOException {
+    public void uploadImage(Review review, MultipartFile image1, MultipartFile image2, MultipartFile image3) throws IOException {
         File uploadDirectory = new File(uploadPath);
         if (!uploadDirectory.exists()) {
             uploadDirectory.mkdirs();
         }
-        String fileExtension = StringUtils.getFilenameExtension(image.getOriginalFilename());
-        String fileName = review.getId() + "." + fileExtension;
-        File dest = new File(uploadPath + File.separator + fileName);
-        FileCopyUtils.copy(image.getBytes(), dest);
-        List<String> images = review.getImages();
-        if (images == null) {
-            images = new ArrayList<>();
+        if (!image1.isEmpty()) {
+            String fileExtension = StringUtils.getFilenameExtension(image1.getOriginalFilename());
+            String fileName = review.getId() + "_1." + fileExtension;
+            File dest = new File(uploadPath + File.separator + fileName);
+            FileCopyUtils.copy(image1.getBytes(), dest);
+            review.setImage1("/review/image/" + review.getId() + "_1." + fileExtension);
         }
-        images.add("/review/image/" + fileName);
-        review.setImages(images);
-        reviewRepository.save(review);
+        if (!image2.isEmpty()) {
+            String fileExtension = StringUtils.getFilenameExtension(image2.getOriginalFilename());
+            String fileName = review.getId() + "_2." + fileExtension;
+            File dest = new File(uploadPath + File.separator + fileName);
+            FileCopyUtils.copy(image2.getBytes(), dest);
+            review.setImage2("/review/image/" + review.getId() + "_2." + fileExtension);
+        }
+        if (!image3.isEmpty()) {
+            String fileExtension = StringUtils.getFilenameExtension(image3.getOriginalFilename());
+            String fileName = review.getId() + "_3." + fileExtension;
+            File dest = new File(uploadPath + File.separator + fileName);
+            FileCopyUtils.copy(image3.getBytes(), dest);
+            review.setImage3("/review/image/" + review.getId() + "_3." + fileExtension);
+        }
+        this.reviewRepository.save(review);
     }
-
 }

@@ -38,7 +38,7 @@ public class Review {
 
     private String image3;
 
-    @OneToOne
+    @OneToOne(mappedBy = "review", cascade = CascadeType.REMOVE)
     private Comment commentContent;
 
 }

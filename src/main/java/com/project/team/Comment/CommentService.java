@@ -5,6 +5,7 @@ import com.project.team.Review.Review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -17,11 +18,13 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setReview(review);
         comment.setContent(content);
+        comment.setCreateDate(LocalDateTime.now());
         this.commentRepository.save(comment);
     }
 
     public void modifyComment(Comment comment, String content) {
         comment.setContent(content);
+        comment.setModifyDate(LocalDateTime.now());
         this.commentRepository.save(comment);
     }
 

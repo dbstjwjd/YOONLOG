@@ -18,6 +18,10 @@ a:hover {
     text-align: center;
 }
 
+#container.logged-in {
+    width: 100%;
+}
+
 .image {
     width: 100%;
     height: auto;
@@ -48,7 +52,7 @@ a:hover {
     background:tan;
     padding:30px;
     border-radius:20px;
-    width:50%;
+    width:45%;
     height:400px;
     border:2px solid black;
 }

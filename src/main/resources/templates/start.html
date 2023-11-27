@@ -30,7 +30,7 @@
 <a th:href="@{/test2}" class="btn btn-success position-absolute">테스트2</a>
 <a th:href="@{/test}" class="btn btn-success position-absolute" style="z-index:99; left:2%; bottom:2%;">테스트 페이지</a>
 <div class="d-flex">
-    <div id="container">
+    <div id="container" th:classappend="${#authentication.name != null ? 'logged-in' : ''}">
         <img style="width:100%; height:100vh; opacity:0.5;" src="/image/startImage.jpg"
              class="image d-flex align-items-center justify-content-center">
         <div class="text-center">
@@ -48,7 +48,7 @@
             </div>
         </div>
     </div>
-    <div style="width:30%;" class="d-flex align-items-center justify-content-center">
+    <div style="width:30%;" class="d-flex align-items-center justify-content-center" sec:authorize="isAnonymous()">
         <div style="width:60%;">
             <h1 class="border-bottom pb-2 mb-2" style="color:tan; text-shadow:-1px -1px 0 #000, 1px -1px 0 #000,-1px 1px 0 #000, 1px 1px 0 #000;">logo</h1>
             <form id="loginForm" th:action="@{/user/login}" method="post">
@@ -91,7 +91,6 @@
                              alt="">
                         카카오 로그인</a>
                 </div>
-
             </form>
             <form id="signupForm" th:action="@{/user/signup}" style="display: none;" th:object="${userCreateForm}"
                   method="post">
@@ -136,12 +135,14 @@
         </div>
     </div>
 </div>
+<input type="hidden" th:value="${signupError}" id="signupError">
 <form th:action="@{/interprocess}" method="get" id="searchAddress">
     <input type="hidden" id="inputAddress" name="inputAddress">
 </form>
 <script th:src="@{/bootstrap.bundle.min.js}"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
+<script th:inline="javascript">
+
     function searchForAddress() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -152,7 +153,12 @@
     }
 
     window.onload = function() {
-        showForm('loginForm');
+        const showError = document.querySelector("#signupError").value;
+            if (showError == "에러 메시지") {
+                showForm('signupForm');
+            } else {
+                showForm('loginForm');
+            }
     };
 
     function showForm(formId) {
@@ -170,6 +176,7 @@
             document.getElementById('signupLink').style.display = 'inline';
         }
     }
+
     function aroundMe() {
         document.querySelector('#inputAddress').value = 'aroundMe';
         document.querySelector('#searchAddress').submit();

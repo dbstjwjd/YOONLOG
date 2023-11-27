@@ -2,8 +2,8 @@ package com.project.team.Restaurant;
 
 import com.project.team.User.SiteUser;
 import com.project.team.User.SiteUserService;
-import com.project.team.review.Review;
-import com.project.team.review.ReviewService;
+import com.project.team.Review.Review;
+import com.project.team.Review.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

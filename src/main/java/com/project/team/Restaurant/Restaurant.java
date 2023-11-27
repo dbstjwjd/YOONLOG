@@ -2,7 +2,7 @@ package com.project.team.Restaurant;
 
 import com.project.team.Reservation.Reservation;
 import com.project.team.User.SiteUser;
-import com.project.team.review.Review;
+import com.project.team.Review.Review;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;

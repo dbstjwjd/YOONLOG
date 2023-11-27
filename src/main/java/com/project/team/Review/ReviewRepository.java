@@ -1,4 +1,4 @@
-package com.project.team.review;
+package com.project.team.Review;
 
 import com.project.team.Restaurant.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;

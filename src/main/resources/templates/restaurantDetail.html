@@ -69,14 +69,14 @@
                     </div>
                     <!-- 가게 소개 -->
                     <label for="introduce" class="border-bottom mb-1" style="font-size:11pt; color:dimgray;">소개</label>
-                    <div class="d-flex align-items-center mb-2" th:if="${restaurant.introduce != null}">
+                    <div class="d-flex align-items-center mb-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-chat-left-text me-1" viewBox="0 0 16 16">
                             <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                             <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
                         </svg>
-                        <span th:text="${restaurant.introduce}"
-                              th:if="${restaurant.introduce != null && restaurant.introduce != ''}"></span>
+                        <span th:if="${restaurant.introduce != null && restaurant.introduce != ''}"
+                              th:text="${restaurant.introduce}"></span>
                         <span th:if="${restaurant.introduce == null || restaurant.introduce == ''}">제공 정보 없음</span>
                     </div>
                     <label for="introduce" class="border-bottom mb-1" style="font-size:11pt; color:dimgray;">별점</label>
@@ -86,6 +86,15 @@
                             <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                         </svg>
                         <span style="font-size:13pt;" th:text="${#numbers.formatDecimal(averageStar, 1, 1)}"></span>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <a class="d-flex align-items-center mb-2" style="text-decoration:underline;" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-chat-square-quote-fill me-1" viewBox="0 0 16 16">
+                                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.5a1 1 0 0 0-.8.4l-1.9 2.533a1 1 0 0 1-1.6 0L5.3 12.4a1 1 0 0 0-.8-.4H2a2 2 0 0 1-2-2V2zm7.194 2.766a1.688 1.688 0 0 0-.227-.272 1.467 1.467 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 5.734 4C4.776 4 4 4.746 4 5.667c0 .92.776 1.666 1.734 1.666.343 0 .662-.095.931-.26-.137.389-.39.804-.81 1.22a.405.405 0 0 0 .011.59c.173.16.447.155.614-.01 1.334-1.329 1.37-2.758.941-3.706a2.461 2.461 0 0 0-.227-.4zM11 7.073c-.136.389-.39.804-.81 1.22a.405.405 0 0 0 .012.59c.172.16.446.155.613-.01 1.334-1.329 1.37-2.758.942-3.706a2.466 2.466 0 0 0-.228-.4 1.686 1.686 0 0 0-.227-.273 1.466 1.466 0 0 0-.469-.324l-.008-.004A1.785 1.785 0 0 0 10.07 4c-.957 0-1.734.746-1.734 1.667 0 .92.777 1.666 1.734 1.666.343 0 .662-.095.931-.26z"/>
+                            </svg>
+                            <span>실시간 채팅</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -279,7 +288,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <div th:each="review : ${reviews}" class="mb-3 border-bottom">
-                                            <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center justify-content-between mb-3">
                                                 <div class="d-flex align-items-center">
                                                     <div class="뱃지 badge me-2">
                                                         <div class="d-flex align-items-center">
@@ -331,14 +340,52 @@
                                                      th:if="${review.image3 != null}"
                                                      style="width:80px; height:80px; border-radius:10px;">
                                             </div>
-                                            <div class="d-flex my-2 align-items-center px-2">
+                                            <div class="d-flex justify-content-around align-items-start mb-2"
+                                                 th:if="${!review.comment.isBlank()}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                      fill="darkgray"
-                                                     class="bi bi-arrow-return-right me-1" viewBox="0 0 16 16">
+                                                     class="bi bi-arrow-return-right" viewBox="0 0 16 16">
                                                     <path fill-rule="evenodd"
                                                           d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
                                                 </svg>
-                                                <div th:text="${review.comment}"></div>
+                                                <div style="width:90%;" th:text="${review.comment}"></div>
+                                            </div>
+                                            <!-- 리뷰 댓글 -->
+                                            <form method="post" th:action="@{|/comment/create/${review.id}|}"
+                                                  sec:authorize="isAuthenticated()" id="commentForm"
+                                                  th:if="${restaurant.owner != null}">
+                                                <div class="input-group mb-2"
+                                                     th:if="${review.commentContent == null && restaurant.owner.loginId == user.loginId}">
+                                                    <input type="text" name="comment" class="form-control">
+                                                    <input type="button" id="commentBtn" class="버튼 btn btn-sm"
+                                                           value="등록">
+                                                </div>
+                                            </form>
+                                            <div th:if="${review.commentContent != null}" id="printComment"
+                                                 style="border:1px solid darkgray; padding:5px; border-radius:15px; display:flex; align-items:center; justify-content:space-between;">
+                                                <div class="d-flex">
+                                                    <div class="d-flex align-items-center ms-1 badge bg-light text-dark">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                             height="16"
+                                                             fill="currentColor" class="bi bi-person-circle me-1"
+                                                             viewBox="0 0 16 16">
+                                                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                                            <path fill-rule="evenodd"
+                                                                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                                        </svg>
+                                                        <div class="me-1">사장님 :</div>
+                                                    </div>
+                                                    <div th:text="${review.commentContent.content}"
+                                                         style="font-size:12pt;"></div>
+                                                </div>
+                                                <div style="font-size:8pt;" class="me-2 badge bg-light text-dark">
+                                                    <a href="javascript:void(0)"
+                                                       th:onclick="|modifyComment(${review.commentContent.id})|"
+                                                       id="cmModifyBtn">수정</a>
+                                                    <span>|</span>
+                                                    <a href="javascript:void(0)" id="cmDeleteBtn"
+                                                       th:data-uri="@{|/comment/delete/${review.commentContent.id}|}">삭제</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -361,6 +408,31 @@
     <script src="/starScore.js"></script>
     <script src="/imageButton.js"></script>
     <script layout:fragment="script" type='text/javascript' th:inline="javascript">
+
+        function modifyComment(commentId) {
+            document.querySelector("#printComment").style.display = 'none';
+        }
+
+        const deleteComment = document.querySelectorAll("#cmDeleteBtn");
+        Array.from(deleteComment).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if (confirm("정말로 삭제하시겠습니까?")) {
+                    location.href = this.dataset.uri;
+                };
+            });
+        });
+
+        const comment = document.querySelectorAll("#commentBtn");
+        Array.from(comment).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if(this.previousElementSibling.value  == '')
+                    alert("댓글 내용을 입력해주세요.")
+                else {
+                    alert("댓글이 등록되었습니다.")
+                    element.parentNode.parentNode.submit();
+                }
+            });
+        });
 
         const deleteReview = document.querySelectorAll("#deleteBtn");
         Array.from(deleteReview).forEach(function(element) {

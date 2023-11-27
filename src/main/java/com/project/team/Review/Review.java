@@ -1,5 +1,6 @@
-package com.project.team.review;
+package com.project.team.Review;
 
+import com.project.team.Comment.Comment;
 import com.project.team.Restaurant.Restaurant;
 import com.project.team.User.SiteUser;
 import jakarta.persistence.*;
@@ -36,4 +37,8 @@ public class Review {
     private String image2;
 
     private String image3;
+
+    @OneToOne(mappedBy = "review", cascade = CascadeType.REMOVE)
+    private Comment commentContent;
+
 }
